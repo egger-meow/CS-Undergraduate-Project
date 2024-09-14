@@ -5,27 +5,8 @@ from torch.autograd import Variable
 
 import numpy as  np
 
-class FC_Encoder(nn.Module):
-    def __init__(self, output_size):
-        super(FC_Encoder, self).__init__()
-        self.fc1 = nn.Linear(784, output_size)
-
-    def forward(self, x):
-        h1 = F.relu(self.fc1(x))
-        return h1
-
-class FC_Decoder(nn.Module):
-    def __init__(self, embedding_size):
-        super(FC_Decoder, self).__init__()
-        self.fc3 = nn.Linear(embedding_size, 1024)
-        self.fc4 = nn.Linear(1024, 784)
-
-    def forward(self, z):
-        h3 = F.relu(self.fc3(z))
-        return torch.sigmoid(self.fc4(h3))
-
 class CNN_Encoder(nn.Module):
-    def __init__(self, output_size, input_size=(1, 28, 28)):
+    def __init__(self, output_size, input_size=(1, 7, 100)):
         super(CNN_Encoder, self).__init__()
 
         self.input_size = input_size
@@ -71,10 +52,10 @@ class CNN_Encoder(nn.Module):
         return self.linear(x)
 
 class CNN_Decoder(nn.Module):
-    def __init__(self, embedding_size, input_size=(1, 28, 28)):
+    def __init__(self, embedding_size, input_size=(1, 7, 100)):
         super(CNN_Decoder, self).__init__()
-        self.input_height = 28
-        self.input_width = 28
+        self.input_channel = 7
+        self.input_timeStamps = 100
         self.input_dim = embedding_size
         self.channel_mult = 16
         self.output_channels = 1
@@ -112,4 +93,4 @@ class CNN_Decoder(nn.Module):
         x = self.fc(x)
         x = x.view(-1, self.fc_output_dim, 1, 1)
         x = self.deconv(x)
-        return x.view(-1, self.input_width*self.input_height)
+        return x.view(-1, self.input_channel*self.input_timeStamps)

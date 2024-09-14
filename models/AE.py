@@ -24,7 +24,7 @@ class Network(nn.Module):
         return self.decoder(z)
 
     def forward(self, x):
-        z = self.encode(x.view(-1, 784))
+        z = self.encode(x.view(-1, 700))
         return self.decode(z)
 
 class AE(object):
@@ -51,7 +51,7 @@ class AE(object):
             sys.exit()
 
     def loss_function(self, recon_x, x):
-        BCE = F.binary_cross_entropy(recon_x, x.view(-1, 784), reduction='sum')
+        BCE = F.binary_cross_entropy(recon_x, x.view(-1, 700), reduction='sum')
         return BCE
 
     def train(self, epoch):
