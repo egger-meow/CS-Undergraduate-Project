@@ -6,7 +6,7 @@ from torchvision import datasets, transforms
 
 import sys
 sys.path.append('../')
-from architectures import FC_Encoder, FC_Decoder, CNN_Encoder, CNN_Decoder
+from architectures import  CNN_Encoder, CNN_Decoder
 from datasets import MNIST, EMNIST, FashionMNIST
 
 class Network(nn.Module):

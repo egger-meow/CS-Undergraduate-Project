@@ -6,7 +6,7 @@ from torch.autograd import Variable
 import numpy as  np
 
 class CNN_Encoder(nn.Module):
-    def __init__(self, output_size, input_size=(1, 7, 100)):
+    def __init__(self, output_size, input_size=(7, 100)):
         super(CNN_Encoder, self).__init__()
 
         self.input_size = input_size
@@ -14,24 +14,24 @@ class CNN_Encoder(nn.Module):
 
         #convolutions
         self.conv = nn.Sequential(
-            nn.Conv2d(in_channels=1,
+            nn.Conv1d(in_channels=7,
                      out_channels=self.channel_mult*1,
                      kernel_size=4,
                      stride=1,
                      padding=1),
             nn.LeakyReLU(0.2, inplace=True),
-            nn.Conv2d(self.channel_mult*1, self.channel_mult*2, 4, 2, 1),
-            nn.BatchNorm2d(self.channel_mult*2),
+            nn.Conv1d(self.channel_mult*1, self.channel_mult*2, 4, 2, 1),
+            nn.BatchNorm1d(self.channel_mult*2),
             nn.LeakyReLU(0.2, inplace=True),
-            nn.Conv2d(self.channel_mult*2, self.channel_mult*4, 4, 2, 1),
-            nn.BatchNorm2d(self.channel_mult*4),
+            nn.Conv1d(self.channel_mult*2, self.channel_mult*4, 4, 2, 1),
+            nn.BatchNorm1d(self.channel_mult*4),
             nn.LeakyReLU(0.2, inplace=True),
-            nn.Conv2d(self.channel_mult*4, self.channel_mult*8, 4, 2, 1),
-            nn.BatchNorm2d(self.channel_mult*8),
+            nn.Conv1d(self.channel_mult*4, self.channel_mult*8, 4, 2, 1),
+            nn.BatchNorm1d(self.channel_mult*8),
             nn.LeakyReLU(0.2, inplace=True),
-            nn.Conv2d(self.channel_mult*8, self.channel_mult*16, 3, 2, 1),
-            nn.BatchNorm2d(self.channel_mult*16),
-            nn.LeakyReLU(0.2, inplace=True)
+            # nn.Conv1d(self.channel_mult*8, self.channel_mult*16, 3, 2, 1),
+            # nn.BatchNorm1d(self.channel_mult*16),
+            # nn.LeakyReLU(0.2, inplace=True)
         )
 
         self.flat_fts = self.get_flat_fts(self.conv)
@@ -52,7 +52,7 @@ class CNN_Encoder(nn.Module):
         return self.linear(x)
 
 class CNN_Decoder(nn.Module):
-    def __init__(self, embedding_size, input_size=(1, 7, 100)):
+    def __init__(self, embedding_size, input_size=(7, 100)):
         super(CNN_Decoder, self).__init__()
         self.input_channel = 7
         self.input_timeStamps = 100
