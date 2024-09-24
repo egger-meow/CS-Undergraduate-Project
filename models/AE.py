@@ -7,15 +7,14 @@ from torchvision import datasets, transforms
 import sys
 sys.path.append('../')
 from architectures import  CNN_Encoder, CNN_Decoder
-from datasets import MNIST, EMNIST, FashionMNIST
+from datasets import Vibration
 
 class Network(nn.Module):
     def __init__(self, args):
         super(Network, self).__init__()
-        output_size = args.embedding_size
-        self.encoder = CNN_Encoder(output_size)
+        self.encoder = CNN_Encoder()
 
-        self.decoder = CNN_Decoder(args.embedding_size)
+        self.decoder = CNN_Decoder()
 
     def encode(self, x):
         return self.encoder(x)
@@ -24,7 +23,7 @@ class Network(nn.Module):
         return self.decoder(z)
 
     def forward(self, x):
-        z = self.encode(x.view(-1, 700))
+        z = self.encode(x)
         return self.decode(z)
 
 class AE(object):
@@ -40,18 +39,10 @@ class AE(object):
         self.optimizer = optim.Adam(self.model.parameters(), lr=1e-3)
 
     def _init_dataset(self):
-        if self.args.dataset == 'MNIST':
-            self.data = MNIST(self.args)
-        elif self.args.dataset == 'EMNIST':
-            self.data = EMNIST(self.args)
-        elif self.args.dataset == 'FashionMNIST':
-            self.data = FashionMNIST(self.args)
-        else:
-            print("Dataset not supported")
-            sys.exit()
+        self.data = Vibration()
 
     def loss_function(self, recon_x, x):
-        BCE = F.binary_cross_entropy(recon_x, x.view(-1, 700), reduction='sum')
+        BCE = F.binary_cross_entropy(recon_x.view(-1, 600), x.view(-1, 600), reduction='sum')
         return BCE
 
     def train(self, epoch):

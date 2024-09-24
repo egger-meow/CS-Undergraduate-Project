@@ -6,91 +6,88 @@ from torch.autograd import Variable
 import numpy as  np 
 
 class CNN_Encoder(nn.Module):
-    def __init__(self, output_size, input_size=(7, 100)):
+    def __init__(self, input_size=(6, 100)):
         super(CNN_Encoder, self).__init__()
 
         self.input_size = input_size
-        self.channel_mult = 16
+        self.channel_mult = 8
 
         #convolutions
         self.conv = nn.Sequential(
-            nn.Conv1d(in_channels=7,
-                     out_channels=self.channel_mult*1,
-                     kernel_size=4,
-                     stride=1,
-                     padding=1),
+            nn.Conv1d(
+                    in_channels=input_size[0],
+                    out_channels=self.channel_mult*1,
+                    kernel_size=4,
+                    stride=1,
+                    padding=1),
+            nn.BatchNorm1d(self.channel_mult*1),
             nn.LeakyReLU(0.2, inplace=True),
-            nn.Conv1d(self.channel_mult*1, self.channel_mult*2, 4, 2, 1),
+            
+            nn.Conv1d(
+                self.channel_mult*1, 
+                self.channel_mult*2, 
+                kernel_size=4, 
+                stride=2, 
+                padding=1),
             nn.BatchNorm1d(self.channel_mult*2),
             nn.LeakyReLU(0.2, inplace=True),
-            nn.Conv1d(self.channel_mult*2, self.channel_mult*4, 4, 2, 1),
+            
+            nn.Conv1d(
+                self.channel_mult*2, 
+                self.channel_mult*4,
+                kernel_size=4, 
+                stride=2, 
+                padding=1),
             nn.BatchNorm1d(self.channel_mult*4),
             nn.LeakyReLU(0.2, inplace=True),
-            nn.Conv1d(self.channel_mult*4, self.channel_mult*8, 3, 2, 1),
-            nn.BatchNorm1d(self.channel_mult*8),
-            nn.LeakyReLU(0.2, inplace=True),
-            # nn.Conv1d(self.channel_mult*8, self.channel_mult*16, 3, 2, 1),
-            # nn.BatchNorm1d(self.channel_mult*16),
-            # nn.LeakyReLU(0.2, inplace=True)
         )
-
-        self.flat_fts = self.get_flat_fts(self.conv)
-
-        self.linear = nn.Sequential(
-            nn.Linear(self.flat_fts, output_size),
-            nn.BatchNorm1d(output_size),
-            nn.LeakyReLU(0.2),
-        )
-
-    def get_flat_fts(self, fts):
-        f = fts(Variable(torch.ones(1, *self.input_size)))
-        return int(np.prod(f.size()[1:]))
 
     def forward(self, x):
-        x = self.conv(x.view(-1, *self.input_size))
-        x = x.view(-1, self.flat_fts)
-        return self.linear(x)
+        return self.conv(x)
 
 class CNN_Decoder(nn.Module):
-    def __init__(self, embedding_size, input_size=(7, 100)):
+    def __init__(self, input_size=(6, 100)):
         super(CNN_Decoder, self).__init__()
-        self.input_channels = 7
+        self.input_channels = 6
         self.input_timeStamps = 100
-        self.input_dim = embedding_size
-        self.channel_mult = 16
-        self.output_channels = 7
+        self.channel_mult = 8
+        self.output_channels = 6
         self.fc_output_dim = 512
 
         self.fc = nn.Sequential(
-            nn.Linear(self.input_dim, self.fc_output_dim),
+            nn.Linear(embedding_size, self.fc_output_dim),
             nn.BatchNorm1d(self.fc_output_dim),
             nn.ReLU(True)
         )
 
         self.deconv = nn.Sequential(
-            # input is Z, going into a convolution
-            nn.ConvTranspose1d(self.fc_output_dim, self.channel_mult*4,
-                                3, 2, 1, bias=False),
-            nn.BatchNorm1d(self.channel_mult*4),
-            nn.ReLU(True),
-            # state size. self.channel_mult*32 x 4 x 4
-            nn.ConvTranspose1d(self.channel_mult*4, self.channel_mult*2,
-                                4, 2, 1, bias=False),
+            nn.ConvTranspose1d(
+                self.channel_mult*4, 
+                self.channel_mult*2,
+                kernel_size=4, 
+                stride=2, 
+                padding=1),
             nn.BatchNorm1d(self.channel_mult*2),
             nn.ReLU(True),
-            # state size. self.channel_mult*16 x 7 x 7
-            nn.ConvTranspose1d(self.channel_mult*2, self.channel_mult*1,
-                                4, 2, 1, bias=False),
+            
+            nn.ConvTranspose1d(
+                self.channel_mult*2, 
+                self.channel_mult*1,
+                kernel_size=4, 
+                stride=2, 
+                padding=1),
             nn.BatchNorm1d(self.channel_mult*1),
             nn.ReLU(True),
-            # state size. self.channel_mult*8 x 14 x 14
-            nn.ConvTranspose1d(self.channel_mult*1, self.output_channels, 4, 1, 1, bias=False),
-            nn.Sigmoid()
-            # state size. self.output_channels x 28 x 28
+            
+            nn.ConvTranspose1d(
+                self.channel_mult*1, 
+                self.input_size[0],
+                kernel_size=4, 
+                stride=1, 
+                padding=1),
+            nn.Sigmoid(),
         )
+        
 
     def forward(self, x):
-        x = self.fc(x)
-        x = x.view(-1, self.fc_output_dim, 1, 1)
-        x = self.deconv(x)
-        return x.view(-1, self.input_channels*self.input_timeStamps)
+        return self.deconv(x)
