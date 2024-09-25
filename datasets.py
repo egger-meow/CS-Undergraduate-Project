@@ -7,43 +7,9 @@ from sklearn.preprocessing import MinMaxScaler
 from torch.utils.data import DataLoader, TensorDataset, random_split
 
 
-class MNIST(object):
-    def __init__(self, args):
-        kwargs = {'num_workers': 1, 'pin_memory': True} if args.cuda else {}
-        self.train_loader = torch.utils.data.DataLoader(
-            datasets.MNIST('data/mnist', train=True, download=True,
-                           transform=transforms.ToTensor()),
-            batch_size=args.batch_size, shuffle=True, **kwargs)
-        self.test_loader = torch.utils.data.DataLoader(
-            datasets.MNIST('data/mnist', train=False, transform=transforms.ToTensor()),
-            batch_size=args.batch_size, shuffle=True, **kwargs)
-
-class EMNIST(object):
-    def __init__(self, args):
-        kwargs = {'num_workers': 1, 'pin_memory': True} if args.cuda else {}
-        self.train_loader = torch.utils.data.DataLoader(
-            datasets.EMNIST('data/emnist', train=True, download=True, split='byclass',
-                           transform=transforms.ToTensor()),
-            batch_size=args.batch_size, shuffle=True, **kwargs)
-        self.test_loader = torch.utils.data.DataLoader(
-            datasets.EMNIST('data/emnist', train=False, split='byclass',
-            transform=transforms.ToTensor()),
-            batch_size=args.batch_size, shuffle=True, **kwargs)
-
-class FashionMNIST(object):
-    def __init__(self, args):
-        kwargs = {'num_workers': 1, 'pin_memory': True} if args.cuda else {}
-        self.train_loader = torch.utils.data.DataLoader(
-            datasets.FashionMNIST('data/fmnist', train=True, download=True,
-                           transform=transforms.ToTensor()),
-            batch_size=args.batch_size, shuffle=True, **kwargs)
-        self.test_loader = torch.utils.data.DataLoader(
-            datasets.FashionMNIST('data/fmnist', train=False, transform=transforms.ToTensor()),
-            batch_size=args.batch_size, shuffle=True, **kwargs)
-
 class Vibration(object):
-    def __init__(self):
-        df = pd.read_csv('E:/download/20240604/20240604/vibdata/20240604235739.csv')
+    def __init__(self, path = 'E:/download/20240604/20240604/vibdata/20240604235739.csv', trainDataRatio = 0.8):
+        df = pd.read_csv(path)
         desiredSampleRate = 300
         originalSampleRate = 8192
         totalSeconds = 30
@@ -53,22 +19,21 @@ class Vibration(object):
         dataNormalizedNumpy = self.normalization(dataRawNumpy)
         
         sampleLength = 100
-        stride = 10
+        stride = 20
         dataSlidingWindow = self.slidingWindow(dataNormalizedNumpy ,sampleLength, stride).transpose(0,2,1)
 
-        dataTensor = torch.tensor(dataSlidingWindow, dtype = torch.float32)
-
+        dataTensor = torch.tensor(dataSlidingWindow, dtype = torch.float32)  
+        
         numSamples = dataTensor.shape[0]
 
-        trainSize = int(0.8 * numSamples)
+        trainSize = int(trainDataRatio * numSamples) if int(trainDataRatio * numSamples) > 0 else 1
 
         trainData, testData = dataTensor[:trainSize], dataTensor[trainSize:]
         # print(trainData.shape)
         
         batchSize = 32
         self.train_loader = DataLoader(TensorDataset(trainData), batch_size=batchSize, shuffle=True)
-        self.test_loader = DataLoader(TensorDataset(testData), batch_size=batchSize)
-        print('data prepared.')
+        self.test_loader = DataLoader(TensorDataset(testData), batch_size=batchSize, shuffle=True)
         
     def slidingWindow(self, data, sampleLength, stride):
         numWindows = (data.shape[0] - sampleLength) // stride + 1 
@@ -85,4 +50,4 @@ class Vibration(object):
         return normalized.reshape(dim0, 6)
         
 
-test = Vibration()
+# test = Vibration()

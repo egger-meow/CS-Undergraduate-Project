@@ -10,7 +10,7 @@ class CNN_Encoder(nn.Module):
         super(CNN_Encoder, self).__init__()
 
         self.input_size = input_size
-        self.channel_mult = 8
+        self.channel_mult = 16
 
         #convolutions
         self.conv = nn.Sequential(
@@ -26,7 +26,7 @@ class CNN_Encoder(nn.Module):
             nn.Conv1d(
                 self.channel_mult*1, 
                 self.channel_mult*2, 
-                kernel_size=4, 
+                kernel_size=3, 
                 stride=2, 
                 padding=1),
             nn.BatchNorm1d(self.channel_mult*2),
@@ -50,15 +50,15 @@ class CNN_Decoder(nn.Module):
         super(CNN_Decoder, self).__init__()
         self.input_channels = 6
         self.input_timeStamps = 100
-        self.channel_mult = 8
+        self.channel_mult = 16
         self.output_channels = 6
         self.fc_output_dim = 512
 
-        self.fc = nn.Sequential(
-            nn.Linear(embedding_size, self.fc_output_dim),
-            nn.BatchNorm1d(self.fc_output_dim),
-            nn.ReLU(True)
-        )
+        # self.fc = nn.Sequential(
+        #     nn.Linear(embedding_size, self.fc_output_dim),
+        #     nn.BatchNorm1d(self.fc_output_dim),
+        #     nn.ReLU(True)
+        # )
 
         self.deconv = nn.Sequential(
             nn.ConvTranspose1d(
@@ -81,8 +81,8 @@ class CNN_Decoder(nn.Module):
             
             nn.ConvTranspose1d(
                 self.channel_mult*1, 
-                self.input_size[0],
-                kernel_size=4, 
+                input_size[0],
+                kernel_size=3, 
                 stride=1, 
                 padding=1),
             nn.Sigmoid(),

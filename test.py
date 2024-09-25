@@ -9,6 +9,7 @@ from torchvision.utils import save_image
 # from models.VAE import VAE
 from models.AE import AE
 
+
 from utils import get_interpolations
 
 parser = argparse.ArgumentParser(
@@ -42,12 +43,8 @@ architectures = {'AE':  ae,
                  'VAE': ae}
 
 print(args.model)
-if __name__ == "__main__":
-    try:
-        os.stat(args.results_path)
-    except :
-        os.mkdir(args.results_path)
 
+if __name__ == "__main__":
     try:
         autoenc = architectures[args.model]
     except KeyError:
@@ -56,30 +53,13 @@ if __name__ == "__main__":
         print('Maybe you can implement it?')
         print('---------------------------------------------------------')
         sys.exit()
-
+    
     try:
-        for epoch in range(1, args.epochs + 1):
-            autoenc.train(epoch)
-            autoenc.test(epoch)
-        autoenc.printLossResult()
-        autoenc.saveModel()
+        path1 = 'E:/download/20240604/20240604/vibdata/20240604204639.csv'
+        path2 = 'E:/download/20240607/20240607/vibdata/20240607161223.csv'
+        
+        print(path2)
+        autoenc.testDataset(path2)
     except (KeyboardInterrupt, SystemExit):
-        print("Manual Interruption")
-
-    # with torch.no_grad():
-    #     images, _ = next(iter(autoenc.test_loader))
-    #     images = images.to(autoenc.device)
-    #     images_per_row = 16
-    #     interpolations = get_interpolations(args, autoenc.model, autoenc.device, images, images_per_row)
-
-    #     sample = torch.randn(64, args.embedding_size).to(autoenc.device)
-    #     sample = autoenc.model.decode(sample).cpu()
-    #     save_image(sample.view(64, 1, 28, 28),
-    #             '{}/sample_{}_{}.png'.format(args.results_path, args.model, args.dataset))
-    #     save_image(interpolations.view(-1, 1, 28, 28),
-    #             '{}/interpolations_{}_{}.png'.format(args.results_path, args.model, args.dataset),  nrow=images_per_row)
-    #     interpolations = interpolations.cpu()
-    #     interpolations = np.reshape(interpolations.data.numpy(), (-1, 28, 28))
-    #     interpolations = ndimage.zoom(interpolations, 5, order=1)
-    #     interpolations *= 256
-    #     imageio.mimsave('{}/animation_{}_{}.gif'.format(args.results_path, args.model, args.dataset), interpolations.astype(np.uint8))
+        print("Manual Interruption")        
+    
