@@ -2,6 +2,9 @@ import argparse, os, sys
 import numpy as np
 import imageio
 from scipy import ndimage
+import gc
+
+
 
 import torch
 from torchvision.utils import save_image
@@ -45,6 +48,7 @@ architectures = {'AE':  ae,
 print(args.model)
 
 if __name__ == "__main__":
+    gc.collect()
     try:
         autoenc = architectures[args.model]
     except KeyError:
@@ -55,11 +59,11 @@ if __name__ == "__main__":
         sys.exit()
     
     try:
-        path1 = 'E:/download/20240604/20240604/vibdata/20240604204639.csv'
-        path2 = 'E:/download/20240607/20240607/vibdata/20240607161223.csv'
         
-        print(path2)
-        autoenc.testDataset(path2)
+        dir1 = 'D:/leveling/leveling_data/Abnormal/Amp/state345/'
+        dir2 = 'D:/leveling/leveling_data/Normal/Amp/state345_2/'
+        
+        autoenc.testDataset(dir2)
     except (KeyboardInterrupt, SystemExit):
         print("Manual Interruption")        
     

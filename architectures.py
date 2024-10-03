@@ -3,10 +3,12 @@ from torch import nn
 from torch.nn import functional as F
 from torch.autograd import Variable
 
+from defi import channels, timeStamps
+
 import numpy as  np 
 
 class CNN_Encoder(nn.Module):
-    def __init__(self, input_size=(6, 100)):
+    def __init__(self, input_size=(channels, timeStamps)):
         super(CNN_Encoder, self).__init__()
 
         self.input_size = input_size
@@ -46,19 +48,13 @@ class CNN_Encoder(nn.Module):
         return self.conv(x)
 
 class CNN_Decoder(nn.Module):
-    def __init__(self, input_size=(6, 100)):
+    def __init__(self, input_size=(channels, timeStamps)):
         super(CNN_Decoder, self).__init__()
-        self.input_channels = 6
-        self.input_timeStamps = 100
+        self.input_channels = channels
+        self.input_timeStamps = timeStamps
         self.channel_mult = 16
-        self.output_channels = 6
+        self.output_channels = channels
         self.fc_output_dim = 512
-
-        # self.fc = nn.Sequential(
-        #     nn.Linear(embedding_size, self.fc_output_dim),
-        #     nn.BatchNorm1d(self.fc_output_dim),
-        #     nn.ReLU(True)
-        # )
 
         self.deconv = nn.Sequential(
             nn.ConvTranspose1d(
@@ -88,6 +84,5 @@ class CNN_Decoder(nn.Module):
             nn.Sigmoid(),
         )
         
-
     def forward(self, x):
         return self.deconv(x)

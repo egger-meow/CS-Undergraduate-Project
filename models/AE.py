@@ -7,6 +7,9 @@ from torch.optim.lr_scheduler import StepLR
 from tqdm import tqdm
 import numpy as np
 
+from defi import channels, timeStamps, trainDataDir, lr, scheduler_gamma, scheduler_stepSize
+
+
 import matplotlib.pyplot as plt
 
 import sys
@@ -41,38 +44,44 @@ class AE(object):
 
         self.model = Network(args)
         self.model.to(self.device)
-        self.optimizer = optim.Adam(self.model.parameters(), lr=0.03)
-        self.scheduler = StepLR(self.optimizer, step_size=10, gamma=0.9)
+        
+        self.optimizer = optim.Adam(self.model.parameters(), lr=lr)
+        self.scheduler = StepLR(self.optimizer, step_size=scheduler_stepSize, gamma=scheduler_gamma)
         
         self.trainLosses = []
         self.testLosses = []
         
     def _init_dataset(self):
-        self.data = Vibration()
+        self.data = Vibration(dir = trainDataDir)
 
-    def loss_function(self, recon_x, x):
-        BCE = F.mse_loss(recon_x.view(-1, 600), x.view(-1, 600), reduction='sum')
-        return BCE
+    def loss_function(self, reconstructed_x, x):
+        # criterion = nn.SmoothL1Loss
+        criterion = F.mse_loss
+        
+        loss = criterion(
+            x.view(-1, channels * timeStamps),
+            reconstructed_x.view(-1, channels * timeStamps), 
+            reduction = 'sum')
+        return loss
 
     def train(self, epoch):
         self.model.train()
         train_loss = 0
         # print(self.train_loader[0])
         for batch_idx, data in enumerate(tqdm(self.train_loader)):
-            data = torch.tensor(data[0])
+            data = data[0].clone().detach()
             
             data = data.to(self.device)
-            # print(data.shape)
             self.optimizer.zero_grad()
             recon_batch = self.model(data)
-            # print(recon_batch.shape)
+
             loss = self.loss_function(recon_batch, data)
             loss.backward()
             train_loss += loss.item()
             self.optimizer.step()
             
             if False and batch_idx % self.args.log_interval == 0:
-                print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
+                print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.8f}'.format(
                     epoch, batch_idx * len(data), len(self.train_loader.dataset),
                     100. * batch_idx / len(self.train_loader),
                     loss.item() / len(data)))
@@ -83,7 +92,7 @@ class AE(object):
         self.trainLosses.append(epochTrainLoss)
         self.scheduler.step()
         
-    def test(self):
+    def test(self, epoch):
         self.model.eval()
         test_loss = 0
         with torch.no_grad():
@@ -94,7 +103,7 @@ class AE(object):
                 test_loss += self.loss_function(recon_batch, data).item()
 
         epochTestLoss = test_loss / len(self.test_loader.dataset)
-        print('====> Test set loss: {:.4f}'.format(epochTestLoss))
+        print('====> Test set loss: {:.8f}'.format(epochTestLoss))
         
         self.testLosses.append(epochTestLoss)
         
@@ -112,7 +121,8 @@ class AE(object):
         ax2.set_xlabel('Epoch')
         ax2.set_ylabel('loss')
         plt.show()
-    def saveModel(self, path = 'checkpoints/0926.pth'):
+        
+    def saveModel(self, path = 'checkpoints/1003_ampSingle.pth'):
         torch.save({
             'model_state_dict': self.model.state_dict(),
             'optimizer_state_dict': self.optimizer.state_dict(),
@@ -122,9 +132,9 @@ class AE(object):
             'testLoss': self.testLosses[-1],
         }, path)
         
-    def testDataset(self, dataPath, modelPath = 'checkpoints/0926.pth'):
+    def testDataset(self, dataPath = '', modelPath = 'checkpoints/1003_ampSingle.pth'):
         self.data = Vibration(
-            dataPath, 
+            dir = dataPath, 
             trainDataRatio=0)
         self.test_loader = self.data.test_loader
         checkpoint = torch.load(modelPath)

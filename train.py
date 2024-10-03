@@ -3,6 +3,8 @@ import numpy as np
 import imageio
 from scipy import ndimage
 
+from defi import channels
+
 import torch
 from torchvision.utils import save_image
 
@@ -15,7 +17,7 @@ parser = argparse.ArgumentParser(
         description='Main function to call training for different AutoEncoders')
 parser.add_argument('--batch-size', type=int, default=128, metavar='N',
                     help='input batch size for training (default: 128)')
-parser.add_argument('--epochs', type=int, default=300, metavar='N',
+parser.add_argument('--epochs', type=int, default=50, metavar='N',
                     help='number of epochs to train (default: 10)')
 parser.add_argument('--no-cuda', action='store_true', default=False,
                     help='enables CUDA training')
@@ -60,26 +62,9 @@ if __name__ == "__main__":
     try:
         for epoch in range(1, args.epochs + 1):
             autoenc.train(epoch)
+            print(epoch)
             autoenc.test(epoch)
         autoenc.printLossResult()
         autoenc.saveModel()
     except (KeyboardInterrupt, SystemExit):
         print("Manual Interruption")
-
-    # with torch.no_grad():
-    #     images, _ = next(iter(autoenc.test_loader))
-    #     images = images.to(autoenc.device)
-    #     images_per_row = 16
-    #     interpolations = get_interpolations(args, autoenc.model, autoenc.device, images, images_per_row)
-
-    #     sample = torch.randn(64, args.embedding_size).to(autoenc.device)
-    #     sample = autoenc.model.decode(sample).cpu()
-    #     save_image(sample.view(64, 1, 28, 28),
-    #             '{}/sample_{}_{}.png'.format(args.results_path, args.model, args.dataset))
-    #     save_image(interpolations.view(-1, 1, 28, 28),
-    #             '{}/interpolations_{}_{}.png'.format(args.results_path, args.model, args.dataset),  nrow=images_per_row)
-    #     interpolations = interpolations.cpu()
-    #     interpolations = np.reshape(interpolations.data.numpy(), (-1, 28, 28))
-    #     interpolations = ndimage.zoom(interpolations, 5, order=1)
-    #     interpolations *= 256
-    #     imageio.mimsave('{}/animation_{}_{}.gif'.format(args.results_path, args.model, args.dataset), interpolations.astype(np.uint8))
