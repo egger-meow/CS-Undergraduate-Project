@@ -7,7 +7,7 @@ from torch.optim.lr_scheduler import StepLR
 from tqdm import tqdm
 import numpy as np
 
-from defi import channels, timeStamps, trainDataDir, lr, scheduler_gamma, scheduler_stepSize
+from defi import channels, timeStamps, lr, scheduler_gamma, scheduler_stepSize, norm_trainDataDir, abnorm_trainDataDir, batchSize
 
 
 import matplotlib.pyplot as plt
@@ -35,12 +35,14 @@ class Network(nn.Module):
         return self.decode(z)
 
 class AE(object):
-    def __init__(self, args):
+    def __init__(self, args, dataDir = '', test = False, modelPath = ''):
         self.args = args
         self.device = torch.device("cuda" if args.cuda else "cpu")
-        self._init_dataset()
-        self.train_loader = self.data.train_loader
-        self.test_loader = self.data.test_loader
+        
+        if not test:
+            self._init_dataset(dataDir, test)
+            self.train_loader = self.data.train_loader
+            self.test_loader = self.data.test_loader
 
         self.model = Network(args)
         self.model.to(self.device)
@@ -50,9 +52,11 @@ class AE(object):
         
         self.trainLosses = []
         self.testLosses = []
+        if test:
+            self.loadModel(modelPath)
         
-    def _init_dataset(self):
-        self.data = Vibration(dir = trainDataDir)
+    def _init_dataset(self, dir, test):
+        self.data = Vibration(dir = dir, test=test)
 
     def loss_function(self, reconstructed_x, x):
         # criterion = nn.SmoothL1Loss
@@ -92,7 +96,7 @@ class AE(object):
         self.trainLosses.append(epochTrainLoss)
         self.scheduler.step()
         
-    def test(self, epoch):
+    def validate(self, epoch = 0):
         self.model.eval()
         test_loss = 0
         with torch.no_grad():
@@ -103,9 +107,9 @@ class AE(object):
                 test_loss += self.loss_function(recon_batch, data).item()
 
         epochTestLoss = test_loss / len(self.test_loader.dataset)
-        print('====> Test set loss: {:.8f}'.format(epochTestLoss))
-        
+        print('====> Validation set loss: {:.8f}'.format(epochTestLoss))
         self.testLosses.append(epochTestLoss)
+        
         
     def printLossResult(self):
         _x = np.arange(0, self.args.epochs )
@@ -114,7 +118,7 @@ class AE(object):
         ax1.plot(_x, self.trainLosses)
         ax2.plot(_x, self.testLosses)
         ax1.title.set_text('training loss')
-        ax2.title.set_text('testing loss')
+        ax2.title.set_text('validating loss')
 
         ax1.set_xlabel('Epoch')
         ax1.set_ylabel('loss')
@@ -132,15 +136,27 @@ class AE(object):
             'testLoss': self.testLosses[-1],
         }, path)
         
-    def testDataset(self, dataPath = '', modelPath = 'checkpoints/1003_ampSingle.pth'):
-        self.data = Vibration(
-            dir = dataPath, 
-            trainDataRatio=0)
+    def test(self, dir):
+        self._init_dataset(dir, True)
         self.test_loader = self.data.test_loader
+        
+        self.model.eval()
+        testLosses = []
+        with torch.no_grad():
+            for i, data in enumerate(self.test_loader):
+                data = data[0].clone().detach()
+                data = data.to(self.device)
+                recon_batch = self.model(data)
+                testLosses.append(self.loss_function(recon_batch, data).item())
+
+        avgTestLoss = sum(testLosses) / len(testLosses)
+        print('====> test set average loss: {:.8f}'.format(avgTestLoss))
+        return testLosses
+        
+    def loadModel(self, modelPath = 'checkpoints/1003_ampSingle.pth'):
+
         checkpoint = torch.load(modelPath)
 
         self.model.load_state_dict(checkpoint['model_state_dict'])
         self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
         self.scheduler.load_state_dict(checkpoint['scheduler_state_dict'])
-
-        self.test()

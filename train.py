@@ -3,7 +3,7 @@ import numpy as np
 import imageio
 from scipy import ndimage
 
-from defi import channels
+from defi import channels, norm_trainDataDir, abnorm_trainDataDir, autoencoderNormPath, autoencoderAbnormPath
 
 import torch
 from torchvision.utils import save_image
@@ -17,7 +17,7 @@ parser = argparse.ArgumentParser(
         description='Main function to call training for different AutoEncoders')
 parser.add_argument('--batch-size', type=int, default=128, metavar='N',
                     help='input batch size for training (default: 128)')
-parser.add_argument('--epochs', type=int, default=50, metavar='N',
+parser.add_argument('--epochs', type=int, default=100, metavar='N',
                     help='number of epochs to train (default: 10)')
 parser.add_argument('--no-cuda', action='store_true', default=False,
                     help='enables CUDA training')
@@ -38,10 +38,8 @@ args = parser.parse_args()
 args.cuda = not args.no_cuda and torch.cuda.is_available()
 torch.manual_seed(args.seed)
 
-# vae = VAE(args)
-ae = AE(args)
-architectures = {'AE':  ae,
-                 'VAE': ae}
+normalPar = (norm_trainDataDir, autoencoderNormPath)
+abnormalPar = (abnorm_trainDataDir, autoencoderAbnormPath)
 
 print(args.model)
 if __name__ == "__main__":
@@ -51,20 +49,14 @@ if __name__ == "__main__":
         os.mkdir(args.results_path)
 
     try:
-        autoenc = architectures[args.model]
-    except KeyError:
-        print('---------------------------------------------------------')
-        print('Model architecture not supported. ', end='')
-        print('Maybe you can implement it?')
-        print('---------------------------------------------------------')
-        sys.exit()
-
-    try:
+        parameters = abnormalPar
+        
+        ae = AE(args, parameters[0])
         for epoch in range(1, args.epochs + 1):
-            autoenc.train(epoch)
-            print(epoch)
-            autoenc.test(epoch)
-        autoenc.printLossResult()
-        autoenc.saveModel()
+            ae.train(epoch)
+            ae.validate()
+            
+        ae.printLossResult()
+        ae.saveModel(parameters[1])
     except (KeyboardInterrupt, SystemExit):
         print("Manual Interruption")

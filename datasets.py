@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader, TensorDataset, random_split
 import matplotlib.pyplot as plt
 from pathlib import Path
 
-from defi import channels, timeStamps, batchSize
+from defi import channels, startChannel, timeStamps, batchSize
 
 class Vibration(object):
     # read raw Vibration file with 6 channel (not used now)
@@ -40,7 +40,7 @@ class Vibration(object):
         self.test_loader = DataLoader(TensorDataset(testData), batch_size=batchSize, shuffle=False)
         
     
-    def __init__(self, dir = 'D:/leveling/leveling_data/Normal/Amp/state345/', trainDataRatio = 0.8, displayData = False):
+    def __init__(self, dir = 'D:/leveling/leveling_data/Normal/Amp/state345/', trainDataRatio = 0.85, displayData = False, test = False):
         # read files from a dir, each file represent a sample
         directory = Path(dir)
 
@@ -50,27 +50,32 @@ class Vibration(object):
         for file in files:
             path = dir + file.name 
             df = pd.read_csv(path)
-            data = df.iloc[:, 0:channels].values.transpose(1,0)
+            data = df.iloc[:, startChannel: startChannel + channels].values.transpose(1,0)
 
             dataToList = list(data)
-            for d in range(channels):
-                dimData = dataToList[d]
+            for d in range(startChannel, startChannel + channels):
+                # print(d)
+                dimData = dataToList[d - startChannel]
                 
-                flatStart = self.getFlatStart(dimData)
-
-                if flatStart is not None:
-                    if displayData:
+                ampChannel = 0
+                
+                if d == ampChannel:
+                    flatStart = self.getFlatStart(dimData)
+                    if flatStart is not None:
                         fdata = dimData[:flatStart]
-                        plt.figure(figsize=(10, 6))
-                        plt.plot(dimData, label='Original Data')
+                        # dimData = dimData[:flatStart] 
+                if displayData:
+                    plt.figure(figsize=(10, 6))
+                    plt.plot(dimData, label=f'Original Data (channel-{d})')
+                    if d == ampChannel and  flatStart is not None:
                         plt.plot(range(flatStart), fdata, label='Filtered Wavy Part', color='r')
-                        plt.show()
-                dimData = dimData[:flatStart] 
+                    plt.title(f'channel-{d}')
+                    plt.show()
                 
                 adjusted_lens = timeStamps
                 dimData = self.interpolation(adjusted_lens, dimData)
                 
-                dataToList[d] = dimData
+                dataToList[d - startChannel] = dimData
                 
             data = np.array(dataToList)
             dataList.append(data) 
@@ -80,15 +85,20 @@ class Vibration(object):
             dtype = torch.float32)  
         # not normalization yet
         
+        # actually test data here is validation data
         numSamples = dataTensor.shape[0]
 
-        trainSize = int(trainDataRatio * numSamples) if int(trainDataRatio * numSamples) > 0 else 1
+        trainSize = int(trainDataRatio * numSamples) if not test else 0
 
         trainData, testData = dataTensor[:trainSize], dataTensor[trainSize:]
-
-        self.train_loader = DataLoader(TensorDataset(trainData), batch_size=batchSize, shuffle=True)
-        self.test_loader = DataLoader(TensorDataset(testData), batch_size=batchSize, shuffle=True)
         
+        bs = batchSize if not test else 1
+        
+        if not test:
+            self.train_loader = DataLoader(TensorDataset(trainData), batch_size=bs, shuffle=False)
+        self.test_loader = DataLoader(TensorDataset(testData), batch_size=bs, shuffle=False)
+        
+        print(trainData.shape, testData.shape)
         
     def slidingWindow(self, data, sampleLength, stride):
         numWindows = (data.shape[0] - sampleLength) // stride + 1 
@@ -107,17 +117,13 @@ class Vibration(object):
         return normalized
     
     def getFlatStart(self, data):
-        flat_threshold = 0.005  
+        flat_threshold = 0.01
         window_size = 5
-        diff = np.abs(np.diff(data))
-        flat_start = None
-        
-        for i in range(len(diff) - window_size):
-            if np.all(diff[i:i+window_size] < flat_threshold):
-                flat_start = i + window_size
-                break
-        return flat_start
-        
-test = Vibration(dir = 'D:/leveling/leveling_data/Normal/Vib/state345/', displayData=False)
+        # print(diff)
+        for i in range(0, data.shape[0], window_size):
+            if np.std(data[i: i+window_size]) < flat_threshold:
+                return i+window_size*2
+        return None
+# test = Vibration(dir = 'D:/leveling/leveling_data/v1/Normal/stage345/', displayData=True)
 
 

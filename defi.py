@@ -1,14 +1,23 @@
 # ---- data definitions ----
 
-channels = 1
+channels = 6
+startChannel = 1
 timeStamps = 100
 
-trainDataDir = 'D:/leveling/leveling_data/Normal/Amp/state345/'
+
+norm_trainDataDir = 'D:/leveling/leveling_data/v1/Normal/train/'
+abnorm_trainDataDir = 'D:/leveling/leveling_data/v1/Abnormal/train/'
+
+norm_testDataDir = 'D:/leveling/leveling_data/v1/Normal/test/'
+abnorm_testDataDir = 'D:/leveling/leveling_data/v1/Abnormal/test/'
+
+autoencoderNormPath = 'D:/leveling/pytorch-AE/checkpoints/autoEncoderNorm.pth'
+autoencoderAbnormPath = 'D:/leveling/pytorch-AE/checkpoints/autoEncoderAbnorm.pth'
 
 # ---- hyper parameters ----
 
-batchSize = 4
+batchSize = 32
 
-lr = 0.003
-scheduler_stepSize = 10
-scheduler_gamma = 0.9
+lr = 0.001
+scheduler_stepSize = 15
+scheduler_gamma = 0.85

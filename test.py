@@ -4,7 +4,7 @@ import imageio
 from scipy import ndimage
 import gc
 
-
+from defi import autoencoderNormPath, autoencoderAbnormPath, norm_testDataDir, abnorm_testDataDir
 
 import torch
 from torchvision.utils import save_image
@@ -40,17 +40,13 @@ args = parser.parse_args()
 args.cuda = not args.no_cuda and torch.cuda.is_available()
 torch.manual_seed(args.seed)
 
-# vae = VAE(args)
-ae = AE(args)
-architectures = {'AE':  ae,
-                 'VAE': ae}
 
 print(args.model)
 
 if __name__ == "__main__":
     gc.collect()
     try:
-        autoenc = architectures[args.model]
+        autoenc = None
     except KeyError:
         print('---------------------------------------------------------')
         print('Model architecture not supported. ', end='')
@@ -59,11 +55,19 @@ if __name__ == "__main__":
         sys.exit()
     
     try:
+        aeNormal = AE(args, test = True, modelPath = autoencoderNormPath)
+        aeAbnormal = AE(args, test = True, modelPath = autoencoderAbnormPath)
         
-        dir1 = 'D:/leveling/leveling_data/Abnormal/Amp/state345/'
-        dir2 = 'D:/leveling/leveling_data/Normal/Amp/state345_2/'
+        loss_aeNormal_dataNormal = aeNormal.test(norm_testDataDir)
+        loss_aeAbnormal_dataNormal = aeAbnormal.test(norm_testDataDir)
+        dataNormal_levelingScores = [x / y for x, y in zip(loss_aeAbnormal_dataNormal, loss_aeNormal_dataNormal)]
+        print(dataNormal_levelingScores)
         
-        autoenc.testDataset(dir2)
+        loss_aeNormal_dataAbnormal = aeNormal.test(abnorm_testDataDir)
+        loss_aeAbnormal_dataAbnormal = aeAbnormal.test(abnorm_testDataDir)
+        dataAbnormal_levelingScores = [x / y for x, y in zip(loss_aeAbnormal_dataAbnormal, loss_aeNormal_dataAbnormal)]
+        print(dataAbnormal_levelingScores)
+        
     except (KeyboardInterrupt, SystemExit):
         print("Manual Interruption")        
     
