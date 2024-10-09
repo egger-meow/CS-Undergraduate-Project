@@ -3,6 +3,8 @@
 just adjust parameters in settings.py
 and run train.py and test.py directly
 
+the following is the content of the orignal author
+
 # AutoEncoders in PyTorch
 
 [![dep2](https://img.shields.io/badge/PyTorch-0.4.1-orange.svg)](https://pytorch.org/)

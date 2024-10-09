@@ -41,15 +41,6 @@ def scatterTestReuslt(dataNoraml, dataAbnormal):
 if __name__ == "__main__":
     gc.collect()
     try:
-        autoenc = None
-    except KeyError:
-        print('---------------------------------------------------------')
-        print('Model architecture not supported. ', end='')
-        print('Maybe you can implement it?')
-        print('---------------------------------------------------------')
-        sys.exit()
-    
-    try:
         aeNormal = AE(test = True, modelPath = autoencoderNormPath)
         aeAbnormal = AE(test = True, modelPath = autoencoderAbnormPath)
         
@@ -64,10 +55,10 @@ if __name__ == "__main__":
         loss_aeNormal_dataAbnormal = aeNormal.test(abnorm_testDataDir)
         loss_aeAbnormal_dataAbnormal = aeAbnormal.test(abnorm_testDataDir)
         dataAbnormal_levelingScores = [x / y for x, y in zip(loss_aeNormal_dataAbnormal, loss_aeAbnormal_dataAbnormal)]
-        
         print(dataAbnormal_levelingScores)
         
         scatterTestReuslt(dataNormal_levelingScores, dataAbnormal_levelingScores)
+        
     except (KeyboardInterrupt, SystemExit):
         print("Manual Interruption")        
     
