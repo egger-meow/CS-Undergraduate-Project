@@ -1,9 +1,5 @@
-# ---- data definitions ----
-
-channels = 6
-startChannel = 1
-timeStamps = 100
-
+import torch
+# ---- data path definitions ----
 
 norm_trainDataDir = 'D:/leveling/leveling_data/v1/Normal/train/'
 abnorm_trainDataDir = 'D:/leveling/leveling_data/v1/Abnormal/train/'
@@ -14,10 +10,21 @@ abnorm_testDataDir = 'D:/leveling/leveling_data/v1/Abnormal/test/'
 autoencoderNormPath = 'D:/leveling/pytorch-AE/checkpoints/autoEncoderNorm.pth'
 autoencoderAbnormPath = 'D:/leveling/pytorch-AE/checkpoints/autoEncoderAbnorm.pth'
 
+cuda = torch.cuda.is_available()
+
+# ---- training selection ----
+
+trainNormalAutoEncoder = True # choose to train normal or abnormal autoencoder
+
 # ---- hyper parameters ----
 
-batchSize = 32
+channels = 7
+startChannel = 0
+timeStamps = 100
+
+epochs = 100
+batchSize = 16
 
 lr = 0.001
-scheduler_stepSize = 15
+scheduler_stepSize = 10
 scheduler_gamma = 0.85

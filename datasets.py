@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader, TensorDataset, random_split
 import matplotlib.pyplot as plt
 from pathlib import Path
 
-from defi import channels, startChannel, timeStamps, batchSize
+from settings import channels, startChannel, timeStamps, batchSize
 
 class Vibration(object):
     # read raw Vibration file with 6 channel (not used now)
@@ -74,6 +74,10 @@ class Vibration(object):
                 
                 adjusted_lens = timeStamps
                 dimData = self.interpolation(adjusted_lens, dimData)
+                min_value = np.min(dimData)
+                max_value = np.max(dimData)
+
+                dimData = (dimData - min_value) / (max_value - min_value)
                 
                 dataToList[d - startChannel] = dimData
                 
