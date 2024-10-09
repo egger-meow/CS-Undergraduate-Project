@@ -1,3 +1,8 @@
+# refined
+
+just adjust parameters in settings.py
+and run train.py and test.py directly
+
 # AutoEncoders in PyTorch
 
 [![dep2](https://img.shields.io/badge/PyTorch-0.4.1-orange.svg)](https://pytorch.org/)
