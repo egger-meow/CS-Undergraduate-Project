@@ -99,7 +99,7 @@ class Vibration(object):
         bs = batchSize if not test else 1
         
         if not test:
-            self.train_loader = DataLoader(TensorDataset(trainData), batch_size=bs, shuffle=False)
+            self.train_loader = DataLoader(TensorDataset(trainData), batch_size=bs, shuffle=True)
         self.test_loader = DataLoader(TensorDataset(testData), batch_size=bs, shuffle=False)
         
         print(trainData.shape, testData.shape)
@@ -128,6 +128,6 @@ class Vibration(object):
             if np.std(data[i: i+window_size]) < flat_threshold:
                 return i+window_size*2
         return None
-# test = Vibration(dir = 'D:/leveling/leveling_data/v1/Normal/stage345/', displayData=True)
+# test = Vibration(dir = 'D:/leveling/leveling_data/v1/Normal/train/', displayData=True)
 
 

@@ -3,7 +3,7 @@ from torch import nn
 from torch.nn import functional as F
 from torch.autograd import Variable
 
-from settings import channels, timeStamps
+from settings import channels, timeStamps, embeddingSize
 
 import numpy as  np 
 
@@ -12,7 +12,7 @@ class CNN_Encoder(nn.Module):
         super(CNN_Encoder, self).__init__()
 
         self.input_size = input_size
-        self.channel_mult = 32
+        self.channel_mult = embeddingSize
 
         #convolutions
         self.conv = nn.Sequential(
@@ -62,9 +62,8 @@ class CNN_Decoder(nn.Module):
         super(CNN_Decoder, self).__init__()
         self.input_channels = channels
         self.input_timeStamps = timeStamps
-        self.channel_mult = 32
+        self.channel_mult = embeddingSize
         self.output_channels = channels
-        self.fc_output_dim = 512
 
         self.deconv = nn.Sequential(
             

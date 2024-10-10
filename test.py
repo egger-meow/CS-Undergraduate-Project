@@ -47,7 +47,7 @@ if __name__ == "__main__":
         loss_aeNormal_dataNormal = aeNormal.test(norm_testDataDir)
         loss_aeAbnormal_dataNormal = aeAbnormal.test(norm_testDataDir)
         dataNormal_levelingScores = [x / y for x, y in zip(loss_aeNormal_dataNormal, loss_aeAbnormal_dataNormal)]
-        print(dataNormal_levelingScores)
+        print(loss_aeNormal_dataNormal)
         
         aeNormal = AE(test = True, modelPath = autoencoderNormPath)
         aeAbnormal = AE(test = True, modelPath = autoencoderAbnormPath)
@@ -55,9 +55,9 @@ if __name__ == "__main__":
         loss_aeNormal_dataAbnormal = aeNormal.test(abnorm_testDataDir)
         loss_aeAbnormal_dataAbnormal = aeAbnormal.test(abnorm_testDataDir)
         dataAbnormal_levelingScores = [x / y for x, y in zip(loss_aeNormal_dataAbnormal, loss_aeAbnormal_dataAbnormal)]
-        print(dataAbnormal_levelingScores)
+        print(loss_aeNormal_dataAbnormal)
         
-        scatterTestReuslt(dataNormal_levelingScores, dataAbnormal_levelingScores)
+        scatterTestReuslt(loss_aeNormal_dataNormal, loss_aeNormal_dataAbnormal)
         
     except (KeyboardInterrupt, SystemExit):
         print("Manual Interruption")        

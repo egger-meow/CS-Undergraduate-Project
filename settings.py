@@ -14,7 +14,7 @@ cuda = torch.cuda.is_available()
 
 # ---- training selection ----
 
-trainNormalAutoEncoder = True # choose to train normal or abnormal autoencoder
+trainNormalAutoEncoder = False  # choose to train normal or abnormal autoencoder
 
 # ---- hyper parameters ----
 
@@ -25,6 +25,7 @@ timeStamps = 100
 epochs = 100
 batchSize = 16
 
+embeddingSize = 64
 lr = 0.001
-scheduler_stepSize = 10
-scheduler_gamma = 0.85
+scheduler_stepSize = 5
+scheduler_gamma = 0.9
