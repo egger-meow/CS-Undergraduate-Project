@@ -39,7 +39,7 @@ def cut(sourceDir, testDir, trainDir):
     for file in remaining_files:
         shutil.copy(os.path.join(sourceDir, file), os.path.join(trainDir, file))
 
-    print("Files have been cleared and moved successfully.")
+    print("Files have been cleared and copied successfully.")
 
 sourceDir = 'D:/leveling/leveling_data/v1/Normal/source'
 testDir = 'D:/leveling/leveling_data/v1/Normal/test'
