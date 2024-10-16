@@ -14,18 +14,24 @@ cuda = torch.cuda.is_available()
 
 # ---- training selection ----
 
-architechture = 'CNN1D'
+architechture = 'LSTM'
 
 # ---- hyper parameters ----
 
-channels = 7
-startChannel = 0
+channels = 3
+startChannel = 1
 timeStamps = 100
 
-epochs = 10
+epochs = 50
 batchSize = 16
 
-embeddingSize = 64
-lr = 0.001
-scheduler_stepSize = 5
-scheduler_gamma = 0.9
+embeddingSize = 128
+
+lr = 0.005
+scheduler_stepSize = 10
+scheduler_gamma = 0.7
+
+# ---- LSTM parameters ----
+
+dropout = 0.0
+layers  = 1

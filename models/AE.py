@@ -23,6 +23,7 @@ from models.architectures.LSTM import LSTM_Encoder, LSTM_Decoder
 
 from datasets import Vibration
 
+    
 arch = {
     'CNN1D' : {'enoder': CNN_Encoder, 'decoder': CNN_Decoder},
     'LSTM' : {'enoder': LSTM_Encoder, 'decoder': LSTM_Decoder}
@@ -46,6 +47,26 @@ class Network(nn.Module):
     def forward(self, x):
         z = self.encode(x)
         return self.decode(z)
+    
+class LSTMNetwork(nn.Module):
+    def __init__(self):
+        super(LSTMNetwork, self).__init__()
+        usedArch = arch[architechture]
+        
+        self.encoder = usedArch['enoder']()
+        self.decoder = usedArch['decoder']()
+
+    def encode(self, x):
+        return self.encoder(x)
+
+    def decode(self, z):
+        return self.decoder(z)
+
+    def forward(self, x):
+        x_enc, enc_out = self.encoder(x)
+        x_dec, last_h = self.decoder(x_enc)
+
+        return x_dec
 
 class AE(object):
     def __init__(self, dataDir = '', test = False, modelPath = ''):
@@ -56,7 +77,8 @@ class AE(object):
             self.train_loader = self.data.train_loader
             self.test_loader = self.data.test_loader
 
-        self.model = Network()
+        self.model = Network() if architechture != 'LSTM' else LSTMNetwork()
+        
         self.model.to(self.device)
         
         self.optimizer = optim.Adam(self.model.parameters(), lr=lr)
@@ -73,10 +95,12 @@ class AE(object):
     def loss_function(self, reconstructed_x, x):
         # criterion = nn.SmoothL1Loss
         criterion = F.mse_loss
+        # print(x.shape)
+        # print(reconstructed_x.shape)
         
         loss = criterion(
-            x.view(-1, channels * timeStamps),
-            reconstructed_x.view(-1, channels * timeStamps), 
+            x.reshape(-1, channels * timeStamps),
+            reconstructed_x.reshape(-1, channels * timeStamps), 
             reduction = 'sum')
         return loss
 
