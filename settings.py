@@ -22,7 +22,7 @@ channels = 7
 startChannel = 0
 timeStamps = 100
 
-epochs = 100
+epochs = 10
 batchSize = 16
 
 embeddingSize = 64

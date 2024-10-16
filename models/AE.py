@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 import sys
 sys.path.append('../')
 
-from architectures import  CNN_Encoder, CNN_Decoder
+from models.architectures.CNN1D import CNN_Encoder, CNN_Decoder
 from datasets import Vibration
 
 arch = {
