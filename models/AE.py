@@ -7,22 +7,32 @@ from torch.optim.lr_scheduler import StepLR
 from tqdm import tqdm
 import numpy as np
 
-from settings import epochs,cuda ,channels, timeStamps, lr, scheduler_gamma, scheduler_stepSize, norm_trainDataDir, abnorm_trainDataDir, batchSize
+from settings import epochs, cuda, channels, timeStamps, lr, scheduler_gamma, scheduler_stepSize, batchSize
+from settings import norm_trainDataDir, abnorm_trainDataDir
+
+from settings import architechture
 
 
 import matplotlib.pyplot as plt
 
 import sys
 sys.path.append('../')
+
 from architectures import  CNN_Encoder, CNN_Decoder
 from datasets import Vibration
+
+arch = {
+    'CNN1D' : {'enoder': CNN_Encoder, 'decoder': CNN_Decoder}
+}
 
 class Network(nn.Module):
     def __init__(self):
         super(Network, self).__init__()
-        self.encoder = CNN_Encoder()
+        usedArch = arch[architechture]
+        
+        self.encoder = usedArch['enoder']()
 
-        self.decoder = CNN_Decoder()
+        self.decoder = usedArch['decoder']()
 
     def encode(self, x):
         return self.encoder(x)

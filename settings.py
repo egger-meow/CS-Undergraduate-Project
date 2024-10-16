@@ -14,7 +14,7 @@ cuda = torch.cuda.is_available()
 
 # ---- training selection ----
 
-trainNormalAutoEncoder = False  # choose to train normal or abnormal autoencoder
+architechture = 'CNN1D'
 
 # ---- hyper parameters ----
 

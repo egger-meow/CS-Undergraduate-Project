@@ -41,12 +41,16 @@ def cut(sourceDir, testDir, trainDir):
 
     print("Files have been cleared and copied successfully.")
 
-sourceDir = 'D:/leveling/leveling_data/v1/Normal/source'
-testDir = 'D:/leveling/leveling_data/v1/Normal/test'
-trainDir = 'D:/leveling/leveling_data/v1/Normal/train'
-cut(sourceDir, testDir, trainDir)
+def main():
+    sourceDir = 'D:/leveling/leveling_data/v1/Normal/source'
+    testDir = 'D:/leveling/leveling_data/v1/Normal/test'
+    trainDir = 'D:/leveling/leveling_data/v1/Normal/train'
+    cut(sourceDir, testDir, trainDir)
 
-sourceDir = 'D:/leveling/leveling_data/v1/Abnormal/source'
-testDir = 'D:/leveling/leveling_data/v1/Abnormal/test'
-trainDir = 'D:/leveling/leveling_data/v1/Abnormal/train'
-cut(sourceDir, testDir, trainDir)
+    sourceDir = 'D:/leveling/leveling_data/v1/Abnormal/source'
+    testDir = 'D:/leveling/leveling_data/v1/Abnormal/test'
+    trainDir = 'D:/leveling/leveling_data/v1/Abnormal/train'
+    cut(sourceDir, testDir, trainDir)
+
+if __name__ == "__main__":  
+    main()
