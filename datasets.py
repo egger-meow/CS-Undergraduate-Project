@@ -11,35 +11,6 @@ from pathlib import Path
 from settings import channels, startChannel, timeStamps, batchSize
 
 class Vibration(object):
-    # read raw Vibration file with 6 channel (not used now)
-    def __init__(self, path = 'E:/download/20240604/20240604/vibdata/20240604235739.csv', trainDataRatio = 0.8):
-        df = pd.read_csv(path)
-        desiredSampleRate = 300
-        originalSampleRate = 8192
-        totalSeconds = 30
-        downSampleFactor = originalSampleRate // desiredSampleRate
-        
-        dataRawNumpy = df.iloc[::downSampleFactor, 2:8].head(desiredSampleRate * totalSeconds).values
-        dataNormalizedNumpy = self.normalization(dataRawNumpy)
-        
-        sampleLength = timeStamps
-        stride = 20
-        dataSlidingWindow = self.slidingWindow(dataNormalizedNumpy ,sampleLength, stride).transpose(0,2,1)
-
-        dataTensor = torch.tensor(dataSlidingWindow, dtype = torch.float32)  
-        
-        numSamples = dataTensor.shape[0]
-
-        trainSize = int(trainDataRatio * numSamples) if int(trainDataRatio * numSamples) > 0 else 1
-
-        trainData, testData = dataTensor[:trainSize], dataTensor[trainSize:]
-        print(trainData.shape)
-        
-        batchSize = 32
-        self.train_loader = DataLoader(TensorDataset(trainData), batch_size=batchSize, shuffle=False)
-        self.test_loader = DataLoader(TensorDataset(testData), batch_size=batchSize, shuffle=False)
-        
-    
     def __init__(self, dir = 'D:/leveling/leveling_data/Normal/Amp/state345/', trainDataRatio = 0.85, displayData = False, test = False):
         # read files from a dir, each file represent a sample
         directory = Path(dir)
@@ -54,16 +25,15 @@ class Vibration(object):
 
             dataToList = list(data)
             for d in range(startChannel, startChannel + channels):
-                # print(d)
                 dimData = dataToList[d - startChannel]
                 
-                ampChannel = 0
+                ampChannel = -1 # now we don't cut amp flat part in the data
                 
                 if d == ampChannel:
                     flatStart = self.getFlatStart(dimData)
                     if flatStart is not None:
                         fdata = dimData[:flatStart]
-                        # dimData = dimData[:flatStart] 
+                        
                 if displayData:
                     plt.figure(figsize=(10, 6))
                     plt.plot(dimData, label=f'Original Data (channel-{d})')
@@ -71,6 +41,9 @@ class Vibration(object):
                         plt.plot(range(flatStart), fdata, label='Filtered Wavy Part', color='r')
                     plt.title(f'channel-{d}')
                     plt.show()
+                    
+                if d == ampChannel:
+                        dimData = dimData[:flatStart]
                 
                 adjusted_lens = timeStamps
                 dimData = self.interpolation(adjusted_lens, dimData)
@@ -128,6 +101,7 @@ class Vibration(object):
             if np.std(data[i: i+window_size]) < flat_threshold:
                 return i+window_size*2
         return None
+    
 # test = Vibration(dir = 'D:/leveling/leveling_data/v1/Normal/train/', displayData=True)
 
 
