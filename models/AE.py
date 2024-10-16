@@ -19,10 +19,13 @@ import sys
 sys.path.append('../')
 
 from models.architectures.CNN1D import CNN_Encoder, CNN_Decoder
+from models.architectures.LSTM import LSTM_Encoder, LSTM_Decoder
+
 from datasets import Vibration
 
 arch = {
-    'CNN1D' : {'enoder': CNN_Encoder, 'decoder': CNN_Decoder}
+    'CNN1D' : {'enoder': CNN_Encoder, 'decoder': CNN_Decoder},
+    'LSTM' : {'enoder': LSTM_Encoder, 'decoder': LSTM_Decoder}
 }
 
 class Network(nn.Module):
