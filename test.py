@@ -37,26 +37,42 @@ def scatterTestReuslt(dataNoraml, dataAbnormal):
     # Show the plot
     plt.show()
 
+def test_normAEscore():
+    aeNormal = AE(test = True, modelPath = autoencoderNormPath)
+    
+    loss_aeNormal_dataNormal = aeNormal.test(norm_testDataDir)
+    print(loss_aeNormal_dataNormal)
+    
+    loss_aeNormal_dataAbnormal = aeNormal.test(abnorm_testDataDir)
+    print(loss_aeNormal_dataAbnormal)
+    
+    scatterTestReuslt(loss_aeNormal_dataNormal, loss_aeNormal_dataAbnormal)
+    
+def test_normAEscoreDividedByAbnormAEscore():
+    aeNormal = AE(test = True, modelPath = autoencoderNormPath)
+    aeAbnormal = AE(test = True, modelPath = autoencoderAbnormPath)
+    
+    loss_aeNormal_dataNormal = aeNormal.test(norm_testDataDir)
+    loss_aeAbnormal_dataNormal = aeAbnormal.test(norm_testDataDir)
+    dataNormal_levelingScores = [x / y for x, y in zip(loss_aeNormal_dataNormal, loss_aeAbnormal_dataNormal)]
+    print(dataNormal_levelingScores)
+    
+    aeNormal = AE(test = True, modelPath = autoencoderNormPath)
+    aeAbnormal = AE(test = True, modelPath = autoencoderAbnormPath)
+    
+    loss_aeNormal_dataAbnormal = aeNormal.test(abnorm_testDataDir)
+    loss_aeAbnormal_dataAbnormal = aeAbnormal.test(abnorm_testDataDir)
+    dataAbnormal_levelingScores = [x / y for x, y in zip(loss_aeNormal_dataAbnormal, loss_aeAbnormal_dataAbnormal)]
+    print(dataAbnormal_levelingScores)
+    
+    scatterTestReuslt(dataNormal_levelingScores, dataAbnormal_levelingScores)
+    
 def main():
     gc.collect()
     try:
-        aeNormal = AE(test = True, modelPath = autoencoderNormPath)
-        aeAbnormal = AE(test = True, modelPath = autoencoderAbnormPath)
-        
-        loss_aeNormal_dataNormal = aeNormal.test(norm_testDataDir)
-        loss_aeAbnormal_dataNormal = aeAbnormal.test(norm_testDataDir)
-        dataNormal_levelingScores = [x / y for x, y in zip(loss_aeNormal_dataNormal, loss_aeAbnormal_dataNormal)]
-        print(loss_aeNormal_dataNormal)
-        
-        aeNormal = AE(test = True, modelPath = autoencoderNormPath)
-        aeAbnormal = AE(test = True, modelPath = autoencoderAbnormPath)
-        
-        loss_aeNormal_dataAbnormal = aeNormal.test(abnorm_testDataDir)
-        loss_aeAbnormal_dataAbnormal = aeAbnormal.test(abnorm_testDataDir)
-        dataAbnormal_levelingScores = [x / y for x, y in zip(loss_aeNormal_dataAbnormal, loss_aeAbnormal_dataAbnormal)]
-        print(loss_aeNormal_dataAbnormal)
-        
-        scatterTestReuslt(loss_aeNormal_dataNormal, loss_aeNormal_dataAbnormal)
+
+        test_normAEscoreDividedByAbnormAEscore()
+        # test_normAEscore()
         
     except (KeyboardInterrupt, SystemExit):
         print("Manual Interruption")        
