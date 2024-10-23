@@ -3,7 +3,7 @@ from torch import nn
 from torch.nn import functional as F
 from torch.autograd import Variable
 
-from settings import channels, timeStamps, embeddingSize
+from settings import channels, timeStamps, embeddingSize, decoderShapeBias
 
 import numpy as  np 
 
@@ -21,7 +21,7 @@ class CNN_Encoder(nn.Module):
                     out_channels=self.channel_mult*1,
                     kernel_size=16,
                     stride=1,
-                    padding=1),
+                    padding=2),
             nn.BatchNorm1d(self.channel_mult*1),
             nn.LeakyReLU(0.2, inplace=True),
             
@@ -97,11 +97,13 @@ class CNN_Decoder(nn.Module):
             nn.ConvTranspose1d(
                 self.channel_mult*1, 
                 input_size[0],
-                kernel_size=19, 
+                kernel_size=16, 
                 stride=1, 
-                padding=1),
-            nn.Sigmoid(),
+                padding=2),
+            nn.Linear(decoderShapeBias, timeStamps),
+            nn.Sigmoid()
         )
         
     def forward(self, x):
-        return self.deconv(x)
+        y = self.deconv(x)
+        return y

@@ -16,9 +16,10 @@ from utils import get_interpolations
 
 torch.manual_seed(42)
 
-def scatterTestReuslt(dataNoraml, dataAbnormal):
+def scatterTestReuslt(dataNoraml, dataAbnormal, title):
     x = np.arange(len(dataNoraml))
 
+    plt.title(title)
     # Plot array1 values with red dots
     plt.scatter(x, dataNoraml, color='red', label='normal data')
 
@@ -46,7 +47,7 @@ def test_normAEscore():
     loss_aeNormal_dataAbnormal = aeNormal.test(abnorm_testDataDir)
     print(loss_aeNormal_dataAbnormal)
     
-    scatterTestReuslt(loss_aeNormal_dataNormal, loss_aeNormal_dataAbnormal)
+    scatterTestReuslt(loss_aeNormal_dataNormal, loss_aeNormal_dataAbnormal, 'single autoencoder')
     
 def test_normAEscoreDividedByAbnormAEscore():
     aeNormal = AE(test = True, modelPath = autoencoderNormPath)
@@ -65,14 +66,14 @@ def test_normAEscoreDividedByAbnormAEscore():
     dataAbnormal_levelingScores = [x / y for x, y in zip(loss_aeNormal_dataAbnormal, loss_aeAbnormal_dataAbnormal)]
     print(dataAbnormal_levelingScores)
     
-    scatterTestReuslt(dataNormal_levelingScores, dataAbnormal_levelingScores)
+    scatterTestReuslt(dataNormal_levelingScores, dataAbnormal_levelingScores, 'double autoencoder')
     
 def main():
     gc.collect()
     try:
 
+        test_normAEscore()
         test_normAEscoreDividedByAbnormAEscore()
-        # test_normAEscore()
         
     except (KeyboardInterrupt, SystemExit):
         print("Manual Interruption")        

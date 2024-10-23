@@ -16,7 +16,7 @@ cuda = torch.cuda.is_available()
 
 # ---- training selection ----
 
-architechture = 'LSTM'
+architechture = 'CNN1D'
 
 
 
@@ -25,16 +25,16 @@ architechture = 'LSTM'
 sampleRate = 128
 sampleRate_origin = 8192
 
-slidingWindow = True
+slidingWindow = False
 stride = 80
 
 channels = 3
 startChannel = 1
-timeStamps = 100
+timeStamps = 256
 
 # ---- hyper parameters ----
 
-epochs = 50
+epochs = 20
 batchSize = 16
 
 embeddingSize = 128
@@ -42,6 +42,10 @@ embeddingSize = 128
 lr = 0.005
 scheduler_stepSize = 10
 scheduler_gamma = 0.7
+
+# ---- CNN1D parameters ----
+
+decoderShapeBias = timeStamps - 1 
 
 # ---- LSTM parameters ----
 
