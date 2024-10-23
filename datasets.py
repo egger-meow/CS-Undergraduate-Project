@@ -7,63 +7,58 @@ from sklearn.preprocessing import MinMaxScaler
 from torch.utils.data import DataLoader, TensorDataset, random_split
 import matplotlib.pyplot as plt
 from pathlib import Path
+from tqdm import tqdm
 
-from settings import channels, startChannel, timeStamps, batchSize, dataVerion
+from settings import channels, startChannel, timeStamps, batchSize 
+from settings import dataVerion, sampleRate, sampleRate_origin
+from settings import slidingWindow, stride
 
 class Vibration(object):
     def __init__(self, dir, trainDataRatio = 0.85, displayData = False, test = False):
-        # read files from a dir, each file represent a sample
+        # read files from a dir, each file represent a sample 
         directory = Path(dir)
 
         files = [f for f in directory.iterdir() if f.is_file() and f.name != '.DS_Store' ]
-        dataList = []
         
-        for file in files:
+        # list of samples
+        dataList = None
+        
+        # each file is a stage3 to stage5
+        print(f'load csvs in {dir}...')
+        for file in tqdm(files):
             path = dir + file.name 
             df = pd.read_csv(path)
-            data = df.iloc[:, startChannel: startChannel + channels].values.transpose(1,0)
 
-            dataToList = list(data)
-            for d in range(startChannel, startChannel + channels):
-                dimData = dataToList[d - startChannel]
-                
-                ampChannel = -1 # now we don't cut amp flat part in the data
-                
-                if d == ampChannel:
-                    flatStart = self.getFlatStart(dimData)
-                    if flatStart is not None:
-                        fdata = dimData[:flatStart]
-                        
-                if displayData:
-                    plt.figure(figsize=(10, 6))
-                    plt.plot(dimData, label=f'Original Data (channel-{d})')
-                    if d == ampChannel and  flatStart is not None:
-                        plt.plot(range(flatStart), fdata, label='Filtered Wavy Part', color='r')
-                    plt.title(f'channel-{d}')
-                    plt.show()
-                    
-                if d == ampChannel:
-                        dimData = dimData[:flatStart]
-                
-                # normalize
-                adjusted_lens = timeStamps
-                dimData = self.interpolation(adjusted_lens, dimData)
-                min_value = np.min(dimData)
-                max_value = np.max(dimData)
-                dimData = (dimData - min_value) / (max_value - min_value)
-                
-                # assign back
-                dataToList[d - startChannel] = dimData
-                
-            data = np.array(dataToList)
-            dataList.append(data) 
+            if dataVerion == 'v1': # data v1 sample rate is fixed 16, so we just make it to fit timestampt we set
+                data = df.iloc[:, startChannel: startChannel + channels].values
+
+            elif dataVerion == 'v2': # data v2 sample rate is 8192, so we down sample to our desired sample rate first
+                downSampleFactor = sampleRate_origin // sampleRate
+                data = df.iloc[::downSampleFactor, startChannel: startChannel + channels].values
+
+            # normalization
+            data = self.normalization(data).transpose(1,0) if not slidingWindow else self.normalization(data)
+
+            # visualize or not
+            if displayData:
+                dataToList = list(data)
+                for d in range(startChannel, startChannel + channels):
+                    self.displayData(dataToList[d - startChannel], d)
+
+            # if not slidingWindow, a file is a sample(with interploition to desired timeStamps) or a file will make many samples.
+            if slidingWindow:
+                data = self.slidingWindow(data, timeStamps, stride).transpose(0,2,1)
+            else:
+                data = self.interpolation(data, timeStamps)
+                data = np.expand_dims(data, axis=0)
+
+            dataList = np.concatenate((dataList, data), axis=0) if dataList is not None else data
 
         dataTensor = torch.tensor(
-            np.array(dataList), 
+            dataList, 
             dtype = torch.float32)  
-        # not normalization yet
-        
-        # actually test data here is validation data
+
+        # testData here is for validation dataset, or in test mode testData is for test dataset
         numSamples = dataTensor.shape[0]
 
         trainSize = int(trainDataRatio * numSamples) if not test else 0
@@ -73,23 +68,36 @@ class Vibration(object):
         bs = batchSize if not test else 1
         
         if not test:
-            self.train_loader = DataLoader(TensorDataset(trainData), batch_size=bs, shuffle=True)
+            self.train_loader = DataLoader(TensorDataset(trainData), batch_size=bs, shuffle=False)
         self.test_loader = DataLoader(TensorDataset(testData), batch_size=bs, shuffle=False)
         
-        print(trainData.shape, testData.shape)
+        print('trainData shape:', trainData.shape, 'testData shape:', testData.shape)
         
+    def displayData(self, data, channelID):
+        plt.figure(figsize=(10, 6))
+        plt.plot(data, label=f'normalized Data with your specified sample rate (channel-{channelID})')
+        plt.title(f'channel-{channelID}')
+        plt.show()
+
     def slidingWindow(self, data, sampleLength, stride):
         numWindows = (data.shape[0] - sampleLength) // stride + 1 
         windows = np.array([data[i:i + sampleLength] for i in range(0, numWindows * stride, stride)])
         return windows 
     
-    def interpolation(self, newDim, data):
-        x_old = np.linspace(0, 1, len(data))
+    def interpolation(self, data, newDim):
+        # data is now shape (channels, timestamp)
+        channels, timestamps = data.shape
+        x_old = np.linspace(0, 1, timestamps)
         x_new = np.linspace(0, 1, newDim)
-
-        return np.interp(x_new, x_old, data)
+        
+        # Interpolate for each channel
+        interpolated_data = np.zeros((channels, newDim))
+        for i in range(channels):
+            interpolated_data[i] = np.interp(x_new, x_old, data[i])
     
-    def normalization(self, data, channels = 6):
+        return interpolated_data
+    
+    def normalization(self, data):
         scaler = MinMaxScaler()
         normalized = scaler.fit_transform(data)
         return normalized
@@ -97,12 +105,12 @@ class Vibration(object):
     def getFlatStart(self, data):
         flat_threshold = 0.01
         window_size = 5
-        # print(diff)
+
         for i in range(0, data.shape[0], window_size):
             if np.std(data[i: i+window_size]) < flat_threshold:
                 return i+window_size*2
         return None
     
-# test = Vibration(dir = 'D:/leveling/leveling_data/v1/Normal/train/', displayData=True)
+# test = Vibration(dir = 'D:/leveling/leveling_data/v2/Normal/train/', displayData=False)
 
 
