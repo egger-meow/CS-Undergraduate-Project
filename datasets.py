@@ -8,10 +8,10 @@ from torch.utils.data import DataLoader, TensorDataset, random_split
 import matplotlib.pyplot as plt
 from pathlib import Path
 
-from settings import channels, startChannel, timeStamps, batchSize
+from settings import channels, startChannel, timeStamps, batchSize, dataVerion
 
 class Vibration(object):
-    def __init__(self, dir = 'D:/leveling/leveling_data/Normal/Amp/state345/', trainDataRatio = 0.85, displayData = False, test = False):
+    def __init__(self, dir, trainDataRatio = 0.85, displayData = False, test = False):
         # read files from a dir, each file represent a sample
         directory = Path(dir)
 
@@ -45,13 +45,14 @@ class Vibration(object):
                 if d == ampChannel:
                         dimData = dimData[:flatStart]
                 
+                # normalize
                 adjusted_lens = timeStamps
                 dimData = self.interpolation(adjusted_lens, dimData)
                 min_value = np.min(dimData)
                 max_value = np.max(dimData)
-
                 dimData = (dimData - min_value) / (max_value - min_value)
                 
+                # assign back
                 dataToList[d - startChannel] = dimData
                 
             data = np.array(dataToList)

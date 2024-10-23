@@ -1,11 +1,13 @@
 import torch
 # ---- data path definitions ----
 
-norm_trainDataDir = 'D:/leveling/leveling_data/v1/Normal/train/'
-abnorm_trainDataDir = 'D:/leveling/leveling_data/v1/Abnormal/train/'
+dataVerion = 'v2' # v0, v1, v2
 
-norm_testDataDir = 'D:/leveling/leveling_data/v1/Normal/test/'
-abnorm_testDataDir = 'D:/leveling/leveling_data/v1/Abnormal/test/'
+norm_trainDataDir = f'D:/leveling/leveling_data/{dataVerion}/Normal/train/'
+abnorm_trainDataDir = f'D:/leveling/leveling_data/{dataVerion}/Abnormal/train/'
+
+norm_testDataDir = f'D:/leveling/leveling_data/{dataVerion}/Normal/test/'
+abnorm_testDataDir = f'D:/leveling/leveling_data/{dataVerion}/Abnormal/test/'
 
 autoencoderNormPath = 'D:/leveling/pytorch-AE/checkpoints/autoEncoderNorm.pth'
 autoencoderAbnormPath = 'D:/leveling/pytorch-AE/checkpoints/autoEncoderAbnorm.pth'
@@ -16,11 +18,21 @@ cuda = torch.cuda.is_available()
 
 architechture = 'LSTM'
 
-# ---- hyper parameters ----
+
+
+# ---- data preparing ----
+
+sampleRate = 128
+sampleRate_origin = 8192
+
+slidingWindow = True
+stride = 80
 
 channels = 3
 startChannel = 1
 timeStamps = 100
+
+# ---- hyper parameters ----
 
 epochs = 50
 batchSize = 16

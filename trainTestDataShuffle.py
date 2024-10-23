@@ -2,14 +2,16 @@ import os
 import shutil
 import random
 
-# Define source and destination directories
-sourceDir = 'D:/leveling/leveling_data/v1/Normal/source'
-testDir = 'D:/leveling/leveling_data/v1/Normal/test'
-trainDir = 'D:/leveling/leveling_data/v1/Normal/train'
+def list_all_files(src_dir):
+    file_paths = []
+    for root, _, files in os.walk(src_dir):
+        for file in files:
+            # Construct the full file path
+            file_path = os.path.join(root, file)
+            file_paths.append(file_path)
+    return file_paths
 
-
-def cut(sourceDir, testDir, trainDir):
-    testFileNum = 40
+def cut(sourceDir, testDir, trainDir, testFileNum = 50):
 
     # Function to clear a directory
     def clear_directory(directory):
@@ -25,31 +27,37 @@ def cut(sourceDir, testDir, trainDir):
     clear_directory(trainDir)
 
     # Get all file names from the source directory
-    files = os.listdir(sourceDir)
-
+    files = list_all_files(sourceDir)
     # Randomly select 50 files to move to directory A
     selected_files = random.sample(files, testFileNum)
 
     # Move selected files to directory A
     for file in selected_files:
-        shutil.copy(os.path.join(sourceDir, file), os.path.join(testDir, file))
+        file_name = os.path.basename(file)
+        # Construct the destination path (flattened structure)
+        dest_file_path = os.path.join(testDir, file_name)
+        os.link(file, dest_file_path)
+        # shutil.copy(os.path.join(sourceDir, file), os.path.join(testDir, file))
 
     # Move the remaining files to directory B
     remaining_files = [file for file in files if file not in selected_files]
     for file in remaining_files:
-        shutil.copy(os.path.join(sourceDir, file), os.path.join(trainDir, file))
+        file_name = os.path.basename(file)
+        # Construct the destination path (flattened structure)
+        dest_file_path = os.path.join(trainDir, file_name)
+        os.link(file, dest_file_path)
 
     print("Files have been cleared and copied successfully.")
 
 def main():
-    sourceDir = 'D:/leveling/leveling_data/v1/Normal/source'
-    testDir = 'D:/leveling/leveling_data/v1/Normal/test'
-    trainDir = 'D:/leveling/leveling_data/v1/Normal/train'
+    sourceDir = 'D:/leveling/leveling_data/v2/source/Normal'
+    testDir = 'D:/leveling/leveling_data/v2/Normal/test'
+    trainDir = 'D:/leveling/leveling_data/v2/Normal/train'
     cut(sourceDir, testDir, trainDir)
 
-    sourceDir = 'D:/leveling/leveling_data/v1/Abnormal/source'
-    testDir = 'D:/leveling/leveling_data/v1/Abnormal/test'
-    trainDir = 'D:/leveling/leveling_data/v1/Abnormal/train'
+    sourceDir = 'D:/leveling/leveling_data/v2/source/Abnormal'
+    testDir = 'D:/leveling/leveling_data/v2/Abnormal/test'
+    trainDir = 'D:/leveling/leveling_data/v2/Abnormal/train'
     cut(sourceDir, testDir, trainDir)
 
 if __name__ == "__main__":  
