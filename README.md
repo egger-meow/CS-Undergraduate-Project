@@ -1,7 +1,9 @@
 # refined
 
-just adjust parameters in settings.py
+adjust parameters in settings.py
 and run train.py and test.py directly
+
+u can run trainTestDataShuffle.py for train test data setup
 
 the following is the content of the orignal author
 

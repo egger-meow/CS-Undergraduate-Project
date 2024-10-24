@@ -1,4 +1,5 @@
 import torch
+
 # ---- data path definitions ----
 
 dataVerion = 'v2' # v0, v1, v2
@@ -23,11 +24,11 @@ architechture = 'CNN1D'
 sampleRate = 128
 sampleRate_origin = 8192
 
-slidingWindow = False
-stride = 80
+slidingWindow = False   # if true, the window size will be timeStamps, 
+stride = 80             # looping through the data with sampleRate
 
-channels = 4
-startChannel = 3
+startChannel = 3    # amp, door-x, door-y, door-z, car-x, car-y, car-z 
+channels = 4        # amp, door-x, door-y, door-z, car-x, car-y, car-z 
 timeStamps = 256
 
 # ---- hyper parameters ----
