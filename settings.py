@@ -4,8 +4,8 @@ import torch
 
 dataVerion = 'v2' # v0, v1, v2
 
-norm_sourceDir = 'D:/leveling/leveling_data/v2/source/Normal'
-abnorm_sourceDir = 'D:/leveling/leveling_data/v2/source/Abnormal'
+norm_sourceDir = f'D:/leveling/leveling_data/{dataVerion}/source/Normal'
+abnorm_sourceDir = f'D:/leveling/leveling_data/{dataVerion}/source/Abnormal'
 
 norm_trainDataDir = f'D:/leveling/leveling_data/{dataVerion}/Normal/train/'
 abnorm_trainDataDir = f'D:/leveling/leveling_data/{dataVerion}/Abnormal/train/'
