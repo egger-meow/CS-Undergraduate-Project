@@ -11,7 +11,7 @@ def list_all_files(src_dir):
             file_paths.append(file_path)
     return file_paths
 
-def cut(sourceDir, testDir, trainDir, testFileNum = 50):
+def cut(sourceDir, testDir, trainDir, testFileNum = 100):
 
     # Function to clear a directory
     def clear_directory(directory):

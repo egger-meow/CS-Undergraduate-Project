@@ -18,8 +18,6 @@ cuda = torch.cuda.is_available()
 
 architechture = 'CNN1D'
 
-
-
 # ---- data preparing ----
 
 sampleRate = 128
@@ -28,18 +26,18 @@ sampleRate_origin = 8192
 slidingWindow = False
 stride = 80
 
-channels = 3
-startChannel = 1
+channels = 4
+startChannel = 3
 timeStamps = 256
 
 # ---- hyper parameters ----
 
-epochs = 20
-batchSize = 16
+epochs = 50
+batchSize = 32
 
 embeddingSize = 128
 
-lr = 0.005
+lr = 0.001
 scheduler_stepSize = 10
 scheduler_gamma = 0.7
 
