@@ -2,6 +2,8 @@ import os
 import shutil
 import random
 
+from settings import norm_sourceDir, abnorm_sourceDir, norm_trainDataDir, abnorm_trainDataDir, norm_testDataDir, abnorm_testDataDir
+
 def list_all_files(src_dir):
     file_paths = []
     for root, _, files in os.walk(src_dir):
@@ -11,7 +13,7 @@ def list_all_files(src_dir):
             file_paths.append(file_path)
     return file_paths
 
-def cut(sourceDir, testDir, trainDir, testFileNum = 100):
+def cut(sourceDir, trainDir, testDir, testFileNum = 100):
 
     # Function to clear a directory
     def clear_directory(directory):
@@ -28,7 +30,7 @@ def cut(sourceDir, testDir, trainDir, testFileNum = 100):
 
     # Get all file names from the source directory
     files = list_all_files(sourceDir)
-    # Randomly select 50 files to move to directory A
+    # Randomly select testFileNum files to move to directory A
     selected_files = random.sample(files, testFileNum)
 
     # Move selected files to directory A
@@ -50,15 +52,8 @@ def cut(sourceDir, testDir, trainDir, testFileNum = 100):
     print("Files have been cleared and copied successfully.")
 
 def main():
-    sourceDir = 'D:/leveling/leveling_data/v2/source/Normal'
-    testDir = 'D:/leveling/leveling_data/v2/Normal/test'
-    trainDir = 'D:/leveling/leveling_data/v2/Normal/train'
-    cut(sourceDir, testDir, trainDir)
-
-    sourceDir = 'D:/leveling/leveling_data/v2/source/Abnormal'
-    testDir = 'D:/leveling/leveling_data/v2/Abnormal/test'
-    trainDir = 'D:/leveling/leveling_data/v2/Abnormal/train'
-    cut(sourceDir, testDir, trainDir)
+    cut(norm_sourceDir, norm_trainDataDir, norm_testDataDir)
+    cut(abnorm_sourceDir, abnorm_trainDataDir, abnorm_testDataDir)
 
 if __name__ == "__main__":  
     main()
