@@ -32,7 +32,7 @@ class Vibration(object):
             if dataVerion == 'v1': # data v1 sample rate is fixed 16, so we just make it to fit timestampt we set
                 data = df.iloc[:, startChannel: startChannel + channels].values
 
-            elif dataVerion == 'v2': # data v2 sample rate is 8192, so we down sample to our desired sample rate first
+            else: # data v2 sample rate is 8192, so we down sample to our desired sample rate first
                 downSampleFactor = sampleRate_origin // sampleRate
                 data = df.iloc[::downSampleFactor, startChannel: startChannel + channels].values
 

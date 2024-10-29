@@ -3,7 +3,7 @@ from datetime import datetime
 
 # ---- training selection ----
 
-architechture = 'MLP'
+architechture = 'cnn1D'
 
 # ---- data path definitions ----
 
@@ -26,7 +26,7 @@ cuda = torch.cuda.is_available()
 
 # ---- data preparing ----
 
-sampleRate = 256
+sampleRate = 128
 sampleRate_origin = 8192
 
 slidingWindow = False   # if true, the window size will be timeStamps, 
@@ -34,17 +34,17 @@ stride = 80             # looping through the data with sampleRate
 
 startChannel = 3    # amp, door-x, door-y, door-z, car-x, car-y, car-z 
 channels = 4        # amp, door-x, door-y, door-z, car-x, car-y, car-z 
-timeStamps = 512
+timeStamps = 256
 
 # ---- hyper parameters ----
 
-epochs = 100
+epochs = 50
 batchSize = 32
 
-embeddingSize = 256
+embeddingSize = 128
 
 lr = 0.001
-scheduler_stepSize = 10
+scheduler_stepSize = 8
 scheduler_gamma = 0.7
 
 # ---- CNN1D parameters ----
