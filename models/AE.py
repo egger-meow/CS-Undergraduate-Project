@@ -18,6 +18,7 @@ import matplotlib.pyplot as plt
 import sys
 sys.path.append('../')
 
+from models.architectures.MLP import MLP_Encoder, MLP_Decoder
 from models.architectures.CNN1D import CNN_Encoder, CNN_Decoder
 from models.architectures.LSTM import LSTM_Encoder, LSTM_Decoder
 
@@ -25,6 +26,7 @@ from datasets import Vibration
 
     
 arch = {
+    'MLP' : {'enoder': MLP_Encoder, 'decoder': MLP_Decoder},
     'CNN1D' : {'enoder': CNN_Encoder, 'decoder': CNN_Decoder},
     'LSTM' : {'enoder': LSTM_Encoder, 'decoder': LSTM_Decoder}
 }

@@ -1,4 +1,9 @@
 import torch
+from datetime import datetime
+
+# ---- training selection ----
+
+architechture = 'MLP'
 
 # ---- data path definitions ----
 
@@ -13,18 +18,15 @@ abnorm_trainDataDir = f'D:/leveling/leveling_data/{dataVerion}/Abnormal/train/'
 norm_testDataDir = f'D:/leveling/leveling_data/{dataVerion}/Normal/test/'
 abnorm_testDataDir = f'D:/leveling/leveling_data/{dataVerion}/Abnormal/test/'
 
-autoencoderNormPath = 'D:/leveling/pytorch-AE/checkpoints/autoEncoderNorm.pth'
-autoencoderAbnormPath = 'D:/leveling/pytorch-AE/checkpoints/autoEncoderAbnorm.pth'
+current_date = datetime.now().strftime("%y%m%d")
+autoencoderNormPath = f'D:/leveling/pytorch-AE/checkpoints/aeNorm_{dataVerion}{architechture}{current_date}.pth'
+autoencoderAbnormPath = f'D:/leveling/pytorch-AE/checkpoints/aeAbnorm_{dataVerion}{architechture}{current_date}.pth'
 
 cuda = torch.cuda.is_available()
 
-# ---- training selection ----
-
-architechture = 'CNN1D'
-
 # ---- data preparing ----
 
-sampleRate = 128
+sampleRate = 256
 sampleRate_origin = 8192
 
 slidingWindow = False   # if true, the window size will be timeStamps, 
@@ -32,14 +34,14 @@ stride = 80             # looping through the data with sampleRate
 
 startChannel = 3    # amp, door-x, door-y, door-z, car-x, car-y, car-z 
 channels = 4        # amp, door-x, door-y, door-z, car-x, car-y, car-z 
-timeStamps = 256
+timeStamps = 512
 
 # ---- hyper parameters ----
 
-epochs = 50
+epochs = 100
 batchSize = 32
 
-embeddingSize = 128
+embeddingSize = 256
 
 lr = 0.001
 scheduler_stepSize = 10
