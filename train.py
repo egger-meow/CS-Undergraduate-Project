@@ -15,16 +15,16 @@ from utils import get_interpolations
 
 torch.manual_seed(42)
 
-normalPar = (norm_trainDataDir, autoencoderNormPath)
-abnormalPar = (abnorm_trainDataDir, autoencoderAbnormPath)
+normalPar = (norm_trainDataDir, True, autoencoderNormPath)
+abnormalPar = (abnorm_trainDataDir, False,autoencoderAbnormPath)
 
 def train(parameters):
-    ae = AE(parameters[0])
+    ae = AE(parameters[0], parameters[1])
     for epoch in range(1, epochs + 1):
         ae.train(epoch)
         ae.validate()
     ae.printLossResult()
-    ae.saveModel(parameters[1])
+    ae.saveModel(parameters[2])
 
 def main():
     try:

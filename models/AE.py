@@ -7,10 +7,10 @@ from torch.optim.lr_scheduler import StepLR
 from tqdm import tqdm
 import numpy as np
 
-from settings import epochs, cuda, channels, timeStamps, lr, scheduler_gamma, scheduler_stepSize, batchSize
+from settings import epochs, cuda, channels, timeStamps, lr, scheduler_gamma, scheduler_stepSize, batchSize_aeNorm, batchSize_aeAbnorm
 from settings import norm_trainDataDir, abnorm_trainDataDir
-
-from settings import architechture
+from settings import architechture, dataVerion, sampleRate, sampleRate_origin, slidingWindow_aeNorm, slidingWindow_aeAbnorm, stride, startChannel
+from settings import embeddingSize, decoderShapeBias, dropout, layers
 
 
 import matplotlib.pyplot as plt
@@ -71,9 +71,10 @@ class LSTMNetwork(nn.Module):
         return x_dec
 
 class AE(object):
-    def __init__(self, dataDir = '', test = False, modelPath = ''):
+    def __init__(self, dataDir = '', normalVersion = True, test = False, modelPath = ''):
         self.device = torch.device("cuda" if cuda else "cpu") 
         
+        self.isNormalData = normalVersion
         if not test:
             self._init_dataset(dataDir, test)
             self.train_loader = self.data.train_loader
@@ -92,7 +93,7 @@ class AE(object):
             self.loadModel(modelPath)
         
     def _init_dataset(self, dir, test):
-        self.data = Vibration(dir = dir, test=test)
+        self.data = Vibration(dir = dir, normalVersion=self.isNormalData, test=test)
 
     def loss_function(self, reconstructed_x, x):
         # criterion = nn.SmoothL1Loss
@@ -169,7 +170,20 @@ class AE(object):
             'model_state_dict': self.model.state_dict(),
             'optimizer_state_dict': self.optimizer.state_dict(),
             'scheduler_state_dict': self.scheduler.state_dict(),
-            'epoch': epochs,
+            'architechture': architechture, 
+            'dataVerion': dataVerion, 
+            'sampleRate': sampleRate, 
+            'sampleRate_origin': sampleRate_origin, 
+            'slidingWindow_aeNorm': slidingWindow_aeNorm,  
+            'slidingWindow_aeAbnorm': slidingWindow_aeAbnorm,  
+            'stride': stride,            
+            'startChannel': startChannel,   
+            'channels': channels,  
+            'timeStamps': timeStamps, 
+            'embeddingSize': embeddingSize,  
+            'decoderShapeBias': decoderShapeBias, 
+            'dropout': dropout,  
+            'layers': layers,  
             'trainLoss': self.trainLosses[-1],
             'testLoss': self.testLosses[-1],
         }, path)

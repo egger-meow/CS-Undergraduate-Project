@@ -35,7 +35,7 @@ def scatterTestReuslt(dataNoraml, dataAbnormal, title):
     plt.show()
 
 def test_normAEscore():
-    aeNormal = AE(test = True, modelPath = autoencoderNormPath)
+    aeNormal = AE(test = True, normalVersion=True, modelPath = autoencoderNormPath)
     
     loss_aeNormal_dataNormal = aeNormal.test(norm_testDataDir)
     
@@ -44,16 +44,16 @@ def test_normAEscore():
     scatterTestReuslt(loss_aeNormal_dataNormal, loss_aeNormal_dataAbnormal, 'single autoencoder')
     
 def test_normAEscoreDividedByAbnormAEscore():
-    aeNormal = AE(test = True, modelPath = autoencoderNormPath)
-    aeAbnormal = AE(test = True, modelPath = autoencoderAbnormPath)
+    aeNormal = AE(test = True, normalVersion=True, modelPath = autoencoderNormPath)
+    aeAbnormal = AE(test = True, normalVersion=False, modelPath = autoencoderAbnormPath)
     
     loss_aeNormal_dataNormal = aeNormal.test(norm_testDataDir)
     loss_aeAbnormal_dataNormal = aeAbnormal.test(norm_testDataDir)
     dataNormal_levelingScores = [x / y for x, y in zip(loss_aeNormal_dataNormal, loss_aeAbnormal_dataNormal)]
     # print(dataNormal_levelingScores)
     
-    aeNormal = AE(test = True, modelPath = autoencoderNormPath)
-    aeAbnormal = AE(test = True, modelPath = autoencoderAbnormPath)
+    aeNormal = AE(test = True, normalVersion=True, modelPath = autoencoderNormPath)
+    aeAbnormal = AE(test = True, normalVersion=False, modelPath = autoencoderAbnormPath)
     
     loss_aeNormal_dataAbnormal = aeNormal.test(abnorm_testDataDir)
     loss_aeAbnormal_dataAbnormal = aeAbnormal.test(abnorm_testDataDir)

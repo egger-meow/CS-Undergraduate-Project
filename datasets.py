@@ -9,12 +9,12 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 from tqdm import tqdm
 
-from settings import channels, startChannel, timeStamps, batchSize 
+from settings import channels, startChannel, timeStamps, batchSize_aeNorm, batchSize_aeAbnorm
 from settings import dataVerion, sampleRate, sampleRate_origin
-from settings import slidingWindow, stride
+from settings import slidingWindow_aeNorm, slidingWindow_aeAbnorm, stride
 
 class Vibration(object):
-    def __init__(self, dir, trainDataRatio = 0.85, displayData = False, test = False):
+    def __init__(self, dir, normalVersion = True, trainDataRatio = 0.85, displayData = False, test = False):
         # read files from a dir, each file represent a sample 
         directory = Path(dir)
 
@@ -37,6 +37,7 @@ class Vibration(object):
                 data = df.iloc[::downSampleFactor, startChannel: startChannel + channels].values
 
             # normalization
+            slidingWindow = slidingWindow_aeNorm if normalVersion else slidingWindow_aeAbnorm
             data = self.normalization(data).transpose(1,0) if not slidingWindow else self.normalization(data)
 
             # visualize or not
@@ -65,6 +66,7 @@ class Vibration(object):
 
         trainData, testData = dataTensor[:trainSize], dataTensor[trainSize:]
         
+        batchSize = batchSize_aeNorm if normalVersion else batchSize_aeAbnorm
         bs = batchSize if not test else 1
         
         if not test:

@@ -13,13 +13,13 @@ def list_all_files(src_dir):
             file_paths.append(file_path)
     return file_paths
 
-def cut(sourceDir, trainDir, testDir, testFileNum = 100):
+def cut(sourceDir, trainDir, testDir, testFileNum = 50):
 
     # Function to clear a directory
     def clear_directory(directory):
         if not os.path.exists(directory):
             os.makedirs(directory)
-        return 
+            return 
         for file in os.listdir(directory):
             file_path = os.path.join(directory, file)
             if os.path.isfile(file_path) or os.path.islink(file_path):
