@@ -17,6 +17,9 @@ def cut(sourceDir, trainDir, testDir, testFileNum = 100):
 
     # Function to clear a directory
     def clear_directory(directory):
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        return 
         for file in os.listdir(directory):
             file_path = os.path.join(directory, file)
             if os.path.isfile(file_path) or os.path.islink(file_path):

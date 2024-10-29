@@ -7,7 +7,7 @@ architechture = 'MLP'
 
 # ---- data path definitions ----
 
-dataVerion = 'v2' # v0, v1, v2
+dataVerion = 'v3' # v0, v1, v2, v3
 
 norm_sourceDir = f'D:/leveling/leveling_data/{dataVerion}/source/Normal'
 abnorm_sourceDir = f'D:/leveling/leveling_data/{dataVerion}/source/Abnormal'
