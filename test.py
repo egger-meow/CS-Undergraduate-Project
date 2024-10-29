@@ -21,14 +21,10 @@ def scatterTestReuslt(dataNoraml, dataAbnormal, title):
 
     plt.title(title)
     # Plot array1 values with red dots
-    plt.scatter(x, dataNoraml, color='red', label='normal data')
+    plt.scatter(x, dataNoraml, color='blue', label='normal data')
 
     # Plot array2 values with blue dots
-    plt.scatter(x, dataAbnormal, color='blue', label='abnormal data')
-
-    # Add a line to connect the dots (optional)
-    plt.plot(x, dataNoraml, color='red', linestyle='', alpha=0.5)
-    plt.plot(x, dataAbnormal, color='blue', linestyle='', alpha=0.2)
+    plt.scatter(x, dataAbnormal, color='red', label='abnormal data')
 
     # Label the axes and add a legend
     plt.xlabel('test sample ID')
