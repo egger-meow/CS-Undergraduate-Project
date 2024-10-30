@@ -19,8 +19,8 @@ norm_testDataDir = f'D:/leveling/leveling_data/{dataVerion}/Normal/test/'
 abnorm_testDataDir = f'D:/leveling/leveling_data/{dataVerion}/Abnormal/test/'
 
 current_date = datetime.now().strftime("%y%m%d")
-autoencoderNormPath = f'D:/leveling/pytorch-AE/checkpoints/aeNorm_{dataVerion}_{architechture}_{current_date}.pth'
-autoencoderAbnormPath = f'D:/leveling/pytorch-AE/checkpoints/aeAbnorm_{dataVerion}_{architechture}_{current_date}.pth'
+autoencoderNormPath = f'D:/leveling/pytorch-AE/checkpoints/aeNorm_{dataVerion}{architechture}{current_date}.pth'
+autoencoderAbnormPath = f'D:/leveling/pytorch-AE/checkpoints/aeAbnorm_{dataVerion}{architechture}{current_date}.pth'
 
 cuda = torch.cuda.is_available()
 
@@ -39,15 +39,15 @@ timeStamps = 256
 
 # ---- hyper parameters ----
 
-epochs = 100
+epochs = 50
 batchSize_aeNorm = 32
 batchSize_aeAbnorm = 16
 
 embeddingSize = 128
 
 lr = 0.001
-scheduler_stepSize = 10
-scheduler_gamma = 0.7
+scheduler_stepSize = 5
+scheduler_gamma = 0.9
 
 # ---- CNN1D parameters ----
 
