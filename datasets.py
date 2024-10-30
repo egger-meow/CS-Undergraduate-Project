@@ -8,6 +8,7 @@ from torch.utils.data import DataLoader, TensorDataset, random_split
 import matplotlib.pyplot as plt
 from pathlib import Path
 from tqdm import tqdm
+from math import floor
 
 from settings import channels, startChannel, timeStamps, batchSize_aeNorm, batchSize_aeAbnorm
 from settings import dataVerion, sampleRate, sampleRate_origin
@@ -19,7 +20,7 @@ class Vibration(object):
         directory = Path(dir)
 
         files = [f for f in directory.iterdir() if f.is_file() and f.name != '.DS_Store' ]
-        
+        numFiles = len(files)
         # list of samples
         dataList = None
         
@@ -67,7 +68,7 @@ class Vibration(object):
         trainData, testData = dataTensor[:trainSize], dataTensor[trainSize:]
         
         batchSize = batchSize_aeNorm if normalVersion else batchSize_aeAbnorm
-        bs = batchSize if not test else 1
+        bs = batchSize if not test else floor(numSamples / numFiles) if slidingWindow else 1
         
         if not test:
             self.train_loader = DataLoader(TensorDataset(trainData), batch_size=bs, shuffle=False)

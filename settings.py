@@ -19,10 +19,15 @@ norm_testDataDir = f'D:/leveling/leveling_data/{dataVerion}/Normal/test/'
 abnorm_testDataDir = f'D:/leveling/leveling_data/{dataVerion}/Abnormal/test/'
 
 current_date = datetime.now().strftime("%y%m%d")
-autoencoderNormPath = f'D:/leveling/pytorch-AE/checkpoints/aeNorm_{dataVerion}{architechture}{current_date}.pth'
-autoencoderAbnormPath = f'D:/leveling/pytorch-AE/checkpoints/aeAbnorm_{dataVerion}{architechture}{current_date}.pth'
+autoencoderNormPath = f'D:/leveling/pytorch-AE/checkpoints/aeNorm_{dataVerion}_{architechture}_{current_date}.pth'
+autoencoderAbnormPath = f'D:/leveling/pytorch-AE/checkpoints/aeAbnorm_{dataVerion}_{architechture}_{current_date}.pth'
+
+autoencoderNormPath = f'D:/leveling/pytorch-AE/checkpoints/aeNorm_{dataVerion}_{architechture}_241030.pth'
+autoencoderAbnormPath = f'D:/leveling/pytorch-AE/checkpoints/aeAbnorm_{dataVerion}_{architechture}_241030.pth'
 
 cuda = torch.cuda.is_available()
+
+testFileNum = 50
 
 # ---- data preparing ----
 

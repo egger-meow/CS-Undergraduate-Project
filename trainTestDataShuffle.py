@@ -3,6 +3,7 @@ import shutil
 import random
 
 from settings import norm_sourceDir, abnorm_sourceDir, norm_trainDataDir, abnorm_trainDataDir, norm_testDataDir, abnorm_testDataDir
+from settings import testFileNum
 
 def list_all_files(src_dir):
     file_paths = []
@@ -13,7 +14,7 @@ def list_all_files(src_dir):
             file_paths.append(file_path)
     return file_paths
 
-def cut(sourceDir, trainDir, testDir, testFileNum = 50):
+def cut(sourceDir, trainDir, testDir, testFileNum = testFileNum):
 
     # Function to clear a directory
     def clear_directory(directory):
