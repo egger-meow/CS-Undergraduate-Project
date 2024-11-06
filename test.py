@@ -6,7 +6,7 @@ from sklearn.preprocessing import MinMaxScaler
 import gc
 import matplotlib.pyplot as plt
 from settings import autoencoderNormPath, autoencoderAbnormPath, norm_testDataDir, abnorm_testDataDir, testFileNum
-
+from math import sqrt
 import torch
 from torchvision.utils import save_image
 
@@ -16,7 +16,22 @@ from models.AE import AE
 from utils import get_interpolations
 
 torch.manual_seed(42)
+def scatterTestReuslt2D(blue_x, blue_y, red_x, red_y):
 
+    # Plotting the points
+    plt.figure(figsize=(8, 6))
+    plt.scatter(blue_x, blue_y, color='blue', label='normal')
+    plt.scatter(red_x, red_y, color='red', label='abnormal')
+
+    # Adding labels and title
+    plt.xlabel("loss-normalAE")
+    plt.ylabel("loss-abnormalAE")
+    plt.title("conbine the two plots above")
+    plt.legend()
+    plt.grid(True)
+
+    # Show the plot
+    plt.show()
 def scatterTestReuslt(dataNoraml, dataAbnormal, title):
     x = np.arange(len(dataNoraml))
 
@@ -63,9 +78,9 @@ def testSingleAEscore():
     aeAbnormal = AE(test = True, normalVersion=False, modelPath = autoencoderAbnormPath)
     
     loss_aeNormal_dataNormal        = interpolation(aeNormal.test(norm_testDataDir))
-    loss_aeAbnormal_dataNormal      = interpolation(aeAbnormal.test(norm_testDataDir))
+    loss_aeAbnormal_dataNormal      = interpolation(aeAbnormal.test(norm_testDataDir), testFileNum)
     loss_aeNormal_dataAbnormal      = interpolation(aeNormal.test(abnorm_testDataDir))
-    loss_aeAbnormal_dataAbnormal    = interpolation(aeAbnormal.test(abnorm_testDataDir))
+    loss_aeAbnormal_dataAbnormal    = interpolation(aeAbnormal.test(abnorm_testDataDir), testFileNum)
     
     loss_aeNormal_normalized    = normalization(loss_aeNormal_dataNormal + loss_aeNormal_dataAbnormal)
     loss_aeAbnormal_normalized  = normalization(loss_aeAbnormal_dataNormal + loss_aeAbnormal_dataAbnormal)
@@ -78,17 +93,22 @@ def testSingleAEscore():
     
     
     dataNormal_levelingScores = [x / y for x, y in zip(loss_aeNormal_dataNormal, loss_aeAbnormal_dataNormal)]
+    # dataNormal_levelingScores = [sqrt(i) for i in dataNormal_levelingScores]
     # print(len(loss_aeNormal_dataNormal), len(loss_aeAbnormal_dataNormal))
     
     dataAbnormal_levelingScores = [x / y for x, y in zip(loss_aeNormal_dataAbnormal, loss_aeAbnormal_dataAbnormal)]
+    # dataAbnormal_levelingScores = [sqrt(i) for i in dataAbnormal_levelingScores]
     # print(len(loss_aeNormal_dataAbnormal), len(loss_aeAbnormal_dataAbnormal)) 
     
-    scatterTestReuslt(loss_aeNormal_dataNormal, loss_aeNormal_dataAbnormal, 'Single autoencoder')
+    # scatterTestReuslt(loss_aeNormal_dataNormal, loss_aeNormal_dataAbnormal, 'Single autoencoder(normal)')
+    # scatterTestReuslt(loss_aeAbnormal_dataNormal, loss_aeAbnormal_dataAbnormal, 'Single autoencoder(abnormal)')
+    scatterTestReuslt2D(loss_aeNormal_dataNormal, loss_aeAbnormal_dataNormal, loss_aeNormal_dataAbnormal, loss_aeAbnormal_dataAbnormal)
+    # scatterTestReuslt(dataNormal_levelingScores, dataAbnormal_levelingScores, 'double autoencoder')
     
 def main():
     gc.collect()
     try:
-        test_normAEscoreDividedByAbnormAEscore()
+        testSingleAEscore()
         
     except (KeyboardInterrupt, SystemExit):
         print("Manual Interruption")        

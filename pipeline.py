@@ -2,6 +2,6 @@ import trainTestDataShuffle
 import train
 import test
 
-# trainTestDataShuffle.main()
+trainTestDataShuffle.main()
 train.main()
 test.main()
