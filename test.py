@@ -103,7 +103,7 @@ def testSingleAEscore():
     # scatterTestReuslt(loss_aeNormal_dataNormal, loss_aeNormal_dataAbnormal, 'Single autoencoder(normal)')
     # scatterTestReuslt(loss_aeAbnormal_dataNormal, loss_aeAbnormal_dataAbnormal, 'Single autoencoder(abnormal)')
     scatterTestReuslt2D(loss_aeNormal_dataNormal, loss_aeAbnormal_dataNormal, loss_aeNormal_dataAbnormal, loss_aeAbnormal_dataAbnormal)
-    # scatterTestReuslt(dataNormal_levelingScores, dataAbnormal_levelingScores, 'double autoencoder')
+    scatterTestReuslt(dataNormal_levelingScores, dataAbnormal_levelingScores, 'double autoencoder')
     
 def main():
     gc.collect()

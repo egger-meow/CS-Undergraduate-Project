@@ -28,7 +28,7 @@ def train(parameters):
 
 def main():
     try:
-        # train(normalPar)        # train normal autoencoder
+        train(normalPar)        # train normal autoencoder
         train(abnormalPar)      # train abnoral autoencoder
         
     except (KeyboardInterrupt, SystemExit):

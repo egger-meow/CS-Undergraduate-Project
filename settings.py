@@ -22,8 +22,8 @@ current_date = datetime.now().strftime("%y%m%d")
 autoencoderNormPath = f'D:/leveling/pytorch-AE/checkpoints/aeNorm_{dataVerion}_{architechture}_{current_date}.pth'
 autoencoderAbnormPath = f'D:/leveling/pytorch-AE/checkpoints/aeAbnorm_{dataVerion}_{architechture}_{current_date}.pth'
 
-autoencoderNormPath = f'D:/leveling/pytorch-AE/checkpoints/aeNorm_{dataVerion}_{architechture}_241031.pth'
-autoencoderAbnormPath = f'D:/leveling/pytorch-AE/checkpoints/aeAbnorm_{dataVerion}_{architechture}_241031.pth'
+autoencoderNormPath = f'D:/leveling/pytorch-AE/checkpoints/aeNorm_{dataVerion}_{architechture}_241107.pth'
+autoencoderAbnormPath = f'D:/leveling/pytorch-AE/checkpoints/aeAbnorm_{dataVerion}_{architechture}_241107.pth'
 
 cuda = torch.cuda.is_available()
 
@@ -38,9 +38,9 @@ slidingWindow_aeNorm = False    # if true, the window size will be timeStamps,
 slidingWindow_aeAbnorm = False   # if true, the window size will be timeStamps, 
 stride = 128             # looping through the data with sampleRate
 
-startChannel = 1    # amp, door-x, door-y, door-z, car-x, car-y, car-z 
-channels = 3        # amp, door-x, door-y, door-z, car-x, car-y, car-z 
-timeStamps = 256
+startChannel = 0    # amp, door-x, door-y, door-z, car-x, car-y, car-z 
+channels = 4        # amp, door-x, door-y, door-z, car-x, car-y, car-z 
+timeStamps = 512
 
 # ---- hyper parameters ----
 

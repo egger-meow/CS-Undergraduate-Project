@@ -9,10 +9,42 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 from tqdm import tqdm
 from math import floor
+import os
 
 from settings import channels, startChannel, timeStamps, batchSize_aeNorm, batchSize_aeAbnorm
 from settings import dataVerion, sampleRate, sampleRate_origin
 from settings import slidingWindow_aeNorm, slidingWindow_aeAbnorm, stride
+from settings import norm_trainDataDir, abnorm_trainDataDir, norm_testDataDir, abnorm_testDataDir
+
+def find_smallest_file(directory):
+    smallest_file = None
+    smallest_size = float('inf')
+
+    for root, _, files in os.walk(directory):
+        for file in files:
+            file_path = os.path.join(root, file)
+            file_size = os.path.getsize(file_path)
+            if file_size < smallest_size:
+                smallest_size = file_size
+                smallest_file = file_path
+
+    return smallest_file, smallest_size
+
+def findShortestLenData(dirs):
+    shortestLen = None
+    downSampleFactor = sampleRate_origin // sampleRate
+    for dir in dirs:
+        directory = Path(dir)
+
+        files = [f for f in directory.iterdir() if f.is_file() and f.name != '.DS_Store' ]
+        file, _ = find_smallest_file(directory)
+
+        df = pd.read_csv(file)
+        data = df.iloc[::downSampleFactor, startChannel: startChannel + channels].values
+        length = data.shape[0]
+        shortestLen = length if shortestLen is None else length if length < shortestLen else shortestLen
+    return shortestLen
+    # print('shortest data length:', shortestLen)
 
 class Vibration(object):
     def __init__(self, dir, normalVersion = True, trainDataRatio = 0.85, displayData = False, test = False):
@@ -23,6 +55,7 @@ class Vibration(object):
         numFiles = len(files)
         # list of samples
         dataList = None
+        shortestLen = findShortestLenData([norm_trainDataDir, abnorm_trainDataDir, norm_testDataDir, abnorm_testDataDir])
         
         # each file is a stage3 to stage5
         print(f'load csvs in {dir}...')
@@ -36,6 +69,9 @@ class Vibration(object):
             else: # data v2 sample rate is 8192, so we down sample to our desired sample rate first
                 downSampleFactor = sampleRate_origin // sampleRate
                 data = df.iloc[::downSampleFactor, startChannel: startChannel + channels].values
+                print(shortestLen)
+                data = data[:shortestLen,:]
+                
 
             # normalization
             slidingWindow = slidingWindow_aeNorm if normalVersion else slidingWindow_aeAbnorm
@@ -79,7 +115,8 @@ class Vibration(object):
     def displayData(self, data, channelID):
         plt.figure(figsize=(10, 6))
         plt.plot(data, label=f'normalized Data with your specified sample rate (channel-{channelID})')
-        plt.title(f'channel-{channelID}')
+        # plt.title(f'channel-{channelID}')
+        plt.title(f'door-vibration-y')
         plt.show()
 
     def slidingWindow(self, data, sampleLength, stride):
@@ -114,6 +151,7 @@ class Vibration(object):
                 return i+window_size*2
         return None
     
-# test = Vibration(dir = 'D:/leveling/leveling_data/v2/Normal/train/', displayData=False)
+# test = Vibration(dir = 'D:/leveling/leveling_data/v3/Normal/train/', displayData=True)
+# test = Vibration(dir = 'D:/leveling/leveling_data/v3/Abnormal/train/', displayData=True)
 
 
