@@ -73,10 +73,9 @@ class Vibration(object):
 
             else: # data v2 sample rate is 8192, so we down sample to our desired sample rate first
                 downSampleFactor = sampleRate_origin // sampleRate
-                data = df.iloc[:, [2,3]].values
+                data = df.iloc[::downSampleFactor, [2,3]].values
                 print(shortestLen)
-                data = data[int(shortestLen*0.4):int(shortestLen*0.6),:]
-                
+                data = data[:shortestLen,:]
 
             # normalization
             slidingWindow = slidingWindow_aeNorm if normalVersion else slidingWindow_aeAbnorm
