@@ -12,7 +12,6 @@ from torchvision.utils import save_image
 
 # from models.VAE import VAE
 from models.AE import AE
-
 from utils import get_interpolations
 
 torch.manual_seed(42)

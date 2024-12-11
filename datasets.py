@@ -15,6 +15,7 @@ from settings import channels, startChannel, timeStamps, batchSize_aeNorm, batch
 from settings import dataVerion, sampleRate, sampleRate_origin
 from settings import slidingWindow_aeNorm, slidingWindow_aeAbnorm, stride
 from settings import norm_trainDataDir, abnorm_trainDataDir, norm_testDataDir, abnorm_testDataDir
+from settings import testingShapeBias
 
 def find_smallest_file(directory):
     smallest_file = None
@@ -52,6 +53,10 @@ class Vibration(object):
         directory = Path(dir)
 
         files = [f for f in directory.iterdir() if f.is_file() and f.name != '.DS_Store' ]
+        
+        if testingShapeBias:
+            files = files[:50]
+            
         numFiles = len(files)
         # list of samples
         dataList = None
@@ -64,13 +69,13 @@ class Vibration(object):
             df = pd.read_csv(path)
 
             if dataVerion == 'v1': # data v1 sample rate is fixed 16, so we just make it to fit timestampt we set
-                data = df.iloc[:, startChannel: startChannel + channels].values
+                data = df.iloc[:, [3,6]].values
 
             else: # data v2 sample rate is 8192, so we down sample to our desired sample rate first
                 downSampleFactor = sampleRate_origin // sampleRate
-                data = df.iloc[::downSampleFactor, startChannel: startChannel + channels].values
+                data = df.iloc[:, [2,3]].values
                 print(shortestLen)
-                data = data[:shortestLen,:]
+                data = data[int(shortestLen*0.4):int(shortestLen*0.6),:]
                 
 
             # normalization

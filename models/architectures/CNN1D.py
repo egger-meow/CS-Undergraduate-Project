@@ -14,13 +14,13 @@ class CNN_Encoder(nn.Module):
         self.input_size = input_size
         self.channel_mult = embeddingSize
 
-        #convolutions
+        #convolutions.. 
         self.conv = nn.Sequential(
             nn.Conv1d(
                     in_channels=input_size[0],
                     out_channels=self.channel_mult*1,
                     kernel_size=16,
-                    stride=1,
+                    stride=4,
                     padding=2),
             nn.BatchNorm1d(self.channel_mult*1),
             nn.LeakyReLU(0.2, inplace=True),
@@ -45,11 +45,11 @@ class CNN_Encoder(nn.Module):
             
             nn.Conv1d(
                 self.channel_mult*4, 
-                self.channel_mult*4,
+                self.channel_mult*8,
                 kernel_size=4, 
-                stride=2, 
+                stride=1, 
                 padding=1),
-            nn.BatchNorm1d(self.channel_mult*4),
+            nn.BatchNorm1d(self.channel_mult*8),
             nn.LeakyReLU(0.2, inplace=True),
             
         )
@@ -68,10 +68,10 @@ class CNN_Decoder(nn.Module):
         self.deconv = nn.Sequential(
             
             nn.ConvTranspose1d(
-                self.channel_mult*4, 
+                self.channel_mult*8, 
                 self.channel_mult*4,
                 kernel_size=4, 
-                stride=2, 
+                stride=1, 
                 padding=1),
             nn.BatchNorm1d(self.channel_mult*4),
             nn.ReLU(True),
@@ -98,9 +98,11 @@ class CNN_Decoder(nn.Module):
                 self.channel_mult*1, 
                 input_size[0],
                 kernel_size=16, 
-                stride=1, 
+                stride=4, 
                 padding=2),
+
             nn.Linear(decoderShapeBias, timeStamps),
+            
             nn.Sigmoid()
         )
         
