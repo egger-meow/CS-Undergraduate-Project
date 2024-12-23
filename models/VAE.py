@@ -249,7 +249,8 @@ class VAE(object):
             for data in self.test_loader:
                 data = data[0].clone().detach().to(self.device)
                 reconstructed, mu, logvar, _ = self.model(data)
-
+                if architechture == 'LSTM':
+                    reconstructed = reconstructed.transpose(1, 2)
                 testLosses.append(self.loss_function(reconstructed, data, mu, logvar).item())
 
         avgTestLoss = sum(testLosses) / len(testLosses)

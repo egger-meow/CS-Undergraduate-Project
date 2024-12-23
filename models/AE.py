@@ -223,7 +223,8 @@ class AE:
 
                 # Forward pass
                 reconstructed, activations = self.model(data)
-
+                if architechture == 'LSTM':
+                    reconstructed = reconstructed.transpose(1, 2)
                 # Compute loss
                 testLosses.append(self.loss_function(reconstructed, data, activations).item())
 

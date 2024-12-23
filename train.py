@@ -32,6 +32,7 @@ def train(parameters):
     for epoch in range(1, epochs + 1):
         ae.train(epoch)
         ae.validate()
+        
     # ae.printLossResult()
     ae.saveModel(parameters[2])
     # ae.printLossResult()
