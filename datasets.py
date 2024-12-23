@@ -11,7 +11,7 @@ from tqdm import tqdm
 from math import floor
 import os
 
-from settings import channels, startChannel, timeStamps, batchSize_aeNorm, batchSize_aeAbnorm
+from settings import timeStamps, batchSize_aeNorm, batchSize_aeAbnorm
 from settings import dataVerion, sampleRate, sampleRate_origin
 from settings import slidingWindow_aeNorm, slidingWindow_aeAbnorm, stride
 from settings import norm_trainDataDir, abnorm_trainDataDir, norm_testDataDir, abnorm_testDataDir
@@ -41,7 +41,7 @@ def findShortestLenData(dirs):
         file, _ = find_smallest_file(directory)
 
         df = pd.read_csv(file)
-        data = df.iloc[::downSampleFactor, startChannel: startChannel + channels].values
+        data = df.iloc[::downSampleFactor, channelSelected].values
         length = data.shape[0]
         shortestLen = length if shortestLen is None else length if length < shortestLen else shortestLen
     return shortestLen
@@ -88,7 +88,7 @@ class Vibration(object):
             # visualize or not
             if displayData:
                 dataToList = list(data)
-                for d in range(startChannel, startChannel + channels):
+                for d in range(startChannel, channelSelected):
                     self.displayData(dataToList[d - startChannel], d)
 
             # if not slidingWindow, a file is a sample(with interploition to desired timeStamps) or a file will make many samples.

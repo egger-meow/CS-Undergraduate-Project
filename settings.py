@@ -46,8 +46,6 @@ stride = 128             # looping through the data with sampleRate
 # amp,  door-x, door-y, door-z, car-x, car-y, car-z
 channelSelected = [1,2,3]             
 channels = len(channelSelected) 
-startChannel = -1                  # not used currently
-
 
 timeStamps = 1024
 
