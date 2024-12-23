@@ -11,7 +11,7 @@ from tqdm import tqdm
 from math import floor
 import os
 
-from settings import timeStamps, batchSize_aeNorm, batchSize_aeAbnorm
+from settings import channels, timeStamps, batchSize_aeNorm, batchSize_aeAbnorm
 from settings import dataVerion, sampleRate, sampleRate_origin
 from settings import slidingWindow_aeNorm, slidingWindow_aeAbnorm, stride
 from settings import norm_trainDataDir, abnorm_trainDataDir, norm_testDataDir, abnorm_testDataDir
@@ -88,8 +88,8 @@ class Vibration(object):
             # visualize or not
             if displayData:
                 dataToList = list(data)
-                for d in range(startChannel, channelSelected):
-                    self.displayData(dataToList[d - startChannel], d)
+                for d in channelSelected:
+                    self.displayData(dataToList[d], d)
 
             # if not slidingWindow, a file is a sample(with interploition to desired timeStamps) or a file will make many samples.
             if slidingWindow:

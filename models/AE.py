@@ -9,7 +9,7 @@ import numpy as np
 
 from settings import epochs, cuda, channels, timeStamps, lr, scheduler_gamma, scheduler_stepSize, batchSize_aeNorm, batchSize_aeAbnorm
 from settings import norm_trainDataDir, abnorm_trainDataDir
-from settings import architechture, dataVerion, sampleRate, sampleRate_origin, slidingWindow_aeNorm, slidingWindow_aeAbnorm, stride, startChannel
+from settings import architechture, dataVerion, sampleRate, sampleRate_origin, slidingWindow_aeNorm, slidingWindow_aeAbnorm, stride
 from settings import embeddingSize, decoderShapeBias, dropout, layers
 
 
@@ -199,7 +199,6 @@ class AE:
             'slidingWindow_aeNorm': slidingWindow_aeNorm,
             'slidingWindow_aeAbnorm': slidingWindow_aeAbnorm,
             'stride': stride,
-            'startChannel': startChannel,
             'channels': channels,
             'timeStamps': timeStamps,
             'embeddingSize': embeddingSize,
