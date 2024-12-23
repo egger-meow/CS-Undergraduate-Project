@@ -30,7 +30,7 @@ cuda = torch.cuda.is_available()
 
 testFileNum = 50
 
-testingShapeBias = True
+testingShapeBias = False
 
 # ---- data preparing ----
 
