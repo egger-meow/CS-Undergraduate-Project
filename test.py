@@ -5,14 +5,22 @@ from scipy import ndimage
 from sklearn.preprocessing import MinMaxScaler
 import gc
 import matplotlib.pyplot as plt
-from settings import autoencoderNormPath, autoencoderAbnormPath, norm_testDataDir, abnorm_testDataDir, testFileNum
+from settings import autoencoderNormPath, autoEncoder, autoencoderAbnormPath, norm_testDataDir, abnorm_testDataDir, testFileNum
 from math import sqrt
 import torch
 from torchvision.utils import save_image
 
-# from models.VAE import VAE
+from models.VAE import VAE
 from models.AE import AE
+
 from utils import get_interpolations
+
+arch = {
+  'AE':   AE,
+  'VAE': VAE,
+}
+
+model = arch[autoEncoder]
 
 torch.manual_seed(42)
 def scatterTestReuslt2D(blue_x, blue_y, red_x, red_y):
@@ -73,8 +81,8 @@ def interpolation(scores, newDim = testFileNum):
     return interpolated_data[0].tolist()
     
 def testSingleAEscore():
-    aeNormal = AE(test = True, normalVersion=True, modelPath = autoencoderNormPath)
-    aeAbnormal = AE(test = True, normalVersion=False, modelPath = autoencoderAbnormPath)
+    aeNormal = model(test = True, normalVersion=True, modelPath = autoencoderNormPath)
+    aeAbnormal = model(test = True, normalVersion=False, modelPath = autoencoderAbnormPath)
     
     loss_aeNormal_dataNormal        = interpolation(aeNormal.test(norm_testDataDir))
     loss_aeAbnormal_dataNormal      = interpolation(aeAbnormal.test(norm_testDataDir), testFileNum)

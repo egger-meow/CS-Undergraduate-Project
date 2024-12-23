@@ -3,7 +3,8 @@ from datetime import datetime
 
 # ---- training selection ----
 
-architechture = 'CNN1D'
+autoEncoder = 'VAE'
+architechture = 'LSTM'
 
 # ---- data path definitions ----
 
@@ -29,31 +30,39 @@ cuda = torch.cuda.is_available()
 
 testFileNum = 50
 
-testingShapeBias = False
+testingShapeBias = True
 
 # ---- data preparing ----
 
 sampleRate = 256
 sampleRate_origin = 8192
+fft = False
 
 slidingWindow_aeNorm = False    # if true, the window size will be timeStamps, 
 slidingWindow_aeAbnorm = False   # if true, the window size will be timeStamps, 
 stride = 128             # looping through the data with sampleRate
 
-startChannel = 4   # amp, door-x, door-y, door-z, car-x, car-y, car-z 
-channels = 2        # amp, door-x, door-y, door-z, car-x, car-y, car-z 
+# 0,    1,      2,      3,      4,      5,    6
+# amp,  door-x, door-y, door-z, car-x, car-y, car-z
+channelSelected = [1,2,3]             
+channels = len(channelSelected) 
+startChannel = -1                  # not used currently
+
+
 timeStamps = 1024
 
 # ---- hyper parameters ----
-
-epochs = 70
+epochs = 50
 batchSize_aeNorm = 32
 batchSize_aeAbnorm = 4
-embeddingSize = 8
+embeddingSize = 16
 
 lr = 0.001
 scheduler_stepSize = 7
-scheduler_gamma = 0.9
+scheduler_gamma = 0.85
+
+vaeBias = 8
+
 
 # ---- CNN1D parameters ----
 
@@ -61,5 +70,5 @@ decoderShapeBias = timeStamps - 8
 
 # ---- LSTM parameters ----
 
-dropout = 0.0
+dropout = 0.01
 layers  = 1

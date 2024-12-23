@@ -15,7 +15,7 @@ from settings import channels, startChannel, timeStamps, batchSize_aeNorm, batch
 from settings import dataVerion, sampleRate, sampleRate_origin
 from settings import slidingWindow_aeNorm, slidingWindow_aeAbnorm, stride
 from settings import norm_trainDataDir, abnorm_trainDataDir, norm_testDataDir, abnorm_testDataDir
-from settings import testingShapeBias
+from settings import testingShapeBias, channelSelected, fft
 
 def find_smallest_file(directory):
     smallest_file = None
@@ -73,14 +73,18 @@ class Vibration(object):
 
             else: # data v2 sample rate is 8192, so we down sample to our desired sample rate first
                 downSampleFactor = sampleRate_origin // sampleRate
-                data = df.iloc[::downSampleFactor, [2,3]].values
+                data = df.iloc[::downSampleFactor, channelSelected].values
                 print(shortestLen)
                 data = data[:shortestLen,:]
 
             # normalization
             slidingWindow = slidingWindow_aeNorm if normalVersion else slidingWindow_aeAbnorm
+            
+            if fft:
+                data = np.fft.fft(data.transpose(1,0), axis=-1)
+                
             data = self.normalization(data).transpose(1,0) if not slidingWindow else self.normalization(data)
-
+            
             # visualize or not
             if displayData:
                 dataToList = list(data)
@@ -92,9 +96,11 @@ class Vibration(object):
                 data = self.slidingWindow(data, timeStamps, stride).transpose(0,2,1)
             else:
                 data = self.interpolation(data, timeStamps)
+ 
                 data = np.expand_dims(data, axis=0)
 
             dataList = np.concatenate((dataList, data), axis=0) if dataList is not None else data
+            
 
         dataTensor = torch.tensor(
             dataList, 
@@ -142,6 +148,9 @@ class Vibration(object):
         return interpolated_data
     
     def normalization(self, data):
+        if fft:
+            data = data.transpose(1,0).real
+
         scaler = MinMaxScaler()
         normalized = scaler.fit_transform(data)
         return normalized
