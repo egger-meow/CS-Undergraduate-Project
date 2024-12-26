@@ -173,12 +173,12 @@ def test(X_test, y_test, svm_clf, knn_clf, logreg_clf):
 def main():
     gc.collect()
     try:
-        X_train, X_test, y_train, y_test =  dataPrepare(norm_trainDataDir, abnorm_trainDataDir)
+        # X_train, X_test, y_train, y_test =  dataPrepare(norm_trainDataDir, abnorm_trainDataDir)
 
-        svm_clf, knn_clf, logreg_clf = train(X_train, X_test, y_train, y_test)
-        svm_clf = joblib.load('svm_model.joblib')
-        knn_clf = joblib.load('knn_model.joblib')
-        logreg_clf = joblib.load('logreg_model.joblib')
+        # svm_clf, knn_clf, logreg_clf = train(X_train, X_test, y_train, y_test)
+        svm_clf = joblib.load('checkpoints/svm_model1227.joblib')
+        knn_clf = joblib.load('checkpoints/knn_model1227.joblib')
+        logreg_clf = joblib.load('checkpoints/logreg_model1227.joblib')
         _, X_test, _, y_test =  dataPrepare(norm_testDataDir, abnorm_testDataDir, 1)
         
         test(X_test, y_test, svm_clf, knn_clf, logreg_clf)
