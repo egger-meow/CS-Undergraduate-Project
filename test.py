@@ -84,10 +84,10 @@ def testSingleAEscore():
     aeNormal = model(test = True, normalVersion=True, modelPath = autoencoderNormPath)
     aeAbnormal = model(test = True, normalVersion=False, modelPath = autoencoderAbnormPath)
     
-    loss_aeNormal_dataNormal        = interpolation(aeNormal.test(norm_testDataDir))
-    loss_aeAbnormal_dataNormal      = interpolation(aeAbnormal.test(norm_testDataDir), testFileNum)
-    loss_aeNormal_dataAbnormal      = interpolation(aeNormal.test(abnorm_testDataDir))
-    loss_aeAbnormal_dataAbnormal    = interpolation(aeAbnormal.test(abnorm_testDataDir), testFileNum)
+    loss_aeNormal_dataNormal        = aeNormal.test(norm_testDataDir)
+    loss_aeAbnormal_dataNormal      = aeAbnormal.test(norm_testDataDir) 
+    loss_aeNormal_dataAbnormal      = aeNormal.test(abnorm_testDataDir)
+    loss_aeAbnormal_dataAbnormal    = aeAbnormal.test(abnorm_testDataDir) 
     
     loss_aeNormal_normalized    = normalization(loss_aeNormal_dataNormal + loss_aeNormal_dataAbnormal)
     loss_aeAbnormal_normalized  = normalization(loss_aeAbnormal_dataNormal + loss_aeAbnormal_dataAbnormal)
@@ -98,7 +98,8 @@ def testSingleAEscore():
     loss_aeNormal_dataAbnormal        = loss_aeNormal_normalized[testFileNum:]
     loss_aeAbnormal_dataAbnormal      = loss_aeAbnormal_normalized[testFileNum:]
     
-    
+    z = zip(loss_aeNormal_dataNormal,loss_aeAbnormal_dataNormal)
+    print(*z)
     dataNormal_levelingScores = [x / y for x, y in zip(loss_aeNormal_dataNormal, loss_aeAbnormal_dataNormal)]
     # dataNormal_levelingScores = [sqrt(i) for i in dataNormal_levelingScores]
     # print(len(loss_aeNormal_dataNormal), len(loss_aeAbnormal_dataNormal))

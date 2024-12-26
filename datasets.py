@@ -55,7 +55,7 @@ class Vibration(object):
         files = [f for f in directory.iterdir() if f.is_file() and f.name != '.DS_Store' ]
         
         if testingShapeBias:
-            files = files[:50]
+            files = files[:10]
             
         numFiles = len(files)
         # list of samples

@@ -3,8 +3,8 @@ from datetime import datetime
 
 # ---- training selection ----
 
-autoEncoder = 'VAE'
-architechture = 'LSTM'
+autoEncoder = 'AE'
+architechture = 'CNN1D'
 
 # ---- data path definitions ----
 
@@ -23,14 +23,15 @@ current_date = datetime.now().strftime("%y%m%d")
 autoencoderNormPath = f'D:/leveling/pytorch-AE/checkpoints/aeNorm_{dataVerion}_{architechture}_{current_date}.pth'
 autoencoderAbnormPath = f'D:/leveling/pytorch-AE/checkpoints/aeAbnorm_{dataVerion}_{architechture}_{current_date}.pth'
 
-# autoencoderNormPath = f'D:/leveling/pytorch-AE/checkpoints/aeNorm_{dataVerion}_{architechture}_241128.pth'
-# autoencoderAbnormPath = f'D:/leveling/pytorch-AE/checkpoints/aeAbnorm_{dataVerion}_{architechture}_241128.pth'
+autoencoderNormPath = f'D:/leveling/pytorch-AE/checkpoints/aeNorm_{dataVerion}_{architechture}_241225.pth'
+autoencoderAbnormPath = f'D:/leveling/pytorch-AE/checkpoints/aeAbnorm_{dataVerion}_{architechture}_241225.pth'
 
 cuda = torch.cuda.is_available()
 
 testFileNum = 50
 
 testingShapeBias = False
+# testingShapeBias = True
 
 # ---- data preparing ----
 
@@ -44,19 +45,19 @@ stride = 128             # looping through the data with sampleRate
 
 # 0,    1,      2,      3,      4,      5,    6
 # amp,  door-x, door-y, door-z, car-x, car-y, car-z
-channelSelected = [1,2,3]             
+channelSelected = [0]             
 channels = len(channelSelected) 
 
 timeStamps = 1024
 
 # ---- hyper parameters ----
-epochs = 50
+epochs = 300
 batchSize_aeNorm = 32
 batchSize_aeAbnorm = 4
-embeddingSize = 16
+embeddingSize = 8
 
-lr = 0.001
-scheduler_stepSize = 7
+lr = 0.005
+scheduler_stepSize = 8
 scheduler_gamma = 0.85
 
 vaeBias = 8
