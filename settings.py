@@ -19,12 +19,12 @@ abnorm_trainDataDir = f'D:/leveling/leveling_data/{dataVerion}/Abnormal/train/'
 norm_testDataDir = f'D:/leveling/leveling_data/{dataVerion}/Normal/test/'
 abnorm_testDataDir = f'D:/leveling/leveling_data/{dataVerion}/Abnormal/test/'
 
-current_date = datetime.now().strftime("%y%m%d")
+current_date = datetime.now().strftime("%y%m%d%H")
 autoencoderNormPath = f'D:/leveling/pytorch-AE/checkpoints/aeNorm_{dataVerion}_{architechture}_{current_date}.pth'
 autoencoderAbnormPath = f'D:/leveling/pytorch-AE/checkpoints/aeAbnorm_{dataVerion}_{architechture}_{current_date}.pth'
 
-autoencoderNormPath = f'D:/leveling/pytorch-AE/checkpoints/aeNorm_{dataVerion}_{architechture}_241225.pth'
-autoencoderAbnormPath = f'D:/leveling/pytorch-AE/checkpoints/aeAbnorm_{dataVerion}_{architechture}_241225.pth'
+# autoencoderNormPath = f'D:/leveling/pytorch-AE/checkpoints/aeNorm_{dataVerion}_{architechture}_241225.pth'
+# autoencoderAbnormPath = f'D:/leveling/pytorch-AE/checkpoints/aeAbnorm_{dataVerion}_{architechture}_241225.pth'
 
 cuda = torch.cuda.is_available()
 
@@ -45,16 +45,16 @@ stride = 128             # looping through the data with sampleRate
 
 # 0,    1,      2,      3,      4,      5,    6
 # amp,  door-x, door-y, door-z, car-x, car-y, car-z
-channelSelected = [0]             
+channelSelected = [1,2,3]             
 channels = len(channelSelected) 
 
 timeStamps = 1024
 
 # ---- hyper parameters ----
 epochs = 300
-batchSize_aeNorm = 32
-batchSize_aeAbnorm = 4
-embeddingSize = 8
+batchSize_aeNorm = 16
+batchSize_aeAbnorm = 2
+embeddingSize = 16
 
 lr = 0.005
 scheduler_stepSize = 8
