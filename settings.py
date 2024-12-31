@@ -23,8 +23,8 @@ current_date = datetime.now().strftime("%y%m%d%H")
 autoencoderNormPath = f'D:/leveling/pytorch-AE/checkpoints/aeNorm_{dataVerion}_{architechture}_{current_date}.pth'
 autoencoderAbnormPath = f'D:/leveling/pytorch-AE/checkpoints/aeAbnorm_{dataVerion}_{architechture}_{current_date}.pth'
 
-# autoencoderNormPath = f'D:/leveling/pytorch-AE/checkpoints/aeNorm_{dataVerion}_{architechture}_241225.pth'
-# autoencoderAbnormPath = f'D:/leveling/pytorch-AE/checkpoints/aeAbnorm_{dataVerion}_{architechture}_241225.pth'
+autoencoderNormPath = f'D:/leveling/pytorch-AE/checkpoints/aeNorm_{dataVerion}_{architechture}_25010104.pth'
+autoencoderAbnormPath = f'D:/leveling/pytorch-AE/checkpoints/aeAbnorm_{dataVerion}_{architechture}_25010104.pth'
 
 cuda = torch.cuda.is_available()
 
@@ -51,7 +51,7 @@ channels = len(channelSelected)
 timeStamps = 1024
 
 # ---- hyper parameters ----
-epochs = 300
+epochs = 150
 batchSize_aeNorm = 16
 batchSize_aeAbnorm = 2
 embeddingSize = 16
