@@ -51,9 +51,9 @@ channels = len(channelSelected)
 timeStamps = 1024
 
 # ---- hyper parameters ----
-epochs = 150
-batchSize_aeNorm = 16
-batchSize_aeAbnorm = 2
+epochs = 300
+batchSize_aeNorm = 32
+batchSize_aeAbnorm = 4
 embeddingSize = 16
 
 lr = 0.005
