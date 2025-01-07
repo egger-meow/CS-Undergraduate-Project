@@ -12,7 +12,8 @@ from torchvision.utils import save_image
 from settings import (
     channels, autoEncoder, norm_trainDataDir, abnorm_trainDataDir,
     autoencoderNormPath, autoencoderAbnormPath, epochs,
-    norm_testDataDir, abnorm_testDataDir
+    norm_testDataDir, abnorm_testDataDir,
+    phaseII_trainSetPath, phaseII_testSetPath
 )
 from sklearn.model_selection import train_test_split, StratifiedKFold, cross_val_score
 from sklearn.svm import SVC
@@ -24,7 +25,6 @@ from sklearn.metrics import (
 )
 from models.VAE import VAE
 from models.AE import AE
-from utils import get_interpolations
 from imblearn.over_sampling import SMOTE
 from imblearn.pipeline import Pipeline
 import joblib
@@ -157,13 +157,13 @@ def train_phase():
     logging.info("Starting training process...")
 
     # Check if we have saved training data; if not, prepare it
-    if os.path.exists('train_set.joblib'):
-        X_train, y_train = joblib.load('train_set.joblib')
+    if os.path.exists(phaseII_trainSetPath):
+        X_train, y_train = joblib.load(phaseII_trainSetPath)
         logging.info("Loaded existing training set from train_set.joblib.")
     else:
         logging.info("train_set.joblib not found. Preparing training data.")
         X_train, _, y_train, _  = dataPrepare(norm_trainDataDir, abnorm_trainDataDir, test_size=0)
-        joblib.dump((X_train, y_train), 'train_set.joblib')
+        joblib.dump((X_train, y_train), phaseII_trainSetPath)
         logging.info("Training set prepared and saved to train_set.joblib.")
 
     # Create pipelines using imblearn's Pipeline (which supports SMOTE)
@@ -220,13 +220,13 @@ def test_phase():
     pipeline_logreg = joblib.load('checkpoints/logreg_pipeline.joblib')
 
     # Load or prepare test data
-    if os.path.exists('test_set.joblib'):
-        X_test, y_test = joblib.load('test_set.joblib')
+    if os.path.exists(phaseII_testSetPath):
+        X_test, y_test = joblib.load(phaseII_testSetPath)
         logging.info("Loaded existing test set from test_set.joblib.")
     else:
         logging.info("test_set.joblib not found. Preparing test data.")
         _, X_test, _, y_test = dataPrepare(norm_testDataDir, abnorm_testDataDir, test_size=1)
-        joblib.dump((X_test, y_test), 'test_set.joblib')
+        joblib.dump((X_test, y_test), phaseII_testSetPath)
         logging.info("Test set prepared and saved to test_set.joblib.")
 
     print("Evaluating models...")
@@ -238,7 +238,7 @@ def test_phase():
 
     logreg_preds = pipeline_logreg.predict(X_test)
     logreg_proba = pipeline_logreg.predict_proba(X_test)[:, 1]
-
+    p
     evaluate_model("Support Vector Machine", y_test, svm_preds, svm_proba)
     evaluate_model("K-Nearest Neighbors", y_test, knn_preds, knn_proba)
     evaluate_model("Logistic Regression", y_test, logreg_preds, logreg_proba)

@@ -24,7 +24,6 @@ from settings import (
 from models.VAE import VAE
 from models.AE import AE
 
-from utils import get_interpolations
 
 # ========== Model Dictionary ========== #
 arch = {
