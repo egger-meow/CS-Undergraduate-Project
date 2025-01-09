@@ -12,7 +12,7 @@ from math import floor
 import os
 
 from settings import channels, timeStamps, batchSize_aeNorm, batchSize_aeAbnorm
-from settings import dataVerion, sampleRate, sampleRate_origin
+from settings import dataVersion, sampleRate, sampleRate_origin
 from settings import slidingWindow_aeNorm, slidingWindow_aeAbnorm, stride
 from settings import norm_trainDataDir, abnorm_trainDataDir, norm_testDataDir, abnorm_testDataDir
 from settings import testingShapeBias, channelSelected, fft
@@ -68,7 +68,7 @@ class Vibration(object):
             path = dir + file.name 
             df = pd.read_csv(path)
 
-            if dataVerion == 'v1': # data v1 sample rate is fixed 16, so we just make it to fit timestampt we set
+            if dataVersion == 'v1': # data v1 sample rate is fixed 16, so we just make it to fit timestampt we set
                 data = df.iloc[:, [3,6]].values
 
             else: # data v2 sample rate is 8192, so we down sample to our desired sample rate first
@@ -165,6 +165,6 @@ class Vibration(object):
         return None
     
 # test = Vibration(dir = 'D:/leveling/leveling_data/v3/Normal/train/', displayData=True)
-# test = Vibration(dir = 'D:/leveling/leveling_data/v3/Abnormal/train/', displayData=True)
+test = Vibration(dir = 'D:/leveling/leveling_data/v3/Abnormal/train/', displayData=True)
 
 

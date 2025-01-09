@@ -9,7 +9,7 @@ import numpy as np
 
 from settings import epochs, cuda, channels, timeStamps, lr, scheduler_gamma, scheduler_stepSize, batchSize_aeNorm, batchSize_aeAbnorm
 from settings import norm_trainDataDir, abnorm_trainDataDir
-from settings import architechture, dataVerion, sampleRate, sampleRate_origin, slidingWindow_aeNorm, slidingWindow_aeAbnorm, stride
+from settings import architecture, dataVersion, sampleRate, sampleRate_origin, slidingWindow_aeNorm, slidingWindow_aeAbnorm, stride
 from settings import embeddingSize, decoderShapeBias, dropout, layers
 
 
@@ -34,7 +34,7 @@ arch = {
 class Network(nn.Module):
     def __init__(self):
         super(Network, self).__init__()
-        usedArch = arch[architechture]
+        usedArch = arch[architecture]
         
         self.encoder = usedArch['enoder']()  # Encoder architecture
         self.decoder = usedArch['decoder']()  # Decoder architecture
@@ -57,7 +57,7 @@ class Network(nn.Module):
 class LSTMNetwork(nn.Module):
     def __init__(self):
         super(LSTMNetwork, self).__init__()
-        usedArch = arch[architechture]
+        usedArch = arch[architecture]
         
         self.encoder = usedArch['enoder']()
         self.decoder = usedArch['decoder']()
@@ -88,7 +88,7 @@ class AE:
             self.train_loader = self.data.train_loader
             self.test_loader = self.data.test_loader
 
-        self.model = Network() if architechture != 'LSTM' else LSTMNetwork()
+        self.model = Network() if architecture != 'LSTM' else LSTMNetwork()
         self.model.to(self.device)
 
         self.optimizer = optim.Adam(self.model.parameters(), lr=lr)
@@ -133,7 +133,7 @@ class AE:
 
             # Forward pass
             reconstructed, activations = self.model(data)
-            if architechture == 'LSTM':
+            if architecture == 'LSTM':
                 reconstructed = reconstructed.transpose(1, 2)
             # Compute loss
             loss = self.loss_function(reconstructed, data, activations)
@@ -160,7 +160,7 @@ class AE:
 
                 # Forward pass
                 reconstructed, activations = self.model(data)
-                if architechture == 'LSTM':
+                if architecture == 'LSTM':
                     reconstructed = reconstructed.transpose(1, 2)
                 # Compute loss
                 test_loss += self.loss_function(reconstructed, data, activations).item()
@@ -192,8 +192,8 @@ class AE:
             'model_state_dict': self.model.state_dict(),
             'optimizer_state_dict': self.optimizer.state_dict(),
             'scheduler_state_dict': self.scheduler.state_dict(),
-            'architechture': architechture,
-            'dataVerion': dataVerion,
+            'architecture': architecture,
+            'dataVersion': dataVersion,
             'sampleRate': sampleRate,
             'sampleRate_origin': sampleRate_origin,
             'slidingWindow_aeNorm': slidingWindow_aeNorm,
@@ -223,7 +223,7 @@ class AE:
 
                 # Forward pass
                 reconstructed, activations = self.model(data)
-                if architechture == 'LSTM':
+                if architecture == 'LSTM':
                     reconstructed = reconstructed.transpose(1, 2)
                 # Compute loss
                 testLosses.append(self.loss_function(reconstructed, data, activations).item())

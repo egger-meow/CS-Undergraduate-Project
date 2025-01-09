@@ -1,76 +1,72 @@
+# settings.py
+import os
 import torch
 from datetime import datetime
 
-# ---- training selection ----
+# ---- Training Selection ----
+autoEncoder = os.getenv('AUTO_ENCODER', 'AE')
+architecture = os.getenv('ARCHITECTURE', 'CNN1D')
 
-autoEncoder = 'AE'
-architechture = 'CNN1D'
+# ---- Data Path Definitions ----
+dataVersion = os.getenv('DATA_VERSION', 'v3')  # v0, v1, v2, v3
 
-# ---- data path definitions ----
+norm_sourceDir = f'D:/leveling/leveling_data/{dataVersion}/source/Normal'
+abnorm_sourceDir = f'D:/leveling/leveling_data/{dataVersion}/source/Abnormal'
 
-dataVerion = 'v3' # v0, v1, v2, v3
+norm_trainDataDir = f'D:/leveling/leveling_data/{dataVersion}/Normal/train/'
+abnorm_trainDataDir = f'D:/leveling/leveling_data/{dataVersion}/Abnormal/train/'
 
-norm_sourceDir = f'D:/leveling/leveling_data/{dataVerion}/source/Normal'
-abnorm_sourceDir = f'D:/leveling/leveling_data/{dataVerion}/source/Abnormal'
+norm_testDataDir = f'D:/leveling/leveling_data/{dataVersion}/Normal/test/'
+abnorm_testDataDir = f'D:/leveling/leveling_data/{dataVersion}/Abnormal/test/'
 
-norm_trainDataDir = f'D:/leveling/leveling_data/{dataVerion}/Normal/train/'
-abnorm_trainDataDir = f'D:/leveling/leveling_data/{dataVerion}/Abnormal/train/'
+current_date = datetime.now().strftime("%y%m%d")
+autoencoderNormPath = f'D:/leveling/pytorch-AE/checkpoints/aeNorm_{dataVersion}_{architecture}_{current_date}.pth'
+autoencoderAbnormPath = f'D:/leveling/pytorch-AE/checkpoints/aeAbnorm_{dataVersion}_{architecture}_{current_date}.pth'
 
-norm_testDataDir = f'D:/leveling/leveling_data/{dataVerion}/Normal/test/'
-abnorm_testDataDir = f'D:/leveling/leveling_data/{dataVerion}/Abnormal/test/'
+phaseII_trainSetPath = os.getenv('PHASEII_TRAIN_SET_PATH', 'D:/leveling/pytorch-AE/trainTest_II_dataSets/train_set_amp.joblib')
+phaseII_testSetPath = os.getenv('PHASEII_TEST_SET_PATH', 'D:/leveling/pytorch-AE/trainTest_II_dataSets/test_set_amp.joblib')
 
-current_date = datetime.now().strftime("%y%m%d%H")
-autoencoderNormPath = f'D:/leveling/pytorch-AE/checkpoints/aeNorm_{dataVerion}_{architechture}_{current_date}.pth'
-autoencoderAbnormPath = f'D:/leveling/pytorch-AE/checkpoints/aeAbnorm_{dataVerion}_{architechture}_{current_date}.pth'
+phaseII_mode = os.getenv('PHASEII_MODE', 'amp')
 
-phaseII_trainSetPath = 'D:/leveling/pytorch-AE/trainTest_II_dataSets/train_set_amp.joblib'
-phaseII_testSetPath = 'D:/leveling/pytorch-AE/trainTest_II_dataSets/test_set_amp.joblib'
+# ---- General Settings ----
+cuda = os.getenv('CUDA', 'True') == 'True' and torch.cuda.is_available()
+testFileNum = int(os.getenv('TEST_FILE_NUM', 50))
+testingShapeBias = os.getenv('TESTING_SHAPE_BIAS', 'False') == 'True'
 
-# autoencoderNormPath = f'D:/leveling/pytorch-AE/checkpoints/aeNorm_{dataVerion}_{architechture}_241225.pth'
-# autoencoderAbnormPath = f'D:/leveling/pytorch-AE/checkpoints/aeAbnorm_{dataVerion}_{architechture}_241225.pth'
+# ---- Data Preparing ----
+sampleRate = int(os.getenv('SAMPLE_RATE', 256))
+sampleRate_origin = int(os.getenv('SAMPLE_RATE_ORIGIN', 8192))
+fft = os.getenv('FFT', 'False') == 'True'
 
-cuda = torch.cuda.is_available()
+slidingWindow_aeNorm = os.getenv('SLIDING_WINDOW_AE_NORM', 'False') == 'True'
+slidingWindow_aeAbnorm = os.getenv('SLIDING_WINDOW_AE_ABNORM', 'False') == 'True'
+stride = int(os.getenv('STRIDE', 128))
 
-testFileNum = 50
+channelSelected = list(map(int, os.getenv('CHANNEL_SELECTED', '0').split()))
+channels = len(channelSelected)
 
-testingShapeBias = False
-# testingShapeBias = True
+timeStamps = int(os.getenv('TIME_STAMPS', 1024))
 
-# ---- data preparing ----
+# ---- Hyper Parameters ----
+epochs = int(os.getenv('EPOCHS', 300))
+batchSize_aeNorm = int(os.getenv('BATCH_SIZE_AE_NORM', 32))
+batchSize_aeAbnorm = int(os.getenv('BATCH_SIZE_AE_ABNORM', 4))
+embeddingSize = int(os.getenv('EMBEDDING_SIZE', 8))
 
-sampleRate = 256
-sampleRate_origin = 8192
-fft = False
+lr = float(os.getenv('LR', 0.005))
+scheduler_stepSize = int(os.getenv('SCHEDULER_STEP_SIZE', 8))
+scheduler_gamma = float(os.getenv('SCHEDULER_GAMMA', 0.85))
 
-slidingWindow_aeNorm = False    # if true, the window size will be timeStamps, 
-slidingWindow_aeAbnorm = False   # if true, the window size will be timeStamps, 
-stride = 128             # looping through the data with sampleRate
+vaeBias = int(os.getenv('VAEBIAS', 8))
 
-# 0,    1,      2,      3,      4,      5,    6
-# amp,  door-x, door-y, door-z, car-x, car-y, car-z
-channelSelected = [0]             
-channels = len(channelSelected) 
-
-timeStamps = 1024
-
-# ---- hyper parameters ----
-epochs = 300
-batchSize_aeNorm = 32
-batchSize_aeAbnorm = 4
-embeddingSize = 4
-
-lr = 0.005
-scheduler_stepSize = 8
-scheduler_gamma = 0.85
-
-vaeBias = 8
-
-
-# ---- CNN1D parameters ----
-
+# ---- CNN1D Parameters ----
 decoderShapeBias = timeStamps - 8
 
-# ---- LSTM parameters ----
+# ---- LSTM Parameters ----
+dropout = float(os.getenv('DROPOUT', 0.01))
+layers = int(os.getenv('LAYERS', 1))
 
-dropout = 0.01
-layers  = 1
+
+
+channelSelected = [1,2,3]             
+channels = len(channelSelected) 

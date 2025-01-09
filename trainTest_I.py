@@ -54,7 +54,7 @@ def train_phase():
             ae.train(epoch)
             ae.validate()
             
-        ae.printLossResult()
+        # ae.printLossResult()
         ae.saveModel(parameters[2])
 
     # Train normal autoencoder

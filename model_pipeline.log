@@ -240,3 +240,387 @@
 2025-01-07 21:53:39,597 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
 2025-01-07 21:53:39,597 - INFO - Starting testing phase...
 2025-01-07 21:53:39,633 - INFO - Loaded existing test set from test_set.joblib.
+2025-01-07 22:42:04,939 - INFO - Starting testing phase...
+2025-01-07 22:42:04,939 - INFO - Loaded existing test set from test_set.joblib.
+2025-01-07 22:43:38,052 - INFO - Starting testing phase...
+2025-01-07 22:43:38,052 - INFO - Loaded existing test set from test_set.joblib.
+2025-01-07 22:44:14,961 - INFO - Starting training process...
+2025-01-07 22:44:14,961 - INFO - Loaded existing training set from train_set.joblib.
+2025-01-07 22:44:14,998 - INFO - SVM pipeline trained.
+2025-01-07 22:44:14,998 - INFO - KNN pipeline trained.
+2025-01-07 22:44:14,998 - INFO - Logistic Regression pipeline trained.
+2025-01-07 22:44:15,010 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-07 22:44:15,010 - INFO - Starting testing phase...
+2025-01-07 22:44:15,044 - INFO - Loaded existing test set from test_set.joblib.
+2025-01-08 01:15:59,303 - INFO - Starting testing phase...
+2025-01-08 01:15:59,307 - INFO - Loaded existing test set from test_set.joblib.
+2025-01-08 01:55:27,510 - INFO - Starting testing phase...
+2025-01-08 01:55:27,513 - INFO - Loaded existing test set from test_set.joblib.
+2025-01-08 01:55:53,518 - INFO - Starting training process...
+2025-01-08 01:55:53,519 - INFO - Loaded existing training set from train_set.joblib.
+2025-01-08 01:55:53,570 - INFO - SVM pipeline trained.
+2025-01-08 01:55:53,571 - INFO - KNN pipeline trained.
+2025-01-08 01:55:53,575 - INFO - Logistic Regression pipeline trained.
+2025-01-08 01:55:53,579 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-08 01:55:53,580 - INFO - Starting testing phase...
+2025-01-08 01:55:53,607 - INFO - Loaded existing test set from test_set.joblib.
+2025-01-08 02:49:02,044 - INFO - Starting training process...
+2025-01-08 02:49:02,045 - INFO - train_set.joblib not found. Preparing training data.
+2025-01-08 02:51:18,950 - INFO - Training set prepared and saved to train_set.joblib.
+2025-01-08 02:51:18,997 - INFO - SVM pipeline trained.
+2025-01-08 02:51:19,002 - INFO - KNN pipeline trained.
+2025-01-08 02:51:19,014 - INFO - Logistic Regression pipeline trained.
+2025-01-08 02:51:19,021 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-08 02:51:19,021 - INFO - Starting testing phase...
+2025-01-08 02:51:19,055 - INFO - test_set.joblib not found. Preparing test data.
+2025-01-08 02:51:35,381 - INFO - Test set prepared and saved to test_set.joblib.
+2025-01-08 02:59:50,238 - INFO - Starting training process...
+2025-01-08 02:59:50,239 - INFO - train_set.joblib not found. Preparing training data.
+2025-01-08 03:26:24,918 - INFO - Starting training process...
+2025-01-08 03:26:24,918 - INFO - train_set.joblib not found. Preparing training data.
+2025-01-08 03:35:17,118 - INFO - Starting training process...
+2025-01-08 03:35:17,118 - INFO - train_set.joblib not found. Preparing training data.
+2025-01-08 03:37:18,451 - INFO - Training set prepared and saved to train_set.joblib.
+2025-01-08 03:37:18,479 - INFO - SVM pipeline trained.
+2025-01-08 03:37:18,482 - INFO - KNN pipeline trained.
+2025-01-08 03:37:18,492 - INFO - Logistic Regression pipeline trained.
+2025-01-08 03:37:18,497 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-08 03:37:18,497 - INFO - Starting testing phase...
+2025-01-08 03:37:18,529 - INFO - test_set.joblib not found. Preparing test data.
+2025-01-08 03:37:31,808 - INFO - Test set prepared and saved to test_set.joblib.
+2025-01-08 03:45:04,476 - INFO - Starting training process...
+2025-01-08 03:45:04,476 - INFO - train_set.joblib not found. Preparing training data.
+2025-01-08 04:19:24,144 - INFO - Starting training process...
+2025-01-08 04:19:24,144 - INFO - train_set.joblib not found. Preparing training data.
+2025-01-08 04:21:22,336 - INFO - Training set prepared and saved to train_set.joblib.
+2025-01-08 04:21:22,367 - INFO - SVM pipeline trained.
+2025-01-08 04:21:22,367 - INFO - KNN pipeline trained.
+2025-01-08 04:21:22,383 - INFO - Logistic Regression pipeline trained.
+2025-01-08 04:21:22,383 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-08 04:21:22,383 - INFO - Starting testing phase...
+2025-01-08 04:21:22,414 - INFO - test_set.joblib not found. Preparing test data.
+2025-01-08 04:21:35,710 - INFO - Test set prepared and saved to test_set.joblib.
+2025-01-08 04:28:56,940 - INFO - Starting training process...
+2025-01-08 04:28:56,940 - INFO - train_set.joblib not found. Preparing training data.
+2025-01-08 04:31:04,805 - INFO - Training set prepared and saved to train_set.joblib.
+2025-01-08 04:31:04,836 - INFO - SVM pipeline trained.
+2025-01-08 04:31:04,836 - INFO - KNN pipeline trained.
+2025-01-08 04:31:04,836 - INFO - Logistic Regression pipeline trained.
+2025-01-08 04:31:04,852 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-08 04:31:04,852 - INFO - Starting testing phase...
+2025-01-08 04:31:04,867 - INFO - test_set.joblib not found. Preparing test data.
+2025-01-08 04:31:17,883 - INFO - Test set prepared and saved to test_set.joblib.
+2025-01-08 04:37:30,893 - INFO - Starting training process...
+2025-01-08 04:37:30,893 - INFO - train_set.joblib not found. Preparing training data.
+2025-01-08 04:39:29,854 - INFO - Training set prepared and saved to train_set.joblib.
+2025-01-08 04:39:29,888 - INFO - SVM pipeline trained.
+2025-01-08 04:39:29,888 - INFO - KNN pipeline trained.
+2025-01-08 04:39:29,904 - INFO - Logistic Regression pipeline trained.
+2025-01-08 04:39:29,904 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-08 04:39:29,904 - INFO - Starting testing phase...
+2025-01-08 04:39:29,938 - INFO - test_set.joblib not found. Preparing test data.
+2025-01-08 04:39:43,003 - INFO - Test set prepared and saved to test_set.joblib.
+2025-01-08 04:46:48,673 - INFO - Starting training process...
+2025-01-08 04:46:48,673 - INFO - train_set.joblib not found. Preparing training data.
+2025-01-08 04:49:04,093 - INFO - Training set prepared and saved to train_set.joblib.
+2025-01-08 04:49:04,127 - INFO - SVM pipeline trained.
+2025-01-08 04:49:04,131 - INFO - KNN pipeline trained.
+2025-01-08 04:49:04,140 - INFO - Logistic Regression pipeline trained.
+2025-01-08 04:49:04,145 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-08 04:49:04,145 - INFO - Starting testing phase...
+2025-01-08 04:49:04,169 - INFO - test_set.joblib not found. Preparing test data.
+2025-01-08 04:49:17,917 - INFO - Test set prepared and saved to test_set.joblib.
+2025-01-08 18:37:28,452 - INFO - Starting testing phase...
+2025-01-08 18:37:28,465 - INFO - Loaded existing test set from test_set.joblib.
+2025-01-08 18:53:49,038 - INFO - Starting training process...
+2025-01-08 18:53:49,038 - INFO - train_set.joblib not found. Preparing training data.
+2025-01-08 18:55:46,096 - INFO - Training set prepared and saved to train_set.joblib.
+2025-01-08 18:55:46,127 - INFO - SVM pipeline trained.
+2025-01-08 18:55:46,127 - INFO - KNN pipeline trained.
+2025-01-08 18:55:46,142 - INFO - Logistic Regression pipeline trained.
+2025-01-08 18:55:46,142 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-08 18:55:46,142 - INFO - Starting testing phase...
+2025-01-08 18:55:46,174 - INFO - test_set.joblib not found. Preparing test data.
+2025-01-08 18:56:00,174 - INFO - Test set prepared and saved to test_set.joblib.
+2025-01-08 19:04:40,457 - INFO - Starting training process...
+2025-01-08 19:04:40,457 - INFO - train_set.joblib not found. Preparing training data.
+2025-01-08 19:06:45,659 - INFO - Training set prepared and saved to train_set.joblib.
+2025-01-08 19:06:45,697 - INFO - SVM pipeline trained.
+2025-01-08 19:06:45,697 - INFO - KNN pipeline trained.
+2025-01-08 19:06:45,697 - INFO - Logistic Regression pipeline trained.
+2025-01-08 19:06:45,707 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-08 19:06:45,707 - INFO - Starting testing phase...
+2025-01-08 19:06:45,731 - INFO - test_set.joblib not found. Preparing test data.
+2025-01-08 19:06:59,346 - INFO - Test set prepared and saved to test_set.joblib.
+2025-01-08 19:14:09,405 - INFO - Starting training process...
+2025-01-08 19:14:09,405 - INFO - train_set.joblib not found. Preparing training data.
+2025-01-08 19:16:01,047 - INFO - Training set prepared and saved to train_set.joblib.
+2025-01-08 19:16:01,078 - INFO - SVM pipeline trained.
+2025-01-08 19:16:01,078 - INFO - KNN pipeline trained.
+2025-01-08 19:16:01,078 - INFO - Logistic Regression pipeline trained.
+2025-01-08 19:16:01,078 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-08 19:16:01,078 - INFO - Starting testing phase...
+2025-01-08 19:16:01,109 - INFO - test_set.joblib not found. Preparing test data.
+2025-01-08 19:16:13,463 - INFO - Test set prepared and saved to test_set.joblib.
+2025-01-08 19:24:55,781 - INFO - Starting training process...
+2025-01-08 19:24:55,781 - INFO - train_set.joblib not found. Preparing training data.
+2025-01-08 19:26:56,522 - INFO - Training set prepared and saved to train_set.joblib.
+2025-01-08 19:26:56,553 - INFO - SVM pipeline trained.
+2025-01-08 19:26:56,553 - INFO - KNN pipeline trained.
+2025-01-08 19:26:56,553 - INFO - Logistic Regression pipeline trained.
+2025-01-08 19:26:56,553 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-08 19:26:56,553 - INFO - Starting testing phase...
+2025-01-08 19:26:56,584 - INFO - test_set.joblib not found. Preparing test data.
+2025-01-08 19:27:09,768 - INFO - Test set prepared and saved to test_set.joblib.
+2025-01-08 19:33:52,922 - INFO - Starting training process...
+2025-01-08 19:33:52,922 - INFO - train_set.joblib not found. Preparing training data.
+2025-01-08 19:35:49,221 - INFO - Training set prepared and saved to train_set.joblib.
+2025-01-08 19:35:49,253 - INFO - SVM pipeline trained.
+2025-01-08 19:35:49,253 - INFO - KNN pipeline trained.
+2025-01-08 19:35:49,253 - INFO - Logistic Regression pipeline trained.
+2025-01-08 19:35:49,253 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-08 19:35:49,253 - INFO - Starting testing phase...
+2025-01-08 19:35:49,284 - INFO - test_set.joblib not found. Preparing test data.
+2025-01-08 19:36:01,444 - INFO - Test set prepared and saved to test_set.joblib.
+2025-01-08 19:44:20,755 - INFO - Starting training process...
+2025-01-08 19:44:20,755 - INFO - train_set.joblib not found. Preparing training data.
+2025-01-08 19:46:23,524 - INFO - Training set prepared and saved to train_set.joblib.
+2025-01-08 19:46:23,556 - INFO - SVM pipeline trained.
+2025-01-08 19:46:23,556 - INFO - KNN pipeline trained.
+2025-01-08 19:46:23,556 - INFO - Logistic Regression pipeline trained.
+2025-01-08 19:46:23,571 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-08 19:46:23,571 - INFO - Starting testing phase...
+2025-01-08 19:46:23,602 - INFO - test_set.joblib not found. Preparing test data.
+2025-01-08 19:46:36,168 - INFO - Test set prepared and saved to test_set.joblib.
+2025-01-08 19:53:20,067 - INFO - Starting training process...
+2025-01-08 19:53:20,067 - INFO - train_set.joblib not found. Preparing training data.
+2025-01-08 19:55:19,240 - INFO - Training set prepared and saved to train_set.joblib.
+2025-01-08 19:55:19,271 - INFO - SVM pipeline trained.
+2025-01-08 19:55:19,271 - INFO - KNN pipeline trained.
+2025-01-08 19:55:19,287 - INFO - Logistic Regression pipeline trained.
+2025-01-08 19:55:19,287 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-08 19:55:19,287 - INFO - Starting testing phase...
+2025-01-08 19:55:19,302 - INFO - test_set.joblib not found. Preparing test data.
+2025-01-08 19:55:31,670 - INFO - Test set prepared and saved to test_set.joblib.
+2025-01-08 20:04:36,883 - INFO - Starting training process...
+2025-01-08 20:04:36,883 - INFO - train_set.joblib not found. Preparing training data.
+2025-01-08 20:06:37,141 - INFO - Training set prepared and saved to train_set.joblib.
+2025-01-08 20:06:37,172 - INFO - SVM pipeline trained.
+2025-01-08 20:06:37,172 - INFO - KNN pipeline trained.
+2025-01-08 20:06:37,172 - INFO - Logistic Regression pipeline trained.
+2025-01-08 20:06:37,187 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-08 20:06:37,187 - INFO - Starting testing phase...
+2025-01-08 20:06:37,203 - INFO - test_set.joblib not found. Preparing test data.
+2025-01-08 20:06:49,931 - INFO - Test set prepared and saved to test_set.joblib.
+2025-01-08 20:14:59,861 - INFO - Starting training process...
+2025-01-08 20:14:59,861 - INFO - train_set.joblib not found. Preparing training data.
+2025-01-08 21:16:55,809 - INFO - Training set prepared and saved to train_set.joblib.
+2025-01-08 21:16:55,828 - INFO - SVM pipeline trained.
+2025-01-08 21:16:55,828 - INFO - KNN pipeline trained.
+2025-01-08 21:16:55,828 - INFO - Logistic Regression pipeline trained.
+2025-01-08 21:16:55,839 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-08 21:16:55,839 - INFO - Starting testing phase...
+2025-01-08 21:16:55,868 - INFO - test_set.joblib not found. Preparing test data.
+2025-01-08 22:37:16,605 - INFO - Test set prepared and saved to test_set.joblib.
+2025-01-08 22:46:57,640 - INFO - Starting training process...
+2025-01-08 22:46:57,640 - INFO - train_set.joblib not found. Preparing training data.
+2025-01-08 22:49:02,647 - INFO - Training set prepared and saved to train_set.joblib.
+2025-01-08 22:49:02,686 - INFO - SVM pipeline trained.
+2025-01-08 22:49:02,686 - INFO - KNN pipeline trained.
+2025-01-08 22:49:02,690 - INFO - Logistic Regression pipeline trained.
+2025-01-08 22:49:02,696 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-08 22:49:02,696 - INFO - Starting testing phase...
+2025-01-08 22:49:02,727 - INFO - test_set.joblib not found. Preparing test data.
+2025-01-08 22:49:15,875 - INFO - Test set prepared and saved to test_set.joblib.
+2025-01-08 22:56:11,286 - INFO - Starting training process...
+2025-01-08 22:56:11,286 - INFO - train_set.joblib not found. Preparing training data.
+2025-01-08 22:58:03,296 - INFO - Training set prepared and saved to train_set.joblib.
+2025-01-08 22:58:03,320 - INFO - SVM pipeline trained.
+2025-01-08 22:58:03,320 - INFO - KNN pipeline trained.
+2025-01-08 22:58:03,329 - INFO - Logistic Regression pipeline trained.
+2025-01-08 22:58:03,329 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-08 22:58:03,329 - INFO - Starting testing phase...
+2025-01-08 22:58:03,357 - INFO - test_set.joblib not found. Preparing test data.
+2025-01-08 22:58:15,706 - INFO - Test set prepared and saved to test_set.joblib.
+2025-01-08 23:06:56,556 - INFO - Starting training process...
+2025-01-08 23:06:56,556 - INFO - train_set.joblib not found. Preparing training data.
+2025-01-08 23:08:55,086 - INFO - Training set prepared and saved to train_set.joblib.
+2025-01-08 23:08:55,106 - INFO - SVM pipeline trained.
+2025-01-08 23:08:55,106 - INFO - KNN pipeline trained.
+2025-01-08 23:08:55,116 - INFO - Logistic Regression pipeline trained.
+2025-01-08 23:08:55,116 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-08 23:08:55,116 - INFO - Starting testing phase...
+2025-01-08 23:08:55,136 - INFO - test_set.joblib not found. Preparing test data.
+2025-01-08 23:09:07,676 - INFO - Test set prepared and saved to test_set.joblib.
+2025-01-08 23:17:53,543 - INFO - Starting testing phase...
+2025-01-08 23:17:53,543 - INFO - test_set.joblib not found. Preparing test data.
+2025-01-08 23:19:15,931 - INFO - Starting testing phase...
+2025-01-08 23:19:15,946 - INFO - Loaded existing test set from test_set.joblib.
+2025-01-08 23:24:11,754 - INFO - Starting testing phase...
+2025-01-08 23:24:11,754 - INFO - Loaded existing test set from test_set.joblib.
+2025-01-08 23:24:58,357 - INFO - Starting testing phase...
+2025-01-08 23:24:58,360 - INFO - Loaded existing test set from test_set.joblib.
+2025-01-08 23:25:37,788 - INFO - Starting testing phase...
+2025-01-08 23:25:37,799 - INFO - Loaded existing test set from test_set.joblib.
+2025-01-08 23:26:26,471 - INFO - Starting training process...
+2025-01-08 23:26:26,471 - INFO - Loaded existing training set from train_set.joblib.
+2025-01-08 23:26:26,505 - INFO - SVM pipeline trained.
+2025-01-08 23:26:26,505 - INFO - KNN pipeline trained.
+2025-01-08 23:26:26,505 - INFO - Logistic Regression pipeline trained.
+2025-01-08 23:26:26,516 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-08 23:26:26,516 - INFO - Starting testing phase...
+2025-01-08 23:26:26,538 - INFO - Loaded existing test set from test_set.joblib.
+2025-01-08 23:33:20,781 - INFO - Starting training process...
+2025-01-08 23:33:20,781 - INFO - Loaded existing training set from train_set.joblib.
+2025-01-08 23:33:20,816 - INFO - SVM pipeline trained.
+2025-01-08 23:33:20,816 - INFO - KNN pipeline trained.
+2025-01-08 23:33:20,816 - INFO - Logistic Regression pipeline trained.
+2025-01-08 23:33:20,825 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-08 23:33:20,825 - INFO - Starting testing phase...
+2025-01-08 23:33:20,849 - INFO - Loaded existing test set from test_set.joblib.
+2025-01-08 23:34:42,897 - INFO - Starting training process...
+2025-01-08 23:34:42,897 - INFO - Loaded existing training set from train_set.joblib.
+2025-01-08 23:34:42,935 - INFO - SVM pipeline trained.
+2025-01-08 23:34:42,935 - INFO - KNN pipeline trained.
+2025-01-08 23:34:42,942 - INFO - Logistic Regression pipeline trained.
+2025-01-08 23:34:42,946 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-08 23:34:42,947 - INFO - Starting testing phase...
+2025-01-08 23:34:42,960 - INFO - Loaded existing test set from test_set.joblib.
+2025-01-08 23:35:12,284 - INFO - Starting training process...
+2025-01-08 23:35:12,284 - INFO - Loaded existing training set from train_set.joblib.
+2025-01-08 23:35:12,314 - INFO - SVM pipeline trained.
+2025-01-08 23:35:12,315 - INFO - KNN pipeline trained.
+2025-01-08 23:35:12,319 - INFO - Logistic Regression pipeline trained.
+2025-01-08 23:35:12,319 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-08 23:35:12,319 - INFO - Starting testing phase...
+2025-01-08 23:35:12,338 - INFO - Loaded existing test set from test_set.joblib.
+2025-01-08 23:43:31,351 - INFO - Starting training process...
+2025-01-08 23:43:31,351 - INFO - Loaded existing training set from train_set.joblib.
+2025-01-08 23:43:58,583 - INFO - Starting training process...
+2025-01-08 23:43:58,583 - INFO - Loaded existing training set from train_set.joblib.
+2025-01-08 23:43:58,614 - INFO - SVM pipeline trained.
+2025-01-08 23:43:58,614 - INFO - KNN pipeline trained.
+2025-01-08 23:43:58,614 - INFO - Logistic Regression pipeline trained.
+2025-01-08 23:43:58,636 - INFO - Decision Tree pipeline trained.
+2025-01-08 23:43:58,753 - INFO - Random Forest pipeline trained.
+2025-01-08 23:43:58,784 - INFO - Trained models saved: svm, knn, logreg, dt, rf (joblib).
+2025-01-08 23:43:58,784 - INFO - Starting testing phase...
+2025-01-08 23:43:58,841 - INFO - Loaded existing test set from test_set.joblib.
+2025-01-08 23:44:18,539 - INFO - Starting training process...
+2025-01-08 23:44:18,539 - INFO - Loaded existing training set from train_set.joblib.
+2025-01-08 23:44:18,568 - INFO - SVM pipeline trained.
+2025-01-08 23:44:18,568 - INFO - KNN pipeline trained.
+2025-01-08 23:44:18,568 - INFO - Logistic Regression pipeline trained.
+2025-01-08 23:44:18,581 - INFO - Decision Tree pipeline trained.
+2025-01-08 23:44:18,691 - INFO - Random Forest pipeline trained.
+2025-01-08 23:44:18,738 - INFO - Trained models saved: svm, knn, logreg, dt, rf (joblib).
+2025-01-08 23:44:18,738 - INFO - Starting testing phase...
+2025-01-08 23:44:18,777 - INFO - Loaded existing test set from test_set.joblib.
+2025-01-08 23:44:54,113 - INFO - Starting training process...
+2025-01-08 23:44:54,129 - INFO - Loaded existing training set from train_set.joblib.
+2025-01-08 23:44:54,156 - INFO - SVM pipeline trained.
+2025-01-08 23:44:54,158 - INFO - KNN pipeline trained.
+2025-01-08 23:44:54,163 - INFO - Logistic Regression pipeline trained.
+2025-01-08 23:44:54,165 - INFO - Decision Tree pipeline trained.
+2025-01-08 23:44:54,297 - INFO - Random Forest pipeline trained.
+2025-01-08 23:44:54,333 - INFO - Trained models saved: svm, knn, logreg, dt, rf (joblib).
+2025-01-08 23:44:54,333 - INFO - Starting testing phase...
+2025-01-08 23:44:54,392 - INFO - Loaded existing test set from test_set.joblib.
+2025-01-08 23:53:01,398 - INFO - Starting training process...
+2025-01-08 23:53:01,399 - INFO - Loaded existing training set from train_set.joblib.
+2025-01-08 23:53:01,413 - INFO - SVM pipeline trained.
+2025-01-08 23:53:01,428 - INFO - KNN pipeline trained.
+2025-01-08 23:53:01,432 - INFO - Logistic Regression pipeline trained.
+2025-01-08 23:53:01,434 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-08 23:53:01,434 - INFO - Starting testing phase...
+2025-01-08 23:53:01,452 - INFO - Loaded existing test set from test_set.joblib.
+2025-01-08 23:53:34,078 - INFO - Starting training process...
+2025-01-08 23:53:34,078 - INFO - Loaded existing training set from train_set.joblib.
+2025-01-08 23:53:34,117 - INFO - SVM pipeline trained.
+2025-01-08 23:53:34,118 - INFO - KNN pipeline trained.
+2025-01-08 23:53:34,120 - INFO - Logistic Regression pipeline trained.
+2025-01-08 23:53:34,120 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-08 23:53:34,127 - INFO - Starting testing phase...
+2025-01-08 23:53:34,140 - INFO - Loaded existing test set from test_set.joblib.
+2025-01-08 23:55:54,115 - INFO - Starting training process...
+2025-01-08 23:55:54,115 - INFO - train_set.joblib not found. Preparing training data.
+2025-01-09 00:17:27,032 - INFO - Starting training process...
+2025-01-09 00:17:27,032 - INFO - train_set.joblib not found. Preparing training data.
+2025-01-09 00:19:20,569 - INFO - Training set prepared and saved to train_set.joblib.
+2025-01-09 00:19:20,600 - INFO - SVM pipeline trained.
+2025-01-09 00:19:20,600 - INFO - KNN pipeline trained.
+2025-01-09 00:19:20,616 - INFO - Logistic Regression pipeline trained.
+2025-01-09 00:19:20,616 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-09 00:19:20,616 - INFO - Starting testing phase...
+2025-01-09 00:19:20,631 - INFO - test_set.joblib not found. Preparing test data.
+2025-01-09 00:19:33,547 - INFO - Test set prepared and saved to test_set.joblib.
+2025-01-09 00:30:29,790 - INFO - Starting training process...
+2025-01-09 00:30:29,790 - INFO - train_set.joblib not found. Preparing training data.
+2025-01-09 00:33:19,808 - INFO - Training set prepared and saved to train_set.joblib.
+2025-01-09 00:33:19,853 - INFO - SVM pipeline trained.
+2025-01-09 00:33:19,859 - INFO - KNN pipeline trained.
+2025-01-09 00:33:19,871 - INFO - Logistic Regression pipeline trained.
+2025-01-09 00:33:19,876 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-09 00:33:19,876 - INFO - Starting testing phase...
+2025-01-09 00:33:19,910 - INFO - test_set.joblib not found. Preparing test data.
+2025-01-09 00:33:37,724 - INFO - Test set prepared and saved to test_set.joblib.
+2025-01-09 00:44:00,437 - INFO - Starting training process...
+2025-01-09 00:44:00,437 - INFO - train_set.joblib not found. Preparing training data.
+2025-01-09 00:46:34,072 - INFO - Training set prepared and saved to train_set.joblib.
+2025-01-09 00:46:34,112 - INFO - SVM pipeline trained.
+2025-01-09 00:46:34,117 - INFO - KNN pipeline trained.
+2025-01-09 00:46:34,129 - INFO - Logistic Regression pipeline trained.
+2025-01-09 00:46:34,135 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-09 00:46:34,136 - INFO - Starting testing phase...
+2025-01-09 00:46:34,177 - INFO - test_set.joblib not found. Preparing test data.
+2025-01-09 00:46:50,819 - INFO - Test set prepared and saved to test_set.joblib.
+2025-01-09 01:00:05,232 - INFO - Starting training process...
+2025-01-09 01:00:05,233 - INFO - train_set.joblib not found. Preparing training data.
+2025-01-09 01:04:44,433 - INFO - Training set prepared and saved to train_set.joblib.
+2025-01-09 01:04:44,493 - INFO - SVM pipeline trained.
+2025-01-09 01:04:44,499 - INFO - KNN pipeline trained.
+2025-01-09 01:04:44,523 - INFO - Logistic Regression pipeline trained.
+2025-01-09 01:04:44,533 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-09 01:04:44,533 - INFO - Starting testing phase...
+2025-01-09 01:04:44,762 - INFO - test_set.joblib not found. Preparing test data.
+2025-01-09 01:05:05,576 - INFO - Test set prepared and saved to test_set.joblib.
+2025-01-09 01:11:55,526 - INFO - Starting training process...
+2025-01-09 01:11:55,526 - INFO - train_set.joblib not found. Preparing training data.
+2025-01-09 01:13:45,679 - INFO - Training set prepared and saved to train_set.joblib.
+2025-01-09 01:13:45,711 - INFO - SVM pipeline trained.
+2025-01-09 01:13:45,711 - INFO - KNN pipeline trained.
+2025-01-09 01:13:45,726 - INFO - Logistic Regression pipeline trained.
+2025-01-09 01:13:45,726 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-09 01:13:45,726 - INFO - Starting testing phase...
+2025-01-09 01:13:45,757 - INFO - test_set.joblib not found. Preparing test data.
+2025-01-09 01:13:57,840 - INFO - Test set prepared and saved to test_set.joblib.
+2025-01-09 01:22:18,763 - INFO - Starting training process...
+2025-01-09 01:22:18,763 - INFO - train_set.joblib not found. Preparing training data.
+2025-01-09 01:24:15,112 - INFO - Training set prepared and saved to train_set.joblib.
+2025-01-09 01:24:15,143 - INFO - SVM pipeline trained.
+2025-01-09 01:24:15,143 - INFO - KNN pipeline trained.
+2025-01-09 01:24:15,143 - INFO - Logistic Regression pipeline trained.
+2025-01-09 01:24:15,159 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-09 01:24:15,159 - INFO - Starting testing phase...
+2025-01-09 01:24:15,190 - INFO - test_set.joblib not found. Preparing test data.
+2025-01-09 01:24:27,650 - INFO - Test set prepared and saved to test_set.joblib.
+2025-01-09 01:31:02,352 - INFO - Starting training process...
+2025-01-09 01:31:02,352 - INFO - train_set.joblib not found. Preparing training data.
+2025-01-09 01:32:52,625 - INFO - Training set prepared and saved to train_set.joblib.
+2025-01-09 01:32:52,672 - INFO - SVM pipeline trained.
+2025-01-09 01:32:52,672 - INFO - KNN pipeline trained.
+2025-01-09 01:32:52,687 - INFO - Logistic Regression pipeline trained.
+2025-01-09 01:32:52,687 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-09 01:32:52,687 - INFO - Starting testing phase...
+2025-01-09 01:32:52,703 - INFO - test_set.joblib not found. Preparing test data.
+2025-01-09 01:33:04,836 - INFO - Test set prepared and saved to test_set.joblib.
+2025-01-09 03:54:46,126 - INFO - Starting training process...
+2025-01-09 03:54:46,126 - INFO - train_set.joblib not found. Preparing training data.
+2025-01-09 03:56:48,968 - INFO - Training set prepared and saved to train_set.joblib.
+2025-01-09 03:56:49,015 - INFO - SVM pipeline trained.
+2025-01-09 03:56:49,015 - INFO - KNN pipeline trained.
+2025-01-09 03:56:49,031 - INFO - Logistic Regression pipeline trained.
+2025-01-09 03:56:49,031 - INFO - Trained models saved: svm_pipeline.joblib, knn_pipeline.joblib, logreg_pipeline.joblib
+2025-01-09 03:56:49,031 - INFO - Starting testing phase...
+2025-01-09 03:56:49,046 - INFO - test_set.joblib not found. Preparing test data.
+2025-01-09 03:57:01,480 - INFO - Test set prepared and saved to test_set.joblib.

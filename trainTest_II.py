@@ -13,7 +13,7 @@ from settings import (
     channels, autoEncoder, norm_trainDataDir, abnorm_trainDataDir,
     autoencoderNormPath, autoencoderAbnormPath, epochs,
     norm_testDataDir, abnorm_testDataDir,
-    phaseII_trainSetPath, phaseII_testSetPath
+    phaseII_trainSetPath, phaseII_testSetPath, phaseII_mode
 )
 from sklearn.model_selection import train_test_split, StratifiedKFold, cross_val_score
 from sklearn.svm import SVC
@@ -157,7 +157,7 @@ def train_phase():
     logging.info("Starting training process...")
 
     # Check if we have saved training data; if not, prepare it
-    if os.path.exists(phaseII_trainSetPath):
+    if os.path.exists(phaseII_trainSetPath) and False:
         X_train, y_train = joblib.load(phaseII_trainSetPath)
         logging.info("Loaded existing training set from train_set.joblib.")
     else:
@@ -220,7 +220,7 @@ def test_phase():
     pipeline_logreg = joblib.load('checkpoints/logreg_pipeline.joblib')
 
     # Load or prepare test data
-    if os.path.exists(phaseII_testSetPath):
+    if os.path.exists(phaseII_testSetPath) and False:
         X_test, y_test = joblib.load(phaseII_testSetPath)
         logging.info("Loaded existing test set from test_set.joblib.")
     else:
@@ -238,11 +238,17 @@ def test_phase():
 
     logreg_preds = pipeline_logreg.predict(X_test)
     logreg_proba = pipeline_logreg.predict_proba(X_test)[:, 1]
-    p
+    
     evaluate_model("Support Vector Machine", y_test, svm_preds, svm_proba)
     evaluate_model("K-Nearest Neighbors", y_test, knn_preds, knn_proba)
     evaluate_model("Logistic Regression", y_test, logreg_preds, logreg_proba)
 
+    if phaseII_mode == 'amp':
+        joblib.dump((logreg_preds, y_test), 'amp_result.joblib')
+    elif phaseII_mode == 'vib':
+        joblib.dump((svm_preds, y_test), 'vib_result.joblib')
+        
+    
 def main():
     """Command-line entry point: use -train, -test, or both."""
     gc.collect()

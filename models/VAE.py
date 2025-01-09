@@ -9,7 +9,7 @@ import numpy as np
 
 from settings import epochs, cuda, channels, timeStamps, lr, scheduler_gamma, scheduler_stepSize, batchSize_aeNorm, batchSize_aeAbnorm
 from settings import norm_trainDataDir, abnorm_trainDataDir
-from settings import architechture, dataVerion, sampleRate, sampleRate_origin, slidingWindow_aeNorm, slidingWindow_aeAbnorm, stride
+from settings import architecture, dataVersion, sampleRate, sampleRate_origin, slidingWindow_aeNorm, slidingWindow_aeAbnorm, stride
 from settings import embeddingSize, decoderShapeBias, dropout, layers
 from settings import vaeBias
 
@@ -33,7 +33,7 @@ arch = {
 class VAE_Network(nn.Module):
     def __init__(self):
         super(VAE_Network, self).__init__()
-        usedArch = arch[architechture]
+        usedArch = arch[architecture]
 
         # Base encoder (whatever architecture you picked)
         # Suppose the encoder returns (hidden, activations)
@@ -84,7 +84,7 @@ class VAE_Network(nn.Module):
 class LSTM_VAE(nn.Module):
     def __init__(self):
         super(LSTM_VAE, self).__init__()
-        usedArch = arch[architechture]
+        usedArch = arch[architecture]
         
         # 1) LSTM Encoder
         # Suppose LSTM_Encoder returns (x_enc, hidden_out)
@@ -164,7 +164,7 @@ class VAE(object):
             self.test_loader = self.data.test_loader
 
         # Use the new VAE network instead of the old AE network
-        self.model = VAE_Network() if architechture != 'LSTM' else LSTM_VAE()
+        self.model = VAE_Network() if architecture != 'LSTM' else LSTM_VAE()
         
         # Adam optimizer, same as AE
         self.optimizer = optim.Adam(self.model.parameters(), lr=lr)
@@ -204,7 +204,7 @@ class VAE(object):
             reconstructed, mu, logvar, _ = self.model(data)
                 # Suppose 'reconstructed_x' is [B, timeStamps, channels].
                 # Just do:
-            if architechture == 'LSTM':
+            if architecture == 'LSTM':
                 reconstructed = reconstructed.transpose(1, 2)
                 # Now shape is [B, channels, timeStamps].
 
@@ -229,7 +229,7 @@ class VAE(object):
 
                 # Forward pass
                 reconstructed, mu, logvar, _ = self.model(data)
-                if architechture == 'LSTM':
+                if architecture == 'LSTM':
                     reconstructed = reconstructed.transpose(1, 2)
                 # Accumulate validation loss
                 test_loss += self.loss_function(reconstructed, data, mu, logvar).item()
@@ -249,7 +249,7 @@ class VAE(object):
             for data in self.test_loader:
                 data = data[0].clone().detach().to(self.device)
                 reconstructed, mu, logvar, _ = self.model(data)
-                if architechture == 'LSTM':
+                if architecture == 'LSTM':
                     reconstructed = reconstructed.transpose(1, 2)
                 testLosses.append(self.loss_function(reconstructed, data, mu, logvar).item())
 
@@ -262,7 +262,7 @@ class VAE(object):
             'model_state_dict': self.model.state_dict(),
             'optimizer_state_dict': self.optimizer.state_dict(),
             'scheduler_state_dict': self.scheduler.state_dict(),
-            'architechture': architechture,
+            'architecture': architecture,
             # ... plus any other relevant hyperparams
             'trainLoss': self.trainLosses[-1] if self.trainLosses else None,
             'testLoss': self.testLosses[-1] if self.testLosses else None,
