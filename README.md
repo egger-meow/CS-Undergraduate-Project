@@ -1,85 +1,224 @@
-# refined
+# Elevator Re-leveling Anomaly Detection System
 
-adjust parameters in settings.py
-and run train.py and test.py directly
+[![PyTorch](https://img.shields.io/badge/PyTorch-1.9+-orange.svg)](https://pytorch.org/)
+[![Python](https://img.shields.io/badge/Python-3.7+-blue.svg)](https://python.org)
+![Status](https://img.shields.io/badge/Status-Production-brightgreen.svg)
 
-u can run trainTestDataShuffle.py for train test data setup
+A dual autoencoder system for detecting elevator re-leveling events using motor current and vibration data, implementing the methodology described in `docs/background.md`.
 
-the following is the content of the orignal author
+## Project Overview
 
-# AutoEncoders in PyTorch
+This system detects "re-leveling" events in elevators - when an elevator performs a second alignment after the first leveling attempt has excessive error. This serves as an early warning system for potential maintenance issues.
 
-[![dep2](https://img.shields.io/badge/PyTorch-0.4.1-orange.svg)](https://pytorch.org/)
-![dep1](https://img.shields.io/badge/Status-Work--in--Progress-brightgreen.svg)
+### Key Features
 
--------------------------
+- **Dual Autoencoder Architecture**: Separate models for normal and abnormal data
+- **Multi-channel Analysis**: Motor current (high precision) + door vibration (high recall)
+- **OR Fusion Strategy**: Optimizes for recall over precision (maintenance-friendly)
+- **10-fold Cross-validation**: Robust evaluation with repeated experiments
+- **Clean Configuration**: Centralized config management with dataclasses
 
-## Description
+## Architecture
 
-This repo contains an implementation of the following AutoEncoders:
+### Data Channels (Background.md Findings)
+- **Channel 0**: Motor current (amp) - High precision (0.94), lower recall (0.62)
+- **Channels 1-3**: Door vibration XYZ - High recall (0.84), lower precision (0.82) 
+- **Channels 4-6**: Car vibration XYZ - Less informative (excluded from optimal combination)
 
-* [Vanilla AutoEncoders - **AE**](http://ufldl.stanford.edu/tutorial/unsupervised/Autoencoders/): </br>
-  The most basic autoencoder structure is one which simply maps input data-points through a __bottleneck layer__ whose dimensionality is smaller than the input.
+### Methodology
+1. **Dual Training**: Train separate 1D-CNN autoencoders on normal and abnormal data
+2. **Feature Extraction**: Use reconstruction losses as 2D features (normal_loss, abnormal_loss)
+3. **Classification**: Apply SVM/LogReg/kNN on 2D feature space
+4. **Fusion**: OR logic between amp and vib predictions for final decision
 
-* [Variational AutoEncoders - **VAE**](https://arxiv.org/pdf/1606.05908): </br>
-  The Variational Autoencoder introduces the constraint
-that the latent code `z` is a random variable distributed according to a prior distribution `p(z)`.
+## Quick Start
 
-* [Adversarially Constrained Autoencoder Interpolations - **ACAI**](https://arxiv.org/pdf/1807.07543):</br>
-A critic network tries to predict the interpolation coefficient α corresponding to an interpolated datapoint. The autoencoder is
-trained to fool the critic into outputting α = 0.</br>
-![ACAI-figure](assets/ACAI-figure.png)
+### Installation
 
--------------------------
-
-## Setup
-
-### Create a Python Virtual Environment
-```
-mkvirtualenv --python=/usr/bin/python3 pytorch-AE
-```
-
-###  Install dependencies
-```
-pip install torch torchvision
+```bash
+pip install -r requirements.txt
 ```
 
--------------------------
+### Configuration
 
-## Training
+The system uses a centralized configuration in `config.py`. Key settings:
+
+```python
+# Data configuration  
+data_version = 'v3'
+amp_channels = [0]          # Motor current
+vib_channels = [1, 2, 3]    # Door vibration XYZ
+
+# Model configuration
+architecture = 'CNN1D'      # 1D-CNN as per background.md
+embedding_size = 8          # For amp model
+embedding_size_vib = 16     # For vib model (multi-channel)
+
+# Evaluation configuration
+n_repeats = 10              # 10-fold cross-validation
+fusion_method = 'OR'        # OR fusion strategy
 ```
-python train.py --help
+
+### Basic Usage
+
+```bash
+# Display current configuration
+python main.py --config-info
+
+# Train individual models
+python main.py --train-amp              # Train amplitude model
+python main.py --train-vib              # Train vibration model  
+python main.py --train-both             # Train both models
+
+# Evaluate with fusion
+python main.py --evaluate               # Single evaluation with fusion
+
+# Complete pipeline (background.md methodology)
+python main.py --complete               # 10-repeat cross-validation
 ```
 
-### Training Options and some examples:
+### Example Workflow
 
-* **Vanilla Autoencoder:**
-  ```
-  python train.py --model AE
-  ```
+```bash
+# 1. Train both models
+python main.py --train-both
 
-* **Variational Autoencoder:**
-  ```
-  python train.py --model VAE --batch-size 512 --dataset EMNIST --seed 42 --log-interval 500 --epochs 5 --embedding-size 128
-  ```
+# 2. Run evaluation with fusion
+python main.py --evaluate
 
--------------------------
+# 3. Run complete evaluation pipeline (matches background.md results)
+python main.py --complete
+```
 
-## Results
+## Project Structure
 
-| Vanilla AutoEncoders       |  Variational AutoEncoders  | ACAI          |
-|------------------------- |------------------------- | --------------------|
-| <img src="assets/interpolations_AE.png" width="250" height="250" />  | <img src="assets/interpolations_VAE_2.png" width="250" height="250" /> | <img src="assets/interpolations_ACAI.png" width="250" height="250" />|
+```
+pytorch-AE/
+├── core/                   # Core system components
+│   ├── data_processor.py   # Data preprocessing and loading
+│   ├── dual_autoencoder.py # Dual AE implementation  
+│   ├── fusion_engine.py    # OR fusion and evaluation
+│   └── evaluation_pipeline.py # 10-fold cross-validation
+├── models/                 # Model architectures
+│   ├── architectures/
+│   │   ├── CNN1D.py       # 1D-CNN encoder/decoder
+│   │   ├── MLP.py         # MLP architecture
+│   │   └── LSTM.py        # LSTM architecture
+│   ├── AE.py              # Legacy autoencoder (deprecated)
+│   └── VAE.py             # Legacy VAE (deprecated)
+├── docs/                  # Documentation
+│   └── background.md      # Detailed methodology and findings
+├── checkpoints/           # Saved models and pipelines
+├── results/               # Evaluation results
+├── logs/                  # System logs
+├── config.py              # Centralized configuration
+├── main.py                # Main execution script
+└── requirements.txt       # Dependencies
+```
 
+## Key Components
 
+### DataProcessor (`core/data_processor.py`)
+- Handles downsampling from 8192Hz to ~256Hz
+- Channel selection based on background.md findings
+- Consistent data length normalization
+- Separate preparation for amp and vib data
 
-### Contributing:
-If you have suggestions or any type of contribution idea, file an issue, make a PR
-and **don't forget to star the repository**
+### DualAutoEncoder (`core/dual_autoencoder.py`)  
+- Implements dual AE training (normal + abnormal)
+- Extracts 2D reconstruction loss features
+- Supports different embedding sizes for amp/vib
+- Includes sparsity regularization
 
-### More projects:
-Feel free to check out my other repos with more work in Machine Learning:
+### FusionEngine (`core/fusion_engine.py`)
+- Trains classifiers on 2D features
+- Implements OR fusion strategy
+- Evaluates individual and fused performance
+- Generates results in background.md format
 
-* [World Models in TensorFlow](https://github.com/dariocazzani/World-Models-TensorFlow)
-* [TensorBlob](https://github.com/dariocazzani/TensorBlob)
-* [banaNavigation](https://github.com/dariocazzani/banaNavigation)
+### EvaluationPipeline (`core/evaluation_pipeline.py`)
+- Runs 10-repeat complete pipeline evaluation
+- Computes averaged metrics across experiments
+- Generates final reports matching background.md methodology
+
+## Results Format
+
+The system outputs results in the format shown in background.md:
+
+| Model          | Accuracy | Precision | Recall   | F1-Score |
+| -------------- | -------- | --------- | -------- | -------- |
+| Amp (電流0)    | 0.79     | **0.94**  | 0.62     | 0.75     |
+| Vib (1,2,3)    | 0.83     | 0.82      | **0.84** | 0.83     |
+| Mix (OR)       | **0.86** | 0.82      | **0.92** | **0.87** |
+
+## Configuration Management
+
+The refactored system uses dataclasses for clean configuration:
+
+- `DataConfig`: Data paths, channels, sampling parameters
+- `ModelConfig`: Architecture, training parameters, embedding sizes  
+- `EvaluationConfig`: Cross-validation, fusion strategy, classifiers
+- `SystemConfig`: Device, paths, logging, random seeds
+
+## Migration from Legacy Code
+
+The refactored system replaces:
+- `pipeline.py` → `main.py` (cleaner CLI interface)
+- `trainTest_I.py` → `core/dual_autoencoder.py` (focused dual AE)
+- `trainTest_II.py` → `core/fusion_engine.py` (fusion and evaluation)
+- `mix.py` → `core/fusion_engine.py` (integrated OR fusion)
+- `settings.py` → `config.py` (structured configuration)
+
+Legacy files are preserved but deprecated.
+
+## Advanced Usage
+
+### Custom Configurations
+
+Modify `config.py` for different experimental setups:
+
+```python
+# Use different channels
+config.data.vib_channels = [1, 2, 3, 4, 5, 6]  # Include car vibration
+
+# Adjust model parameters
+config.model.embedding_size_vib = 32           # Larger embedding for more channels
+
+# Change fusion strategy  
+config.evaluation.fusion_method = 'AND'       # More conservative fusion
+```
+
+### Custom Evaluation
+
+```python
+from core.evaluation_pipeline import EvaluationPipeline
+
+# Run with different number of repeats
+config.evaluation.n_repeats = 5
+pipeline = EvaluationPipeline()
+results = pipeline.run_complete_evaluation()
+```
+
+## Logging
+
+All operations are logged to `logs/dual_ae_pipeline_TIMESTAMP.log` with configurable levels.
+
+## Dependencies
+
+See `requirements.txt` for complete list. Key dependencies:
+- PyTorch (deep learning framework)
+- scikit-learn (classifiers and evaluation)
+- pandas/numpy (data processing)
+- joblib (model persistence)
+
+## Contributing
+
+When adding new features:
+1. Follow the modular architecture in `core/`
+2. Update configuration in `config.py`
+3. Add logging statements for debugging
+4. Maintain backward compatibility with background.md methodology
+
+## License
+
+[Add appropriate license]

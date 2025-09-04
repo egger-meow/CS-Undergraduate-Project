@@ -3,14 +3,13 @@ from torch import nn
 from torch.nn import functional as F
 from torch.autograd import Variable
 
-from settings import channels, timeStamps, embeddingSize, decoderShapeBias, autoEncoder
+import numpy as np
 
-import numpy as  np 
 class CNN_Encoder(nn.Module):
-    def __init__(self, input_size=(channels, timeStamps)):
+    def __init__(self, input_size=(1, 1024), embedding_size=8):
         super(CNN_Encoder, self).__init__()
         self.input_size = input_size
-        self.channel_mult = embeddingSize
+        self.channel_mult = embedding_size
 
         # Convolutions
         self.conv = nn.Sequential(
@@ -65,12 +64,12 @@ class CNN_Encoder(nn.Module):
         return x, activations
 
 class CNN_Decoder(nn.Module):
-    def __init__(self, input_size=(channels, timeStamps)):
+    def __init__(self, input_size=(1, 1024), embedding_size=8):
         super(CNN_Decoder, self).__init__()
-        self.input_channels = channels
-        self.input_timeStamps = timeStamps
-        self.channel_mult = embeddingSize
-        self.output_channels = channels
+        self.input_channels = input_size[0]
+        self.input_timeStamps = input_size[1]
+        self.channel_mult = embedding_size
+        self.output_channels = input_size[0]
 
         self.deconv = nn.Sequential(
             nn.ConvTranspose1d(
@@ -110,7 +109,7 @@ class CNN_Decoder(nn.Module):
                 stride=4,
                 padding=2,
             ),
-            nn.Linear(decoderShapeBias, timeStamps),
+            nn.Linear(self.input_timeStamps - 8, self.input_timeStamps),
 
             nn.Sigmoid(),  # Output scaled to [0, 1]
         )

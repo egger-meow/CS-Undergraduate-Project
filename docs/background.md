@@ -15,7 +15,7 @@
 
 * **評估**：採 **10 次完整管線重複實驗**（每次重新隨機劃分 train/test），彙整平均表現。
 
-> 專案程式架構與設定（如 `settings.py`、`pipeline.py`、已保存的管線 `*_pipeline.joblib`）可在你的 repo 中查閱，分支為 `result-v2`。
+> 專案程式架構與設定（如 `config.py`、`pipeline.py`、已保存的管線 `*_pipeline.joblib`）可在你的 repo 中查閱，分支為 `result-v2`。
 
 ---
 
@@ -73,7 +73,7 @@
 * 推論時對每筆樣本分別計算 Normal-AE 與 Abnormal-AE 的 **reconstruction loss**；把兩個 loss 視作 **2D 特徵向量**（x=normal-loss, y=abnormal-loss），再餵入分類器（**SVM / Logistic Regression / kNN**）。 &#x20;
 
 ![pipeline](./img/training_report/training_report-04.png)
-> repo 的 `settings.py`（分支 `result-v2`）對齊了「**AE（非 VAE）**、**1D-CNN**、**不使用 FFT**」等預設；管線與已訓練分類器（如 `logreg_pipeline.joblib`、`knn_pipeline.joblib`）也都在倉庫中。
+> repo 的 `config.py`（分支 `result-v2`）對齊了「**AE（非 VAE）**、**1D-CNN**、**不使用 FFT**」等預設；管線與已訓練分類器（如 `logreg_pipeline.joblib`、`knn_pipeline.joblib`）也都在倉庫中。
 
 ---
 

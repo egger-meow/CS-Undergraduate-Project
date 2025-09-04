@@ -1,5 +1,43 @@
+# Python
 __pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Data and results
 data/
+D:/leveling/
 results/
+logs/
+*.log
+
+# Model checkpoints and pipelines
 checkpoints/
-model_pipeline.log
+*.pth
+*.joblib
+
+# Legacy results
+legacy/
+*.csv
+*_result.joblib
+*_pipeline.joblib
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
