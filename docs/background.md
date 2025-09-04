@@ -1,13 +1,21 @@
 
+# 電梯再平層異常檢測專案
+
+## 專案概述
 
 * **目標**：偵測「再平層」事件（電梯到站第一次對齊後，因誤差過大而進行第二次對齊），以降低人工巡檢負擔。
-* **資料**：馬達電流（channel 0）+ 六軸振動（門上 XYZ：channels 1–3；車廂/馬達背面 XYZ：channels 4–6），原始取樣率 8192 Hz，訓練前下採樣至約 256 Hz；實驗使用 0604–0605 的正常資料與 0607 的異常資料；切片聚焦 **Stage 3–5**。&#x20;
+
+* **資料**：馬達電流（channel 0）+ 六軸振動（門上 XYZ：channels 1–3；車廂/馬達背面 XYZ：channels 4–6），原始取樣率 8192 Hz，訓練前下採樣至約 256 Hz；實驗使用 0604–0605 的正常資料與 0607 的異常資料；切片聚焦 **Stage 3–5**。
+
 * **方法**：各自以正常資料、異常資料訓練兩個 **1D-CNN Autoencoder**；每筆樣本輸入後得到兩個 reconstruction loss（視作 2D 特徵），再用 SVM / Logistic Regression / kNN 做最後分類。
-* **通道發現**：門上 XYZ（1–3）較有訊號意義；車廂/馬達背面 XYZ（4–6）資訊性弱。電流（0）+ 門上振動（1,2,3）是最佳組合；包含 4–6 的組合準確率常掉到 \~0.7 或以下。&#x20;
+
+* **通道發現**：門上 XYZ（1–3）較有訊號意義；車廂/馬達背面 XYZ（4–6）資訊性弱。電流（0）+ 門上振動（1,2,3）是最佳組合；包含 4–6 的組合準確率常掉到 ~0.7 或以下。
+
 * **融合策略**：電流模型與振動模型的輸出做 **bitwise OR**，以小幅犧牲 precision 換取更高 recall（務實符合維運場景）。
+
 * **評估**：採 **10 次完整管線重複實驗**（每次重新隨機劃分 train/test），彙整平均表現。
 
-> 專案程式架構與設定（如 `settings.py`、`pipeline.py`、已保存的管線 `*_pipeline.joblib`）可在你的 repo 中查閱，分支為 `result-v2`。([GitHub][1])
+> 專案程式架構與設定（如 `settings.py`、`pipeline.py`、已保存的管線 `*_pipeline.joblib`）可在你的 repo 中查閱，分支為 `result-v2`。
 
 ---
 
@@ -35,7 +43,9 @@
 * **Channels 1–3**：門上振動 XYZ（你早期標注為 2–4，與投影片上的 1–3 為同一組，僅索引習慣不同）。
 * **Channels 4–6**：車廂／馬達背面振動 XYZ（投影片稱 car xyz；你口述對應馬達背面）。
 
-> 你的實驗發現與投影片一致：**門上 XYZ 資訊性高，車廂/馬達背面 XYZ 資訊性低**。
+> 實驗發現：**門上 XYZ 資訊性高，車廂/馬達背面 XYZ 資訊性低**。
+
+![comparison](./img/report(easy)/report(easy)-10.png)
 
 ## 數據期間與採樣
 
@@ -62,9 +72,8 @@
   2. **Abnormal-AE**：只用異常資料訓練
 * 推論時對每筆樣本分別計算 Normal-AE 與 Abnormal-AE 的 **reconstruction loss**；把兩個 loss 視作 **2D 特徵向量**（x=normal-loss, y=abnormal-loss），再餵入分類器（**SVM / Logistic Regression / kNN**）。 &#x20;
 
-> 你 repo 的 `settings.py`（分支 `result-v2`）對齊了「**AE（非 VAE）**、**1D-CNN**、**不使用 FFT**」等預設；管線與已訓練分類器（如 `logreg_pipeline.joblib`、`knn_pipeline.joblib`）也都在倉庫中。([GitHub][1])
-
-很好 👍 你提供的三組結果（amp、vib、mix），剛好能夠完整支撐「單通道建模 + 後融合」的策略說明。我幫你整理成一份 **正式報告內容**，同時也附上 **表格化數據**，讓審查者一眼就能看懂為什麼要採 OR 融合。
+![pipeline](./img/training_report/training_report-04.png)
+> repo 的 `settings.py`（分支 `result-v2`）對齊了「**AE（非 VAE）**、**1D-CNN**、**不使用 FFT**」等預設；管線與已訓練分類器（如 `logreg_pipeline.joblib`、`knn_pipeline.joblib`）也都在倉庫中。
 
 ---
 
@@ -77,7 +86,7 @@
    * 使用馬達電流單通道資料，訓練一對 Autoencoder。
    * **實驗結果**：
 
-     * Precision 較高（0.94），代表「判斷為異常時幾乎不會誤報」。
+     * **Precision 較高（0.94）**，代表「判斷為異常時幾乎不會誤報」。
      * 但 Recall 偏低（0.62），異常檢出率不足。
    * 適合作為 **高精確度但較保守** 的檢測器。
 
@@ -86,7 +95,7 @@
    * 使用門上振動三軸資料，訓練另一對 Autoencoder。
    * **實驗結果**：
 
-     * Recall 較高（0.84），代表「異常檢出率較佳」。
+     * **Recall 較高（0.84）**，代表「異常檢出率較佳」。
      * Precision 相對較低（0.82），誤報機率增加。
    * 適合作為 **高靈敏度但較寬鬆** 的檢測器。
 
@@ -140,7 +149,7 @@
 
 * **完整管線重複 10 次**，每次重新隨機劃分 Train/Test 後再做訓練與測試，最後彙整 **平均結果** 作為報告數字。
 
-> （若你要，我可以把 repo 內 `result.csv`、`model_pipeline.log` 抽數字做表格與圖，但目前投影片頁面沒有直接列數字，我就不臆測了。）
+![result](./img/training_report/training_report-11.png)
 
 ---
 
@@ -168,25 +177,13 @@
 
 # 可落地化的下一步（Roadmap）
 
-1. **資料管線化**：
-
-   * streaming downsample → 切段（對齊 Stage 3–5）→ 標準化 → 雙 AE 推論 → OR 融合 → 告警。
-2. **評估指標調校**：
+1. **評估指標調校**：
 
    * 明確追蹤 **Recall / Precision / F1 / AUROC** 與 **告警頻率**；以 ROC/PR-Curve 在不同閾值與分類器設定下找 sweet spot。
-3. **模型管理**：
+2. **模型管理**：
 
    * 每台電梯一組模型 vs 全域模型 + 微調；加上 **週／月回訓** 與 **資料漂移監測**（如 PSI、KS）。
-4. **硬體與延遲**：
-
-   * 估算 256 Hz 下每秒運算量；Edge 裝置推論（ARM + PyTorch/TorchScript 或 ONNX）；延遲與記憶體壓力。
-5. **偵測策略擴充**：
-
-   * 在 AE 之外加入 **Isolation Forest / One-Class SVM** 當異常備援；或以 **triplet / contrastive** 學習強化區別度。
-6. **標註與回饋**：
-
-   * 建立維修人員標註介面，將誤報／漏報回饋至訓練集。
-7. **跨通道早期融合**（選配）：
+3. **跨通道早期融合**（選配）：
 
    * 嘗試在 encoder 端做多通道卷積與注意力（仍保留後端 OR 作保險），觀察是否能在不吞噬 recall 的情況下提升 precision。
 
