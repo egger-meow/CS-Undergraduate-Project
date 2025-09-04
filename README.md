@@ -4,7 +4,7 @@
 [![Python](https://img.shields.io/badge/Python-3.7+-blue.svg)](https://python.org)
 ![Status](https://img.shields.io/badge/Status-Production-brightgreen.svg)
 
-A dual autoencoder system for detecting elevator re-leveling events using motor current and vibration data, implementing the methodology described in `docs/background.md`.
+A dual autoencoder system for detecting elevator re-leveling events using motor current and vibration data, implementing the methodology described in `docs/README.md`.
 
 ## Project Overview
 
