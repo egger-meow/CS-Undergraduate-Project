@@ -46,7 +46,7 @@
 > 實驗發現：**門上 XYZ 資訊性高，車廂/馬達背面 XYZ 資訊性低**。
 
 ![comparison](./img/report(easy)/report(easy)-10.png)
-
+x, y軸代表正常autoencoder與異常autoencoder的reconstruction loss (後續會提及)，一個點代表一個test樣本 (一個樣本是一個時間序列)
 ## 數據期間與採樣
 
 * 正常資料：**0604–0605**；異常資料：**0607**。原始 **8192 Hz**，訓練前下採樣至 **\~256 Hz**。&#x20;
@@ -68,8 +68,8 @@
 
 * 各自訓練兩個 **1D-CNN Autoencoder**：
 
-  1. **Normal-AE**：只用正常資料訓練
-  2. **Abnormal-AE**：只用異常資料訓練
+  1. **Normal-AE** (正常 autoencoder)：只用正常資料訓練
+  2. **Abnormal-AE** (異常 autoencoder)：只用異常資料訓練
 * 推論時對每筆樣本分別計算 Normal-AE 與 Abnormal-AE 的 **reconstruction loss**；把兩個 loss 視作 **2D 特徵向量**（x=normal-loss, y=abnormal-loss），再餵入分類器（**SVM / Logistic Regression / kNN**）。 &#x20;
 
 ![pipeline](./img/training_report/training_report-04.png)
