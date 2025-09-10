@@ -1,4 +1,4 @@
-# Elevator Re-leveling Anomaly Detection System
+# Elevator Re-leveling Anomaly Detection (資工系專題)
 
 [![PyTorch](https://img.shields.io/badge/PyTorch-1.9+-orange.svg)](https://pytorch.org/)
 [![Python](https://img.shields.io/badge/Python-3.7+-blue.svg)](https://python.org)
