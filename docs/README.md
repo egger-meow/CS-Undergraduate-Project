@@ -1,5 +1,4 @@
-
-# 電梯再平層異常檢測專案
+# 專題報告-電梯異常檢測(再平層)之研究
 陽明交通大學 管科系/資工系 侯均頲 
 
 (此 repository 內容皆純為本人撰寫後，2025/09由AI整理，實驗舊版可參閱 result branch)
@@ -213,9 +212,10 @@ x, y軸代表正常autoencoder與異常autoencoder的reconstruction loss (後續
 * **實驗驗證**：期末前完成優秀的異常檢測分類結果，並使用 cross validation 進行驗證
 * **報告撰寫**：以上報告與實驗內容全部由本人完成
 
+--- 
+[專題 github 連結](https://github.com/egger-meow/CS-Undergraduate-Project)
+
 ---
-
-
 ## **指導教授簽名確認**： 
 
 
