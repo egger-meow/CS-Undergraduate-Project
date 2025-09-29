@@ -1,7 +1,6 @@
 # 專題報告-電梯異常檢測(再平層)之研究
 陽明交通大學 管科系/資工系 侯均頲 
 
-(此 repository 內容皆純為本人撰寫後，2025/09由AI整理，實驗舊版可參閱 result branch)
 ## 專案概述
 
 * **目標**：偵測「再平層」事件（電梯到站第一次對齊後，因誤差過大而進行第二次對齊），以降低人工巡檢負擔。
@@ -16,7 +15,6 @@
 
 * **評估**：採 **10 次完整管線重複實驗**（每次重新隨機劃分 train/test），彙整平均表現。
 
-> 專案程式架構與設定（如 `config.py`）可在 repo 中查閱。
 
 ---
 
@@ -74,7 +72,6 @@ x, y軸代表正常autoencoder與異常autoencoder的reconstruction loss (後續
 * 推論時對每筆樣本分別計算 Normal-AE 與 Abnormal-AE 的 **reconstruction loss**；把兩個 loss 視作 **2D 特徵向量**（x=normal-loss, y=abnormal-loss），再餵入分類器（**SVM / Logistic Regression / kNN**）。 &#x20;
 
 ![pipeline](./img/training_report/training_report-04.png)
-> repo 的 `config.py`（對齊了「**AE（非 VAE）**、**1D-CNN**、**不使用 FFT**」等預設；管線與已訓練分類器（如 `logreg_pipeline.joblib`、`knn_pipeline.joblib`）也都在倉庫中。
 
 ---
 
